@@ -1,0 +1,54 @@
+# Ignore arquivos de configuração e compilação
+
+# Visual Studio
+.vscode/
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+# Build Results
+[Dd]ebug/
+[Rr]elease/
+x64/
+x86/
+[Aa][Rr][Mm]64/
+[Aa][Rr][Mm]/
+bld/
+[Bb]in/
+[Oo]bj/
+
+# Logs, pacotes e diretórios de cache
+*.log
+*.nupkg
+*.snupkg
+*.swp
+*.temp
+*.tmp
+*.bak
+*.old
+backup/
+testresults/
+TestResults/
+project.lock.json
+project.fragment.lock.json
+artifacts/
+
+# ASP.NET Scaffolding
+.scaffolding/
+
+# Configuração local do usuário
+appsettings.Development.json
+secrets.json
+
+# ASP.NET Core Static Files
+wwwroot/
+node_modules/
+
+# Rider / IntelliJ IDEA
+.idea/
+
+# Arquivos do sistema operacional
+.DS_Store
+Thumbs.db
