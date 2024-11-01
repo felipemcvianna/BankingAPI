@@ -6,4 +6,21 @@
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
+    <ItemGroup>
+      <ProjectReference Include="..\Banking.Communication\Banking.Communication.csproj" />
+      <ProjectReference Include="..\Banking.Domain\Banking.Domain.csproj" />
+      <ProjectReference Include="..\Banking.Exceptions\Banking.Exceptions.csproj" />
+      <ProjectReference Include="..\Banking.Infrastructure\Banking.Infrastructure.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="UseCases\Cliente\" />
+      <Folder Include="UseCases\Conta\" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="AutoMapper" Version="13.0.1" />
+      <PackageReference Include="FluentValidation" Version="11.10.0" />
+    </ItemGroup>
+
 </Project>
