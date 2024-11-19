@@ -27,7 +27,7 @@ public static class DependencyInjectionExtensions
     private static IServiceCollection AddRepositories(this IServiceCollection services)
     {
         services.AddScoped<IGravarClienteRepository, ClienteRepository>();
-        services.AddScoped<ILerCLienteRepository, ClienteRepository>(); // Registro adicionado
+        services.AddScoped<ILerCLienteRepository, ClienteRepository>(); 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         return services;
     }
