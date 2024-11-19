@@ -12,7 +12,7 @@ public class RegistrarClienteValidatorTest
     {
         var validator = new RegistrarClienteValidator();
 
-        var request = RequestClientJsonBuilder.Build();
+        var request = RequestRegistrarClientJsonBuilder.Build();
 
         var result = validator.Validate(request);
 
@@ -23,7 +23,7 @@ public class RegistrarClienteValidatorTest
     public void RegistrarCliente_NomeInvalido_DeveRetornarErroDeValidacao()
     {
         var validator = new RegistrarClienteValidator();
-        var request = RequestClientJsonBuilder.Build();
+        var request = RequestRegistrarClientJsonBuilder.Build();
         request.Nome = string.Empty;
 
         var result = validator.Validate(request);
@@ -35,7 +35,7 @@ public class RegistrarClienteValidatorTest
     public void RegistrarCliente_EmailInvalido_DeveRetornarErroDeValidacao()
     {
         var validator = new RegistrarClienteValidator();
-        var request = RequestClientJsonBuilder.Build();
+        var request = RequestRegistrarClientJsonBuilder.Build();
         request.Email = string.Empty;
 
         var result = validator.Validate(request);
@@ -47,7 +47,7 @@ public class RegistrarClienteValidatorTest
     public void RegistrarCliente_SenhaInvalida_DeveRetornarErroDeValidacao()
     {
         var validator = new RegistrarClienteValidator();
-        var request = RequestClientJsonBuilder.Build(1);
+        var request = RequestRegistrarClientJsonBuilder.Build(1);
 
         var result = validator.Validate(request);
 
@@ -58,7 +58,7 @@ public class RegistrarClienteValidatorTest
     public void RegistrarCliente_CPFInvalido_DeveRetornarErroDeValidacao()
     {
         var validator = new RegistrarClienteValidator();
-        var request = RequestClientJsonBuilder.Build();
+        var request = RequestRegistrarClientJsonBuilder.Build();
         request.CPF = string.Empty;
 
         var result = validator.Validate(request);

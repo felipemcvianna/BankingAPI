@@ -4,7 +4,7 @@ using Bogus.Extensions.Brazil;
 
 namespace CommomTestUtilities.Requests;
 
-public static class RequestClientJsonBuilder
+public static class RequestRegistrarClientJsonBuilder
 {
     public static RequestRegistrarClienteJson Build(int senha = 10)
     {
