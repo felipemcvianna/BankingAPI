@@ -1,4 +1,5 @@
 using Banking.Application.Services.AutoMapper;
+using Banking.Application.UseCases.Cliente.Deletar;
 using Banking.Application.UseCases.Cliente.Ler;
 using Banking.Application.UseCases.Cliente.Registrar;
 using Microsoft.Extensions.DependencyInjection;
@@ -24,6 +25,9 @@ public static class DependecyInjectionExtensions
     {
         services.AddScoped<IRegistrarClienteUseCase, RegistrarClienteUseCase>();
         services.AddScoped<IGetClienteUseCase, GetClienteUseCase>();
+        services.AddScoped<IDeletarClienteUseCase, DeletarClienteUseCase>();
+        
+        
         return services;
     }
 }
