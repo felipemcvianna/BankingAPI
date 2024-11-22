@@ -39,6 +39,7 @@ public class DeletarClienteUseCase : IDeletarClienteUseCase
         await _unitOfWork.Commit();
 
         return response;
+
     }
 
     private async Task Validator(RequestDeletarClienteJson request)
@@ -64,5 +65,4 @@ public class DeletarClienteUseCase : IDeletarClienteUseCase
             throw new BusinessException("A SENHA ESTÁ INCORRETA");
         }
     }
->>>>>>> 3c5e9f2 (Caso de uso deletar cliente)
 }

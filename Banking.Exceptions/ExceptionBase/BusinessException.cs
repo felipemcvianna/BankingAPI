@@ -1,9 +1,5 @@
 namespace Banking.Exceptions.ExceptionBase;
 
-<<<<<<< HEAD
-public class BusinessException
-{
-=======
 public class BusinessException : BankingExceptions
 {
     public IList<string> Erros { get; set; } = new List<string>();
@@ -12,6 +8,5 @@ public class BusinessException : BankingExceptions
     {
         Erros.Add(erros);
     }
->>>>>>> 3c5e9f2 (Caso de uso deletar cliente)
     
 }

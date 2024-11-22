@@ -1,10 +1,3 @@
-<<<<<<< HEAD
-namespace Banking.Application.UseCases.Cliente.Deletar;
-
-public class DeletarClienteValidator
-{
-    
-=======
 using Banking.Communication.Requests.Cliente;
 using FluentValidation;
 
@@ -19,5 +12,4 @@ public class DeletarClienteValidator : AbstractValidator<RequestDeletarClienteJs
             () => { RuleFor(x => x.Email).EmailAddress().WithMessage("FORMATO DO EMAIL INVÁLIDO"); });
         RuleFor(x => x.Senha.Length).GreaterThanOrEqualTo(6).WithMessage("A SENHA DEVE TER MAIS DE 6 CARACTERES");
     }
->>>>>>> 3c5e9f2 (Caso de uso deletar cliente)
 }
