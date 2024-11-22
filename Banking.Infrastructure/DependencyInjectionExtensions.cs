@@ -28,6 +28,7 @@ public static class DependencyInjectionExtensions
     {
         services.AddScoped<IGravarClienteRepository, ClienteRepository>();
         services.AddScoped<ILerCLienteRepository, ClienteRepository>(); 
+        services.AddScoped<IDeletarClienteRepository, ClienteRepository>(); 
         services.AddScoped<IUnitOfWork, UnitOfWork>();
         return services;
     }
