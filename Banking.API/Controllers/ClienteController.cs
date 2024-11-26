@@ -1,3 +1,4 @@
+using Banking.Application.UseCases.Cliente.AtualizarSenha;
 using Banking.Application.UseCases.Cliente.Deletar;
 using Banking.Application.UseCases.Cliente.Ler;
 using Banking.Application.UseCases.Cliente.Registrar;
@@ -38,6 +39,17 @@ public class ClienteController : ControllerBase
     [ProducesResponseType(typeof(ResponseDeletarClienteJson), StatusCodes.Status200OK)]
     public async Task<IActionResult> DeletarCliente([FromBody] RequestDeletarClienteJson request,
         [FromServices] IDeletarClienteUseCase useCase)
+    {
+        var result = await useCase.Execute(request);
+
+        return Ok(result);
+    }
+    
+    [HttpPatch]
+    [Route("AtualizarSenhaCliente")]
+    [ProducesResponseType(typeof(ResponseAtualizarClienteJson), StatusCodes.Status200OK)]
+    public async Task<IActionResult> AtualizarSenhaCliente([FromBody] RequestAtualizarSenhaClienteJson request,
+        [FromServices] IAtualizarSenhaClienteUseCase useCase)
     {
         var result = await useCase.Execute(request);
 

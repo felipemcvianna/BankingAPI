@@ -15,6 +15,10 @@ public class ClienteRepository : IGravarClienteRepository, ILerCLienteRepository
 
     public async Task Add(Domain.Entities.Cliente cliente) => await _context.Clientes.AddAsync(cliente);
 
+    public void AtualizarSenhaCliente(Domain.Entities.Cliente cliente) =>
+        _context.Entry(cliente).Property(x => x.Senha).IsModified = true;
+
+
     public async Task<Domain.Entities.Cliente?> GetClienteByEmail(string email)
     {
         var cliente = await _context.Clientes.FirstOrDefaultAsync(x => x.Email.Equals(email));
