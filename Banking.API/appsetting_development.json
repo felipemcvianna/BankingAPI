@@ -1,0 +1,11 @@
+{
+    "ConnectionStrings": {
+        "DefaultConnection": "Host=HOST_AQUI;Port=PORTA_AQUI;Database=DATABASE_AQUI;Username=USERNAME_AQUI;Password=SENHA_AQUI;"
+    },
+    "Settings": {
+        "Jwt": {
+            "ExpirationTimeMinutes": 10,
+            "SigningKey": "CHAVE_API_AQUI"
+        }
+    }
+}
