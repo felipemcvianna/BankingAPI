@@ -39,7 +39,7 @@ artifacts/
 .scaffolding/
 
 # Configuração local do usuário
-appsettings.Development.json
+appsettings.json
 secrets.json
 
 # ASP.NET Core Static Files
