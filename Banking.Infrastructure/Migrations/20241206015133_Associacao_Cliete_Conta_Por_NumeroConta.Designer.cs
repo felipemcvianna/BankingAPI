@@ -3,6 +3,7 @@ using System;
 using Banking.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Banking.Infrastructure.Migrations
 {
     [DbContext(typeof(BankingDbContext))]
-    partial class BankingDbContextModelSnapshot : ModelSnapshot
+    [Migration("20241206015133_Associacao_Cliete_Conta_Por_NumeroConta")]
+    partial class Associacao_Cliete_Conta_Por_NumeroConta
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -48,9 +51,6 @@ namespace Banking.Infrastructure.Migrations
                     b.Property<string>("Senha")
                         .IsRequired()
                         .HasColumnType("text");
-
-                    b.Property<Guid>("UserIdentifier")
-                        .HasColumnType("uuid");
 
                     b.HasKey("Id");
 
