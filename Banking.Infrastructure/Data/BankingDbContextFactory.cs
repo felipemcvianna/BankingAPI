@@ -13,7 +13,7 @@ namespace Banking.Infrastructure
                 "Banking.API");
             var configuration = new ConfigurationBuilder()
                 .SetBasePath(basePath)
-                .AddJsonFile("appsettings.Development.json", optional: true)
+                .AddJsonFile("appsettings.json", optional: true)
                 .Build();
 
             var optionsBuilder = new DbContextOptionsBuilder<BankingDbContext>();

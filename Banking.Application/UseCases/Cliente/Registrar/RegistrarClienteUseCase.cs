@@ -1,4 +1,6 @@
 using AutoMapper;
+using Banking.Application.Services.Encryption;
+using Banking.Application.UseCases.Conta;
 using Banking.Communication.Requests.Cliente;
 using Banking.Communication.Response.Cliente;
 using Banking.Domain.Repositories;
@@ -14,15 +16,21 @@ public class RegistrarClienteUseCase : IRegistrarClienteUseCase
     private readonly IGravarClienteRepository _gravarClienteRepository;
     private readonly ILerCLienteRepository _lerCLienteRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly IRegistrarContaUseCase _registrarContaUseCase;
+    private readonly PasswordEncryptor _passwordEncryptor;
+
 
     public RegistrarClienteUseCase(IMapper mapper,
         IGravarClienteRepository gravarClienteRepository,
-        ILerCLienteRepository lerCLienteRepository, IUnitOfWork unitOfWork)
+        ILerCLienteRepository lerCLienteRepository, IUnitOfWork unitOfWork,
+        IRegistrarContaUseCase contaUseCase, PasswordEncryptor passwordEncryptor)
     {
         _mapper = mapper;
         _gravarClienteRepository = gravarClienteRepository;
         _lerCLienteRepository = lerCLienteRepository;
         _unitOfWork = unitOfWork;
+        _registrarContaUseCase = contaUseCase;
+        _passwordEncryptor = passwordEncryptor;
     }
 
 
@@ -30,11 +38,13 @@ public class RegistrarClienteUseCase : IRegistrarClienteUseCase
     {
         await Validator(request);
         var cliente = _mapper.Map<Domain.Entities.Cliente>(request);
-        //CLIENT PASSWORD ENCRYPTER
-        //*****************
+        cliente.UserIdentifier = Guid.NewGuid();
+        cliente.Senha = _passwordEncryptor.Encript(request.Senha);
+
+        var numeroConta = await _registrarContaUseCase.Execute();
+        cliente.NumeroConta = numeroConta.NumeroConta;
 
         await _gravarClienteRepository.Add(cliente);
-
         await _unitOfWork.Commit();
 
         var response = _mapper.Map<ResponseRegistrarClienteJson>(cliente);
@@ -42,7 +52,7 @@ public class RegistrarClienteUseCase : IRegistrarClienteUseCase
         return response;
     }
 
-    public async Task Validator(RequestRegistrarClienteJson request)
+    private async Task Validator(RequestRegistrarClienteJson request)
     {
         var validator = new RegistrarClienteValidator();
 
@@ -52,9 +62,8 @@ public class RegistrarClienteUseCase : IRegistrarClienteUseCase
 
         if (existeCpf)
         {
-            result.Errors.Add(new ValidationFailure(string.Empty, "ERRO TAL TAL TAL"));
+            result.Errors.Add(new ValidationFailure(string.Empty, "CPF JÁ CADASTRADO"));
         }
-
 
         if (!result.IsValid)
         {
