@@ -16,7 +16,7 @@ namespace Banking.API.Controllers
         {
             var response = await _useCase.Execute(request);
 
-            return Ok(response.Nome);
+            return Ok(response);
         }
 
         [HttpPost]

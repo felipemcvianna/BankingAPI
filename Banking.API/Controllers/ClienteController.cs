@@ -20,7 +20,7 @@ public class ClienteController : ControllerBase
     {
         var result = await useCase.Execute(request);
 
-        return Created(String.Empty, result.Nome);
+        return Created(String.Empty, result);
     }
 
     [HttpGet]

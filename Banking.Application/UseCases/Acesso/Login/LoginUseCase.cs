@@ -2,6 +2,7 @@
 using Banking.Communication.Requests.Login;
 using Banking.Communication.Response.Login;
 using Banking.Domain.Repositories.Cliente;
+using Banking.Domain.Seguranca.Tokens.Generate;
 using Banking.Exceptions.ExceptionBase;
 
 namespace Banking.Application.UseCases.Acesso.Login
@@ -10,10 +11,14 @@ namespace Banking.Application.UseCases.Acesso.Login
     {
         private readonly ILerCLienteRepository _lerCLienteRepository;
         private readonly PasswordEncryptor _passwordEncryptor;
+        private readonly IAcessTokenGenerator _acessTokenGenerator;
 
-        public LoginUseCase(ILerCLienteRepository lerCLienteRepository, PasswordEncryptor passwordEncryptor)
+        public LoginUseCase(ILerCLienteRepository lerCLienteRepository,
+            IAcessTokenGenerator tokenGenerator,
+            PasswordEncryptor passwordEncryptor)
         {
             _lerCLienteRepository = lerCLienteRepository;
+            _acessTokenGenerator = tokenGenerator;
             _passwordEncryptor = passwordEncryptor;
         }
 
@@ -32,7 +37,11 @@ namespace Banking.Application.UseCases.Acesso.Login
 
             return new ResponseLoginJson()
             {
-                Nome = clienteLogin.Nome
+                Nome = clienteLogin.Nome,
+                Tokens = new Communication.Token.ResponseTokensJson
+                {
+                    AcessToken = _acessTokenGenerator.GenerateToken(clienteLogin.UserIdentifier)
+                }
             };
 
         }

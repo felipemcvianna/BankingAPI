@@ -5,6 +5,7 @@ using Banking.Communication.Requests.Cliente;
 using Banking.Communication.Response.Cliente;
 using Banking.Domain.Repositories;
 using Banking.Domain.Repositories.Cliente;
+using Banking.Domain.Seguranca.Tokens.Generate;
 using Banking.Exceptions.ExceptionBase;
 using FluentValidation.Results;
 
@@ -18,12 +19,14 @@ public class RegistrarClienteUseCase : IRegistrarClienteUseCase
     private readonly IUnitOfWork _unitOfWork;
     private readonly IRegistrarContaUseCase _registrarContaUseCase;
     private readonly PasswordEncryptor _passwordEncryptor;
+    private readonly IAcessTokenGenerator _acessTokenGenerator;
 
 
     public RegistrarClienteUseCase(IMapper mapper,
         IGravarClienteRepository gravarClienteRepository,
         ILerCLienteRepository lerCLienteRepository, IUnitOfWork unitOfWork,
-        IRegistrarContaUseCase contaUseCase, PasswordEncryptor passwordEncryptor)
+        IRegistrarContaUseCase contaUseCase, PasswordEncryptor passwordEncryptor,
+        IAcessTokenGenerator AcessTokenGenerator)
     {
         _mapper = mapper;
         _gravarClienteRepository = gravarClienteRepository;
@@ -31,6 +34,7 @@ public class RegistrarClienteUseCase : IRegistrarClienteUseCase
         _unitOfWork = unitOfWork;
         _registrarContaUseCase = contaUseCase;
         _passwordEncryptor = passwordEncryptor;
+        _acessTokenGenerator = AcessTokenGenerator;
     }
 
 
@@ -48,6 +52,11 @@ public class RegistrarClienteUseCase : IRegistrarClienteUseCase
         await _unitOfWork.Commit();
 
         var response = _mapper.Map<ResponseRegistrarClienteJson>(cliente);
+
+        response.Tokens = new Communication.Token.ResponseTokensJson
+        {
+            AcessToken = _acessTokenGenerator.GenerateToken(cliente.UserIdentifier)
+        };
 
         return response;
     }
