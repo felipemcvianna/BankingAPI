@@ -1,6 +1,6 @@
 ﻿using Banking.Application.Services.Encryption;
 using Banking.Communication.Requests.Login;
-using Banking.Communication.Response.Acesso.Login;
+using Banking.Communication.Response.Login;
 using Banking.Domain.Repositories.Cliente;
 using Banking.Exceptions.ExceptionBase;
 
