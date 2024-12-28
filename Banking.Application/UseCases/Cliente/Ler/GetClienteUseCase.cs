@@ -24,7 +24,7 @@ public class GetClienteUseCase : IGetClienteUseCase
         return new ResponseGetClienteJson
         {
             Nome = cliente.Nome,
-            ContaId = cliente.ContaId
+            NumeroConta = "***" + cliente.NumeroConta
         };
     }
 

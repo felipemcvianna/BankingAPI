@@ -8,5 +8,9 @@ public class BusinessException : BankingExceptions
     {
         Erros.Add(erros);
     }
-    
+    public BusinessException(List<string> erros)
+    {
+        Erros = erros;
+    }
+
 }

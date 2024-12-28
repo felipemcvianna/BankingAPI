@@ -15,7 +15,7 @@ public class AutoMapping : Profile
 
     private void RequestToDomain()
     {
-        CreateMap<RequestRegistrarClienteJson, Cliente>();
+        CreateMap<RequestRegistrarClienteJson, Cliente>().ForMember(x => x.Senha, opt => opt.Ignore());
     }
 
     private void DomainToRequest()
