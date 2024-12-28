@@ -7,9 +7,9 @@
             var hash = BCrypt.Net.BCrypt.HashPassword(password);
             return hash.ToString();
         }
-        public  bool Verify(string password, string hash)
+        public  bool Verify(string password, string senhaCliente)
         {
-            return BCrypt.Net.BCrypt.Verify(password, hash);
+            return BCrypt.Net.BCrypt.Verify(password, senhaCliente);
         }
     }
 }

@@ -8,7 +8,7 @@ public class RegistrarClienteValidator : AbstractValidator<RequestRegistrarClien
     public RegistrarClienteValidator()
     {
         RuleFor(x => x.Nome.Length).NotEmpty().WithMessage("ERROR, NOME VAZIO");
-        RuleFor(x => x.CPF.Length).NotEqual(11).WithMessage("SENHA DO TAMANHO INVÁLIDO");
+        RuleFor(x => x.CPF.Length).GreaterThanOrEqualTo(11).WithMessage("CPF DO TAMANHO INVÁLIDO");
         When(x => !string.IsNullOrEmpty(x.Email),
             () =>
             {
@@ -16,6 +16,6 @@ public class RegistrarClienteValidator : AbstractValidator<RequestRegistrarClien
                 
             }
         );
-        RuleFor(x => x.Senha.Length).GreaterThanOrEqualTo(6).WithMessage("A SENHA DEVE TER NO MÍNIMO 6 CARACTERES");
+        RuleFor(x => x.Senha.Length).GreaterThanOrEqualTo(6).WithMessage("A SENHA DEVE TER MAIS DE 6 CARACTERES");
     }
 }

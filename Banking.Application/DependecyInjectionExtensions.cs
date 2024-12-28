@@ -1,5 +1,6 @@
 using Banking.Application.Services.AutoMapper;
 using Banking.Application.Services.Encryption;
+using Banking.Application.UseCases.Acesso.Login;
 using Banking.Application.UseCases.Cliente.AtualizarSenha;
 using Banking.Application.UseCases.Cliente.Deletar;
 using Banking.Application.UseCases.Cliente.Ler;
@@ -35,6 +36,10 @@ public static class DependecyInjectionExtensions
 
         //Conta use cases
         services.AddScoped<IRegistrarContaUseCase, RegistrarContaUseCase>();
+
+
+        //Login use cases
+        services.AddScoped<ILoginUseCase, LoginUseCase>();
         return services;
     }
 
