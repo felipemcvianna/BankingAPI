@@ -6,6 +6,7 @@ using Banking.Application.UseCases.Cliente.Deletar;
 using Banking.Application.UseCases.Cliente.Ler;
 using Banking.Application.UseCases.Cliente.Registrar;
 using Banking.Application.UseCases.Conta;
+using Banking.Application.UseCases.Conta.Deletar;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Banking.Application;
@@ -36,6 +37,7 @@ public static class DependecyInjectionExtensions
 
         //Conta use cases
         services.AddScoped<IRegistrarContaUseCase, RegistrarContaUseCase>();
+        services.AddScoped<IDeletarContaUseCase, DeletarContaUseCase>();
 
 
         //Login use cases

@@ -1,4 +1,5 @@
 using Banking.Application.Services.Encryption;
+using Banking.Application.UseCases.Conta.Deletar;
 using Banking.Communication.Requests.Cliente;
 using Banking.Communication.Response.Cliente;
 using Banking.Domain.Repositories;
@@ -13,14 +14,18 @@ public class DeletarClienteUseCase : IDeletarClienteUseCase
     private readonly IDeletarClienteRepository _deletarClienteRepository;
     private readonly IUnitOfWork _unitOfWork;
     private readonly PasswordEncryptor _passwordEncryptor;
+    private readonly IDeletarContaUseCase _deletarContaUseCase;
 
     public DeletarClienteUseCase(ILerCLienteRepository lerCLienteRepository,
-        IDeletarClienteRepository deletarClienteRepository, IUnitOfWork unitOfWork, PasswordEncryptor passwordEncryptor)
+        IDeletarClienteRepository deletarClienteRepository,
+        IUnitOfWork unitOfWork, PasswordEncryptor passwordEncryptor,
+        IDeletarContaUseCase deletarContaUseCase)
     {
         _lerCLienteRepository = lerCLienteRepository;
         _deletarClienteRepository = deletarClienteRepository;
         _unitOfWork = unitOfWork;
         _passwordEncryptor = passwordEncryptor;
+        _deletarContaUseCase = deletarContaUseCase;
     }
 
     public async Task<ResponseDeletarClienteJson> Execute(RequestDeletarClienteJson request)
@@ -42,6 +47,8 @@ public class DeletarClienteUseCase : IDeletarClienteUseCase
         };
 
         _deletarClienteRepository.Deletar(cliente);
+
+        await _deletarContaUseCase.Execute(cliente.UserIdentifier, cliente.NumeroConta);
 
         await _unitOfWork.Commit();
 

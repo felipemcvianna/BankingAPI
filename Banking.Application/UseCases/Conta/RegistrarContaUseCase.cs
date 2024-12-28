@@ -9,33 +9,34 @@ namespace Banking.Application.UseCases.Conta
     public class RegistrarContaUseCase : IRegistrarContaUseCase
     {
         private readonly IGravarContaRepository _gravarRepository;
-        private readonly ILerContaRepository _lerContaRepository;      
+        private readonly ILerContaRepository _lerContaRepository;
 
         public RegistrarContaUseCase(IGravarContaRepository gravarRepository,
             ILerContaRepository lerContaRepository)
         {
             _gravarRepository = gravarRepository;
             _lerContaRepository = lerContaRepository;
-            
+
         }
 
-        public async Task<ResponseRegistrarContaJson> Execute()
-        {          
+        public async Task<ResponseRegistrarContaJson> Execute(Guid userIdentifier)
+        {
             var numeroBanco = ObterNumeroBanco();
             var numeroAgencia = ObterNumeroAgencia();
             var numeroConta = await GerarNumeroConta();
-            
+
             var conta = new Domain.Entities.Conta
             {
                 DataCriacao = DateTime.UtcNow,
                 NumeroAgencia = numeroAgencia,
                 NumeroBanco = numeroBanco,
                 NumeroConta = numeroConta,
-                Saldo = 0
+                Saldo = 0,
+                UserIdentifier = userIdentifier
             };
-       
+
             await ValidarSeContaExiste(conta.NumeroConta);
-            
+
             await _gravarRepository.Add(conta);
 
             return new ResponseRegistrarContaJson()
@@ -53,7 +54,7 @@ namespace Banking.Application.UseCases.Conta
 
         private int ObterNumeroBanco()
         {
-            return 260; 
+            return 260;
         }
 
         private int ObterNumeroAgencia()
@@ -62,7 +63,7 @@ namespace Banking.Application.UseCases.Conta
         }
 
         private async Task<int> GerarNumeroConta()
-        {          
+        {
             var ultimoNumero = await _lerContaRepository.ObterUltimoNumeroConta();
             return ultimoNumero + 1;
         }
