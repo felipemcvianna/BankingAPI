@@ -19,6 +19,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Banking.Domain\Banking.Domain.csproj" />
+      <ProjectReference Include="..\Banking.Exceptions\Banking.Exceptions.csproj" />
     </ItemGroup>
 
 </Project>

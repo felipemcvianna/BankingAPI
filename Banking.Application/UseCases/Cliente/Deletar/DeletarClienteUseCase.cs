@@ -1,3 +1,5 @@
+using Banking.Application.Services.Encryption;
+using Banking.Application.UseCases.Conta.Deletar;
 using Banking.Communication.Requests.Cliente;
 using Banking.Communication.Response.Cliente;
 using Banking.Domain.Repositories;
@@ -11,13 +13,19 @@ public class DeletarClienteUseCase : IDeletarClienteUseCase
     private readonly ILerCLienteRepository _lerCLienteRepository;
     private readonly IDeletarClienteRepository _deletarClienteRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly PasswordEncryptor _passwordEncryptor;
+    private readonly IDeletarContaUseCase _deletarContaUseCase;
 
     public DeletarClienteUseCase(ILerCLienteRepository lerCLienteRepository,
-        IDeletarClienteRepository deletarClienteRepository, IUnitOfWork unitOfWork)
+        IDeletarClienteRepository deletarClienteRepository,
+        IUnitOfWork unitOfWork, PasswordEncryptor passwordEncryptor,
+        IDeletarContaUseCase deletarContaUseCase)
     {
         _lerCLienteRepository = lerCLienteRepository;
         _deletarClienteRepository = deletarClienteRepository;
         _unitOfWork = unitOfWork;
+        _passwordEncryptor = passwordEncryptor;
+        _deletarContaUseCase = deletarContaUseCase;
     }
 
     public async Task<ResponseDeletarClienteJson> Execute(RequestDeletarClienteJson request)
@@ -26,7 +34,11 @@ public class DeletarClienteUseCase : IDeletarClienteUseCase
 
         var cliente = await _lerCLienteRepository.GetClienteByEmail(request.Email);
 
-        EmailESenhaValidation(cliente, request);
+        if (cliente == null)
+            throw new BusinessException("ESSE EMAIL NÃO PERTENCE A NENHUM CLIENTE");
+
+        if (!PasswordVerify(request.Senha, cliente.Senha))
+            throw new BusinessException("SENHA INCORRETA");
 
         var response = new ResponseDeletarClienteJson()
         {
@@ -35,6 +47,8 @@ public class DeletarClienteUseCase : IDeletarClienteUseCase
         };
 
         _deletarClienteRepository.Deletar(cliente);
+
+        await _deletarContaUseCase.Execute(cliente.UserIdentifier, cliente.NumeroConta);
 
         await _unitOfWork.Commit();
 
@@ -53,16 +67,8 @@ public class DeletarClienteUseCase : IDeletarClienteUseCase
         }
     }
 
-    private void EmailESenhaValidation(Domain.Entities.Cliente cliente, RequestDeletarClienteJson request)
+    private bool PasswordVerify(string requestSenha, string clienteSenha)
     {
-        if (cliente == null)
-        {
-            throw new BusinessException("EMAIL NÃO PERTENCE A NENHUM CLIENTE");
-        }
-
-        if (cliente.Senha != request.Senha)
-        {
-            throw new BusinessException("A SENHA ESTÁ INCORRETA");
-        }
+        return _passwordEncryptor.Verify(requestSenha, clienteSenha);
     }
 }

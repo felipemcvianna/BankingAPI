@@ -7,5 +7,6 @@ public class Conta
     public int NumeroBanco { get; set; }
     public int NumeroConta { get; set; }
     public double Saldo { get; set; }
+    public Guid UserIdentifier { get; set; }
     public DateTime DataCriacao { get; set; }
 }   

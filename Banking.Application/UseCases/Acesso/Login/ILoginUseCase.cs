@@ -1,5 +1,5 @@
 ﻿using Banking.Communication.Requests.Login;
-using Banking.Communication.Response.Acesso.Login;
+using Banking.Communication.Response.Login;
 
 namespace Banking.Application.UseCases.Acesso.Login
 {

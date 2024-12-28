@@ -1,9 +1,8 @@
-﻿using Banking.Domain.Entities;
-
-namespace Banking.Domain.Repositories.Conta
+﻿namespace Banking.Domain.Repositories.Conta
 {
     public interface IGravarContaRepository
     {
-        public Task Add(Domain.Entities.Conta conta);
+        public Task Add(Entities.Conta conta);
+        public Task DeletarConta(Entities.Conta conta);
     }
 }
