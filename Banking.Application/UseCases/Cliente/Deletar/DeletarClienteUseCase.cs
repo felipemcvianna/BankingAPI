@@ -4,6 +4,7 @@ using Banking.Communication.Requests.Cliente;
 using Banking.Communication.Response.Cliente;
 using Banking.Domain.Repositories;
 using Banking.Domain.Repositories.Cliente;
+using Banking.Exceptions;
 using Banking.Exceptions.ExceptionBase;
 
 namespace Banking.Application.UseCases.Cliente.Deletar;
@@ -35,10 +36,10 @@ public class DeletarClienteUseCase : IDeletarClienteUseCase
         var cliente = await _lerCLienteRepository.GetClienteByEmail(request.Email);
 
         if (cliente == null)
-            throw new BusinessException("ESSE EMAIL NÃO PERTENCE A NENHUM CLIENTE");
+            throw new BusinessException(ResourceMessagesExceptions.EMAIL_NAO_CADASTRADO);
 
         if (!PasswordVerify(request.Senha, cliente.Senha))
-            throw new BusinessException("SENHA INCORRETA");
+            throw new BusinessException(ResourceMessagesExceptions.SENHA_INCORRETA);
 
         var response = new ResponseDeletarClienteJson()
         {

@@ -3,6 +3,7 @@ using Banking.Communication.Requests.Login;
 using Banking.Communication.Response.Login;
 using Banking.Domain.Repositories.Cliente;
 using Banking.Domain.Seguranca.Tokens.Generate;
+using Banking.Exceptions;
 using Banking.Exceptions.ExceptionBase;
 
 namespace Banking.Application.UseCases.Acesso.Login
@@ -29,10 +30,10 @@ namespace Banking.Application.UseCases.Acesso.Login
             var clienteLogin = await _lerCLienteRepository.GetClienteByEmail(request.Email);
 
             if (clienteLogin == null)
-                throw new BusinessException("CLIENTE NÃO ENCONTRADO");
+                throw new BusinessException(ResourceMessagesExceptions.EMAIL_NAO_CADASTRADO);
 
             if (!ValidatePassword(request.Senha, clienteLogin.Senha))
-                throw new BusinessException("SENHA INCORRETA");
+                throw new BusinessException(ResourceMessagesExceptions.SENHA_INCORRETA);
 
 
             return new ResponseLoginJson()

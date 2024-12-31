@@ -1,7 +1,6 @@
 using Banking.API.Filters;
 using Banking.Application;
 using Banking.Infrastructure;
-using Banking.Infrastructure.Data;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -22,4 +21,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseHttpsRedirection();
 app.MapControllers();
+
+
 app.Run();
+
+
+

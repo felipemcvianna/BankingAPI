@@ -3,6 +3,6 @@
     public interface IGravarContaRepository
     {
         public Task Add(Entities.Conta conta);
-        public Task DeletarConta(Entities.Conta conta);
+        public void DeletarConta(Entities.Conta conta);
     }
 }

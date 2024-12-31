@@ -6,6 +6,7 @@ using Banking.Communication.Response.Cliente;
 using Banking.Domain.Repositories;
 using Banking.Domain.Repositories.Cliente;
 using Banking.Domain.Seguranca.Tokens.Generate;
+using Banking.Exceptions;
 using Banking.Exceptions.ExceptionBase;
 using FluentValidation.Results;
 
@@ -71,7 +72,7 @@ public class RegistrarClienteUseCase : IRegistrarClienteUseCase
 
         if (existeCpf)
         {
-            result.Errors.Add(new ValidationFailure(string.Empty, "CPF JÁ CADASTRADO"));
+            result.Errors.Add(new ValidationFailure(string.Empty, ResourceMessagesExceptions.CPF_CADASTRADO));
         }
 
         if (!result.IsValid)
