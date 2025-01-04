@@ -19,15 +19,12 @@ namespace Banking.Infrastructure.Data.Repositories.Conta
         public async Task<bool> ExisteConta(int numeroConta)
             => await _context.Contas.AnyAsync(x => x.NumeroConta == numeroConta);
 
-        public async Task<List<Domain.Entities.Conta>> GetAllContas()
+        public List<Domain.Entities.Conta> GetAllContas()
         {
             return _context.Contas.ToList();
         }
         public async Task<int> ObterUltimoNumeroConta()
         {
-            //var contas = GetAllContas();
-            //if (contas == null)
-            //    return 0;
 
             var ultimaConta = await _context.Contas
                 .OrderByDescending(x => x.NumeroConta)
@@ -38,7 +35,7 @@ namespace Banking.Infrastructure.Data.Repositories.Conta
             return ultimaConta.NumeroConta;
         }
 
-        public async Task DeletarConta(Domain.Entities.Conta conta)
+        public void DeletarConta(Domain.Entities.Conta conta)
         {
             _context.Contas.Remove(conta);
         }

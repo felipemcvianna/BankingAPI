@@ -2,6 +2,7 @@ using Banking.Communication.Requests.Cliente;
 using Banking.Communication.Response.Cliente;
 using Banking.Domain.Repositories;
 using Banking.Domain.Repositories.Cliente;
+using Banking.Exceptions;
 using Banking.Exceptions.ExceptionBase;
 
 namespace Banking.Application.UseCases.Cliente.AtualizarSenha;
@@ -60,7 +61,7 @@ public class AtualizarSenhaClienteUseCase : IAtualizarSenhaClienteUseCase
     {
         if (cliente == null)
         {
-            throw new BusinessException("EMAIL NÃO PERTENCE A NENHUM CLIENTE.");
+            throw new BusinessException(ResourceMessagesExceptions.EMAIL_NAO_CADASTRADO);
         }
     }
 
@@ -68,17 +69,17 @@ public class AtualizarSenhaClienteUseCase : IAtualizarSenhaClienteUseCase
     {
         if (senhaAtual != request.SenhaAtual)
         {
-            throw new BusinessException("CONFIRME A SENHA ATUAL");
+            throw new BusinessException(ResourceMessagesExceptions.SENHA_ATUAL);
         }
 
         if (request.NovaSenha == senhaAtual)
         {
-            throw new BusinessException("A SENHA NÃO PODE SER IGUAL A SENHA ATUAL.");
+            throw new BusinessException(ResourceMessagesExceptions.SENHA_IGUAL);
         }
 
         if (request.NovaSenha != request.ConfirmarNovaSenha)
         {
-            throw new BusinessException("AS SENHAS DEVEM SER IGUAIS.");
+            throw new BusinessException(ResourceMessagesExceptions.SENHAS_DEVER_COINCIDIR);
         }
     }
 }

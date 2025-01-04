@@ -1,12 +1,14 @@
-﻿using Banking.Application.UseCases.Acesso.Login;
+﻿using Banking.API.Attributes;
+using Banking.Application.UseCases.Acesso.Login;
 using Banking.Communication.Requests.Login;
 using Banking.Communication.Response.Cliente;
 using Banking.Communication.Response.Login;
 using Microsoft.AspNetCore.Mvc;
 
+
 namespace Banking.API.Controllers
 {
-    [ApiController]
+    [AuthenticatedUser]
     public class AcessoController : ControllerBase
     {
         [HttpPost]

@@ -1,4 +1,5 @@
 using Banking.Communication.Requests.Cliente;
+using Banking.Exceptions;
 using FluentValidation;
 
 namespace Banking.Application.UseCases.Cliente.Deletar;
@@ -7,9 +8,9 @@ public class DeletarClienteValidator : AbstractValidator<RequestDeletarClienteJs
 {
     public DeletarClienteValidator()
     {
-        RuleFor(x => x.Email).NotEmpty().WithMessage(@"O CAMPO ""EMAIL"" DEVE SER PREENCHIDO");
+        RuleFor(x => x.Email).NotEmpty().WithMessage(ResourceMessagesExceptions.EMAIL_VAZIO);
         When(x => !string.IsNullOrEmpty(x.Email),
-            () => { RuleFor(x => x.Email).EmailAddress().WithMessage("FORMATO DO EMAIL INVÁLIDO"); });
-        RuleFor(x => x.Senha.Length).GreaterThanOrEqualTo(6).WithMessage("A SENHA DEVE TER MAIS DE 6 CARACTERES");
+            () => { RuleFor(x => x.Email).EmailAddress().WithMessage(ResourceMessagesExceptions.EMAIL_INVALIDO); });
+        RuleFor(x => x.Senha.Length).GreaterThanOrEqualTo(6).WithMessage(ResourceMessagesExceptions.SENHA_VAZIA);
     }
 }

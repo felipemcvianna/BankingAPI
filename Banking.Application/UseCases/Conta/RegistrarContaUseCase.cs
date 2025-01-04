@@ -1,6 +1,4 @@
-﻿using Banking.Communication.Requests.Cliente;
-using Banking.Communication.Response.Conta;
-using Banking.Domain.Repositories;
+﻿using Banking.Communication.Response.Conta;
 using Banking.Domain.Repositories.Conta;
 using Banking.Exceptions.ExceptionBase;
 
