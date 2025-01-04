@@ -115,6 +115,15 @@ namespace Banking.Exceptions {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Token não encontrado.
+        /// </summary>
+        public static string SEM_TOKEN {
+            get {
+                return ResourceManager.GetString("SEM_TOKEN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a Confirme a senha atual.
         /// </summary>
         public static string SENHA_ATUAL {
@@ -156,6 +165,15 @@ namespace Banking.Exceptions {
         public static string SENHAS_DEVER_COINCIDIR {
             get {
                 return ResourceManager.GetString("SENHAS_DEVER_COINCIDIR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a O usuário não tem permissão de acesso.
+        /// </summary>
+        public static string USUARIO_SEM_PERMISSAO {
+            get {
+                return ResourceManager.GetString("USUARIO_SEM_PERMISSAO", resourceCulture);
             }
         }
     }

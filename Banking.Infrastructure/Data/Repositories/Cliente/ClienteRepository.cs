@@ -18,21 +18,17 @@ public class ClienteRepository : IGravarClienteRepository, ILerCLienteRepository
     public void AtualizarSenhaCliente(Domain.Entities.Cliente cliente) =>
         _context.Entry(cliente).Property(x => x.Senha).IsModified = true;
 
-
     public async Task<Domain.Entities.Cliente?> GetClienteByEmail(string email)
-    {
-        var cliente = await _context.Clientes.FirstOrDefaultAsync(x => x.Email.Equals(email));
-
-        return cliente;
-    }
+        => await _context.Clientes.FirstOrDefaultAsync(x => x.Email.Equals(email));
 
     public async Task<bool> ExisteClienteComCpf(string cpf)
         => await _context.Clientes.AnyAsync(x => x.CPF.Equals(cpf));
 
-    public async Task<bool> ExisteClienteComEmail(int? id, string email)
+    public async Task<bool> ExisteClienteComEmail(string email)
         => await _context.Clientes.AnyAsync(x =>
-            (!string.IsNullOrEmpty(email) && x.Email.Equals(email)) || (id != null && x.Id == id));
-
+            (!string.IsNullOrEmpty(email) && x.Email.Equals(email)));
+    public async Task<bool> ExisteClienteComIdentificador(Guid userIdentifier)
+        => await _context.Clientes.AnyAsync(c => c.UserIdentifier.Equals(userIdentifier));
 
     public void Deletar(Domain.Entities.Cliente cliente)
     {

@@ -6,6 +6,7 @@ using Banking.Infrastructure.Data.Repositories;
 using Banking.Infrastructure.Data.Repositories.Cliente;
 using Banking.Infrastructure.Data.Repositories.Conta;
 using Banking.Infrastructure.Seguranca.Tokens.Acesso.Generator;
+using Banking.Infrastructure.Seguranca.Tokens.Validator;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -49,6 +50,7 @@ public static class DependencyInjectionExtensions
         var signingKey = configuration.GetValue<string>("Settings:Jwt:SigningKey");
 
         services.AddScoped<IAcessTokenGenerator>(options => new AcessTokenGenerator(signingKey!, expiretionTimeMinutes));
+        services.AddScoped<IJwtTokenValidator>(options => new JwtTokenValidator(signingKey!));
 
         return services;
     }

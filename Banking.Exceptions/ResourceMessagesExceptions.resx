@@ -135,6 +135,9 @@
   <data name="NOME_VAZIO" xml:space="preserve">
     <value>O campo Nome deve ser preenchido</value>
   </data>
+  <data name="SEM_TOKEN" xml:space="preserve">
+    <value>Token não encontrado</value>
+  </data>
   <data name="SENHAS_DEVER_COINCIDIR" xml:space="preserve">
     <value>As senhas devem coincidir</value>
   </data>
@@ -149,5 +152,8 @@
   </data>
   <data name="SENHA_VAZIA" xml:space="preserve">
     <value>O campo senha deve ter pelo menos 6 caracteres</value>
+  </data>
+  <data name="USUARIO_SEM_PERMISSAO" xml:space="preserve">
+    <value>O usuário não tem permissão de acesso</value>
   </data>
 </root>

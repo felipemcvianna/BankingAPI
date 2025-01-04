@@ -22,7 +22,7 @@ namespace Banking.Application.UseCases.Conta.Deletar
             if (conta == null)
                 throw new BusinessException("CONTA NÃO ENCONTRADA");
 
-            await _gravarContaRepository.DeletarConta(conta);
+            _gravarContaRepository.DeletarConta(conta);
         }
     }
 }
