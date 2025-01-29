@@ -51,9 +51,7 @@ namespace Banking.API.Filters
             catch (ArgumentNullException ex)
             {
                 context.Result = new UnauthorizedObjectResult(new ResponseTokenErrorJson(ex.Message));
-            }
-            
-
+            }            
         }
         public string TokenOnRequest(AuthorizationFilterContext context)
         {
