@@ -1,9 +1,9 @@
-﻿using Banking.Communication.Response;
+﻿using System.Net;
 using Banking.Communication.Token;
 using Banking.Domain.Repositories.Cliente;
+using Banking.Domain.Seguranca.Tokens;
 using Banking.Exceptions;
 using Banking.Exceptions.ExceptionBase;
-using Banking.Infrastructure.Seguranca.Tokens.Validator;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 using Microsoft.IdentityModel.Tokens;
@@ -29,12 +29,13 @@ namespace Banking.API.Filters
             {
                 var Token = TokenOnRequest(context);
 
+
                 var userIdentifier = _jwtTokenValidator.ValidateAndGetUserIdentifier(Token);
 
                 var exist = await _lerCLienteRepository.ExisteClienteComIdentificador(userIdentifier);
 
                 if (!exist)
-                    throw new BusinessException(ResourceMessagesExceptions.USUARIO_SEM_PERMISSAO);
+                    throw new BankingExceptions(ResourceMessagesExceptions.USUARIO_SEM_PERMISSAO);
             }
             catch (BankingExceptions ex)
             {
@@ -47,21 +48,23 @@ namespace Banking.API.Filters
                     TokenExpires = true
                 });
             }
-            catch
+            catch (ArgumentNullException ex)
             {
-                context.Result = new UnauthorizedObjectResult(new BusinessException(ResourceMessagesExceptions.USUARIO_SEM_PERMISSAO));
-            }
-
+                context.Result = new UnauthorizedObjectResult(new ResponseTokenErrorJson(ex.Message));
+            }            
         }
-
         public string TokenOnRequest(AuthorizationFilterContext context)
         {
-            var authentication = context.HttpContext.Request.Headers.ToString();
+            if (!context.HttpContext.Request.Headers.TryGetValue("Authorization", out var authorizationHeader))
+                throw new ArgumentNullException("",ResourceMessagesExceptions.SEM_TOKEN);
 
-            if (string.IsNullOrWhiteSpace(authentication))
-                throw new BusinessException(ResourceMessagesExceptions.USUARIO_SEM_PERMISSAO);
+            var token = authorizationHeader.ToString();
 
-            return authentication!["Bearer ".Length..].Trim();
+            if (!token.StartsWith("Bearer "))
+                throw new ArgumentNullException("",ResourceMessagesExceptions.TOKEN_INVALIDO);
+
+            return token["Bearer ".Length..].Trim();
         }
+
     }
 }

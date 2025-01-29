@@ -1,7 +1,7 @@
 ﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
-using Banking.Domain.Seguranca.Tokens.Generate;
+using Banking.Domain.Seguranca.Tokens;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Banking.Infrastructure.Seguranca.Tokens.Acesso.Generator

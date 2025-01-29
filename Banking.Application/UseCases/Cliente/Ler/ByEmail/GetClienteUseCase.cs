@@ -5,7 +5,7 @@ using Banking.Exceptions;
 using Banking.Exceptions.ExceptionBase;
 using FluentValidation.Results;
 
-namespace Banking.Application.UseCases.Cliente.Ler;
+namespace Banking.Application.UseCases.Cliente.Ler.ByEmail;
 
 public class GetClienteUseCase : IGetClienteUseCase
 {
@@ -38,7 +38,7 @@ public class GetClienteUseCase : IGetClienteUseCase
         var validate = new GetClienteValidator();
         var result = await validate.ValidateAsync(request);
 
-        var emailExiste = await _lerClienteRepository.ExisteClienteComEmail(null, request.Email);
+        var emailExiste = await _lerClienteRepository.ExisteClienteComEmail(request.Email);
 
         if (!emailExiste)
         {
