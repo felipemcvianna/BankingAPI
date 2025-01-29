@@ -61,6 +61,15 @@ namespace Banking.Exceptions {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Não foi foi possível encontrar o cliente.
+        /// </summary>
+        public static string CLIENTE_NAO_ENCONTRADO {
+            get {
+                return ResourceManager.GetString("CLIENTE_NAO_ENCONTRADO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a CPF já cadastrado.
         /// </summary>
         public static string CPF_CADASTRADO {
@@ -115,7 +124,7 @@ namespace Banking.Exceptions {
         }
         
         /// <summary>
-        ///   Consulta uma cadeia de caracteres localizada semelhante a Token não encontrado.
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Token vazio.
         /// </summary>
         public static string SEM_TOKEN {
             get {
@@ -165,6 +174,15 @@ namespace Banking.Exceptions {
         public static string SENHAS_DEVER_COINCIDIR {
             get {
                 return ResourceManager.GetString("SENHAS_DEVER_COINCIDIR", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Token no formato inválido. Tente Bearer &lt;token&gt;.
+        /// </summary>
+        public static string TOKEN_INVALIDO {
+            get {
+                return ResourceManager.GetString("TOKEN_INVALIDO", resourceCulture);
             }
         }
         

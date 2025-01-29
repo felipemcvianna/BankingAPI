@@ -1,9 +1,13 @@
+using System.IdentityModel.Tokens.Jwt;
+using Banking.API.Attributes;
 using Banking.Application.UseCases.Cliente.AtualizarSenha;
 using Banking.Application.UseCases.Cliente.Deletar;
-using Banking.Application.UseCases.Cliente.Ler;
+using Banking.Application.UseCases.Cliente.Ler.ByEmail;
+using Banking.Application.UseCases.Cliente.Ler.ByToken;
 using Banking.Application.UseCases.Cliente.Registrar;
 using Banking.Communication.Requests.Cliente;
 using Banking.Communication.Response.Cliente;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Banking.API.Controllers;
@@ -33,6 +37,15 @@ public class ClienteController : ControllerBase
 
         return Ok(result);
     }
+    [HttpGet]
+    [Route("LerCLientePeloToken")]
+    [AuthenticatedUser]
+    public async Task<IActionResult> GetClienteByToken([FromServices] IGetClienteByTokenUseCase _useCase)
+    {
+        var result = await _useCase.Execute();
+
+        return Ok(result);
+    }
 
     [HttpDelete]
     [Route("DeletarCliente")]
@@ -44,7 +57,7 @@ public class ClienteController : ControllerBase
 
         return Ok(result);
     }
-    
+
     [HttpPatch]
     [Route("AtualizarSenhaCliente")]
     [ProducesResponseType(typeof(ResponseAtualizarClienteJson), StatusCodes.Status200OK)]

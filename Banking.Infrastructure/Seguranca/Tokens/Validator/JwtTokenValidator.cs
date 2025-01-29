@@ -1,6 +1,9 @@
 ﻿
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
+using Banking.Domain.Seguranca.Tokens;
+using Banking.Exceptions.ExceptionBase;
+using Banking.Exceptions;
 using Microsoft.IdentityModel.Tokens;
 
 namespace Banking.Infrastructure.Seguranca.Tokens.Validator
@@ -16,6 +19,7 @@ namespace Banking.Infrastructure.Seguranca.Tokens.Validator
 
         public Guid ValidateAndGetUserIdentifier(string token)
         {
+
             var validationParameters = new TokenValidationParameters
             {
                 ValidateAudience = false,
@@ -28,9 +32,13 @@ namespace Banking.Infrastructure.Seguranca.Tokens.Validator
 
             var principal = tokenHandler.ValidateToken(token, validationParameters, out _);
 
-            var userIdentifier = principal.Claims.First(c => c.Type == ClaimTypes.Sid).Value;
+            var userIdentifier = principal.Claims.FirstOrDefault(c => c.Type == ClaimTypes.Sid);
 
-            return Guid.Parse(userIdentifier);
+            if (userIdentifier == null)
+                throw new BusinessException(ResourceMessagesExceptions.CLIENTE_NAO_ENCONTRADO);
+
+
+            return Guid.Parse(userIdentifier!.Value);
         }
     }
 }

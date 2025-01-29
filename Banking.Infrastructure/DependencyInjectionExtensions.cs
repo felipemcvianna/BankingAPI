@@ -1,11 +1,12 @@
 using Banking.Domain.Repositories;
 using Banking.Domain.Repositories.Cliente;
 using Banking.Domain.Repositories.Conta;
-using Banking.Domain.Seguranca.Tokens.Generate;
+using Banking.Domain.Seguranca.Tokens;
 using Banking.Infrastructure.Data.Repositories;
 using Banking.Infrastructure.Data.Repositories.Cliente;
 using Banking.Infrastructure.Data.Repositories.Conta;
 using Banking.Infrastructure.Seguranca.Tokens.Acesso.Generator;
+using Banking.Infrastructure.Seguranca.Tokens.GetCliente;
 using Banking.Infrastructure.Seguranca.Tokens.Validator;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -20,6 +21,7 @@ public static class DependencyInjectionExtensions
         services.AddDbContext(configuration);
         services.AddRepositories();
         services.AddTokens(configuration);
+        services.AddLoggedCliente();
         return services;
     }
 
@@ -34,8 +36,8 @@ public static class DependencyInjectionExtensions
     {
         //CLIENTE REPOSITORIES
         services.AddScoped<IGravarClienteRepository, ClienteRepository>();
-        services.AddScoped<ILerCLienteRepository, ClienteRepository>(); 
-        services.AddScoped<IDeletarClienteRepository, ClienteRepository>(); 
+        services.AddScoped<ILerCLienteRepository, ClienteRepository>();
+        services.AddScoped<IDeletarClienteRepository, ClienteRepository>();
         services.AddScoped<IUnitOfWork, UnitOfWork>();
 
         //CONTA REPOSITORIES
@@ -54,5 +56,8 @@ public static class DependencyInjectionExtensions
 
         return services;
     }
+
+    private static IServiceCollection AddLoggedCliente(this IServiceCollection services)
+        => services.AddScoped<ILoggedCliente, LoggedCliente>();
 
 }

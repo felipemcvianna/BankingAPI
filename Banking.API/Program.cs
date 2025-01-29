@@ -1,5 +1,7 @@
 using Banking.API.Filters;
+using Banking.API.Token;
 using Banking.Application;
+using Banking.Domain.Seguranca.Tokens;
 using Banking.Infrastructure;
 using Microsoft.OpenApi.Models;
 
@@ -43,6 +45,8 @@ builder.Services.AddSwaggerGen(opt =>
 builder.Services.AddInfrastrucutre(builder.Configuration);
 builder.Services.AddApplication();
 builder.Services.AddMvc(options => options.Filters.Add(typeof(ExceptionFilter)));
+builder.Services.AddScoped<ITokenRequest, HttpContextTokenValue>();
+builder.Services.AddHttpContextAccessor();
 
 var app = builder.Build();
 

@@ -5,7 +5,7 @@ using Banking.Communication.Requests.Cliente;
 using Banking.Communication.Response.Cliente;
 using Banking.Domain.Repositories;
 using Banking.Domain.Repositories.Cliente;
-using Banking.Domain.Seguranca.Tokens.Generate;
+using Banking.Domain.Seguranca.Tokens;
 using Banking.Exceptions;
 using Banking.Exceptions.ExceptionBase;
 using FluentValidation.Results;

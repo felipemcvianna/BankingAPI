@@ -1,8 +1,8 @@
-﻿namespace Banking.Infrastructure.Seguranca.Tokens.Validator
+﻿namespace Banking.Domain.Seguranca.Tokens
 {
     public interface IJwtTokenValidator
     {
         public Guid ValidateAndGetUserIdentifier(string token);
-        
+
     }
 }

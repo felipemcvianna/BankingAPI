@@ -1,4 +1,4 @@
-﻿namespace Banking.Domain.Seguranca.Tokens.Generate
+﻿namespace Banking.Domain.Seguranca.Tokens
 {
     public interface IAcessTokenGenerator
     {

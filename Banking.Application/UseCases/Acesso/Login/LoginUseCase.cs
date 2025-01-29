@@ -2,7 +2,7 @@
 using Banking.Communication.Requests.Login;
 using Banking.Communication.Response.Login;
 using Banking.Domain.Repositories.Cliente;
-using Banking.Domain.Seguranca.Tokens.Generate;
+using Banking.Domain.Seguranca.Tokens;
 using Banking.Exceptions;
 using Banking.Exceptions.ExceptionBase;
 

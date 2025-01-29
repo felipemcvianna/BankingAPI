@@ -1,11 +1,12 @@
 {
     "ConnectionStrings": {
-        "DefaultConnection": "Host=HOST_AQUI;Port=PORTA_AQUI;Database=DATABASE_AQUI;Username=USERNAME_AQUI;Password=SENHA_AQUI;"
+        "DefaultConnection": "Host=localhost;Port=5432;Database=BankingDb;Username=postgres;Password=lipelipe1;"
     },
     "Settings": {
         "Jwt": {
             "ExpirationTimeMinutes": 10,
-            "SigningKey": "CHAVE_API_AQUI"
+            "SigningKey": "h34jg9PJnD9kkdLK45b9Adsd345LJNMx"
+
         }
     }
 }

@@ -4,7 +4,6 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
 namespace Banking.API.Filters;
-
 public class ExceptionFilter : IExceptionFilter
 {
     public void OnException(ExceptionContext context)
@@ -14,7 +13,6 @@ public class ExceptionFilter : IExceptionFilter
         HandleDeleteException(context);
 
     }
-
     private void HandleRegisterException(ExceptionContext context)
     {
         if (context.Exception is ErrorsOnValidateExceptions exception)
@@ -23,7 +21,6 @@ public class ExceptionFilter : IExceptionFilter
             context.Result = new ObjectResult(exception!.Erros);
         }
     }
-
     private void HandleDeleteException(ExceptionContext context)
     {
         if (context.Exception is BusinessException exception)
@@ -32,10 +29,9 @@ public class ExceptionFilter : IExceptionFilter
             context.Result = new ObjectResult(exception!.Erros);
         }
     }
-
-
     private void HandleUnknowException(ExceptionContext context)
     {
         context.HttpContext.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
+        
     }
 }
