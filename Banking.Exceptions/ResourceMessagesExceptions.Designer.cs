@@ -70,6 +70,15 @@ namespace Banking.Exceptions {
         }
         
         /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Conta não encontrada.
+        /// </summary>
+        public static string CONTA_NAO_ENCONTRADA {
+            get {
+                return ResourceManager.GetString("CONTA_NAO_ENCONTRADA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a CPF já cadastrado.
         /// </summary>
         public static string CPF_CADASTRADO {
@@ -183,6 +192,15 @@ namespace Banking.Exceptions {
         public static string TOKEN_INVALIDO {
             get {
                 return ResourceManager.GetString("TOKEN_INVALIDO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Consulta uma cadeia de caracteres localizada semelhante a Usuário não encontrado.
+        /// </summary>
+        public static string USUARIO_NAO_ENCONTRADO {
+            get {
+                return ResourceManager.GetString("USUARIO_NAO_ENCONTRADO", resourceCulture);
             }
         }
         

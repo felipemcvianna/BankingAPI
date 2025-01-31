@@ -29,7 +29,9 @@ namespace Banking.Infrastructure.Seguranca.Tokens.GetCliente
 
             var securityIdentifier = Guid.Parse(identifier);
 
-            return await _dbContext.Clientes.AsNoTracking().FirstAsync(c => c.UserIdentifier.Equals(securityIdentifier));
+            return await _dbContext.Clientes
+                .AsNoTracking()
+                .FirstAsync(c => c.UserIdentifier.Equals(securityIdentifier));
 
         }
     }

@@ -14,20 +14,23 @@ namespace Banking.API.Filters
     {
         private readonly IJwtTokenValidator _jwtTokenValidator;
         private readonly ILerCLienteRepository _lerCLienteRepository;
+        private readonly ITokenRequest _tokenOnRequest;
 
         public AuthenticatedUserFilter(
             IJwtTokenValidator jwtTokenValidator,
-            ILerCLienteRepository lerCLienteRepository)
+            ILerCLienteRepository lerCLienteRepository,
+            ITokenRequest tokenOnRequest)
         {
             _jwtTokenValidator = jwtTokenValidator;
             _lerCLienteRepository = lerCLienteRepository;
+            _tokenOnRequest = tokenOnRequest;
         }
 
         public async Task OnAuthorizationAsync(AuthorizationFilterContext context)
         {
             try
             {
-                var Token = TokenOnRequest(context);
+                var Token = _tokenOnRequest.Value();
 
 
                 var userIdentifier = _jwtTokenValidator.ValidateAndGetUserIdentifier(Token);
@@ -51,20 +54,11 @@ namespace Banking.API.Filters
             catch (ArgumentNullException ex)
             {
                 context.Result = new UnauthorizedObjectResult(new ResponseTokenErrorJson(ex.Message));
-            }            
+            }
+            catch
+            {
+                context.Result = new UnauthorizedObjectResult(new ResponseTokenErrorJson(ResourceMessagesExceptions.USUARIO_SEM_PERMISSAO));
+            }
         }
-        public string TokenOnRequest(AuthorizationFilterContext context)
-        {
-            if (!context.HttpContext.Request.Headers.TryGetValue("Authorization", out var authorizationHeader))
-                throw new ArgumentNullException("",ResourceMessagesExceptions.SEM_TOKEN);
-
-            var token = authorizationHeader.ToString();
-
-            if (!token.StartsWith("Bearer "))
-                throw new ArgumentNullException("",ResourceMessagesExceptions.TOKEN_INVALIDO);
-
-            return token["Bearer ".Length..].Trim();
-        }
-
     }
 }

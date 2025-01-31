@@ -1,5 +1,5 @@
 ﻿using Banking.Domain.Seguranca.Tokens;
-using Banking.Exceptions.ExceptionBase;
+using Banking.Exceptions;
 
 namespace Banking.API.Token
 {
@@ -15,8 +15,12 @@ namespace Banking.API.Token
         {
             var token = _httpcontextAccessor.HttpContext!.Request.Headers.Authorization.ToString();
 
-            if (token == null || !token.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase))
-                throw new BusinessException("Token vazio ou inválido");
+            if (string.IsNullOrWhiteSpace(token))
+                throw new ArgumentNullException("", ResourceMessagesExceptions.SEM_TOKEN);
+
+            if (!token.StartsWith("Bearer ", StringComparison.OrdinalIgnoreCase))
+                throw new ArgumentNullException("", ResourceMessagesExceptions.TOKEN_INVALIDO);
+
 
             return token["Bearer".Length..].Trim();
         }
