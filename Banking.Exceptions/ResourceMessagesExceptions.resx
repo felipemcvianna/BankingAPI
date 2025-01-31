@@ -120,6 +120,9 @@
   <data name="CLIENTE_NAO_ENCONTRADO" xml:space="preserve">
     <value>Não foi foi possível encontrar o cliente</value>
   </data>
+  <data name="CONTA_NAO_ENCONTRADA" xml:space="preserve">
+    <value>Conta não encontrada</value>
+  </data>
   <data name="CPF_CADASTRADO" xml:space="preserve">
     <value>CPF já cadastrado</value>
   </data>
@@ -158,6 +161,9 @@
   </data>
   <data name="TOKEN_INVALIDO" xml:space="preserve">
     <value>Token no formato inválido. Tente Bearer &lt;token&gt;</value>
+  </data>
+  <data name="USUARIO_NAO_ENCONTRADO" xml:space="preserve">
+    <value>Usuário não encontrado</value>
   </data>
   <data name="USUARIO_SEM_PERMISSAO" xml:space="preserve">
     <value>O usuário não tem permissão de acesso</value>
