@@ -1,7 +1,8 @@
 using Banking.Application.Services.AutoMapper;
 using Banking.Application.Services.Encryption;
 using Banking.Application.UseCases.Acesso.Login;
-using Banking.Application.UseCases.Cliente.AtualizarSenha;
+using Banking.Application.UseCases.Cliente.AtualizarSenha.AtualizarSenhaClienteAutenticado;
+using Banking.Application.UseCases.Cliente.AtualizarSenha.AtualizarSenhaEMail;
 using Banking.Application.UseCases.Cliente.Deletar;
 using Banking.Application.UseCases.Cliente.Ler.ByEmail;
 using Banking.Application.UseCases.Cliente.Ler.ByToken;
@@ -36,6 +37,7 @@ public static class DependecyInjectionExtensions
         services.AddScoped<IDeletarClienteUseCase, DeletarClienteUseCase>();
         services.AddScoped<IAtualizarSenhaClienteUseCase, AtualizarSenhaClienteUseCase>();
         services.AddScoped<IGetClienteByTokenUseCase, GetClienteByTokenUseCase>();
+        services.AddScoped<IAtualizarSenhaClienteAutenticadoUseCase, AtualizarSenhaClienteAutenticadoUseCase>();
 
         //Conta use cases
         services.AddScoped<IRegistrarContaUseCase, RegistrarContaUseCase>();

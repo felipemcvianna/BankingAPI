@@ -9,16 +9,16 @@ public class AutoMapping : Profile
 {
     public AutoMapping()
     {
-        RequestToDomain();
-        DomainToRequest();
+        RegisterRequestToDomain();
+        RegisterDomainToRequest();        
     }
 
-    private void RequestToDomain()
+    private void RegisterRequestToDomain()
     {
         CreateMap<RequestRegistrarClienteJson, Cliente>().ForMember(x => x.Senha, opt => opt.Ignore());
     }
 
-    private void DomainToRequest()
+    private void RegisterDomainToRequest()
     {
         CreateMap<Cliente, ResponseRegistrarClienteJson>()
             .ForMember(x => x.Nome, opt
