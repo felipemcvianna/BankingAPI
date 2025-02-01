@@ -1,3 +1,4 @@
+using Banking.Application.Services.Encryption;
 using Banking.Communication.Requests.Cliente;
 using Banking.Communication.Response.Cliente;
 using Banking.Domain.Repositories;
@@ -5,20 +6,22 @@ using Banking.Domain.Repositories.Cliente;
 using Banking.Exceptions;
 using Banking.Exceptions.ExceptionBase;
 
-namespace Banking.Application.UseCases.Cliente.AtualizarSenha;
+namespace Banking.Application.UseCases.Cliente.AtualizarSenha.AtualizarSenhaEMail;
 
 public class AtualizarSenhaClienteUseCase : IAtualizarSenhaClienteUseCase
 {
     private readonly ILerCLienteRepository _lerCLienteRepository;
     private readonly IGravarClienteRepository _gravarClienteRepository;
     private readonly IUnitOfWork _unitOfWork;
+    private readonly PasswordEncryptor _passwordEncryptor;
 
     public AtualizarSenhaClienteUseCase(ILerCLienteRepository lerCLienteRepository,
-        IGravarClienteRepository gravarClienteRepository, IUnitOfWork unitOfWork)
+        IGravarClienteRepository gravarClienteRepository, IUnitOfWork unitOfWork, PasswordEncryptor passwordEncryptor)
     {
         _lerCLienteRepository = lerCLienteRepository;
         _gravarClienteRepository = gravarClienteRepository;
         _unitOfWork = unitOfWork;
+        _passwordEncryptor = passwordEncryptor;
     }
 
     public async Task<ResponseAtualizarClienteJson> Execute(RequestAtualizarSenhaClienteJson request)
@@ -27,10 +30,12 @@ public class AtualizarSenhaClienteUseCase : IAtualizarSenhaClienteUseCase
 
         var cliente = await _lerCLienteRepository.GetClienteByEmail(request.Email);
 
-        EmailESenhaValidation(cliente, request);
-        SenhaValidation(cliente!.Senha, request);
+        if (cliente == null)
+            throw new BusinessException(ResourceMessagesExceptions.CLIENTE_NAO_ENCONTRADO);
 
-        cliente!.Senha = request.NovaSenha;
+        SenhaValidation(request, cliente);
+
+        cliente.Senha = _passwordEncryptor.Encript(request.NovaSenha);
 
         _gravarClienteRepository.AtualizarSenhaCliente(cliente);
 
@@ -39,9 +44,9 @@ public class AtualizarSenhaClienteUseCase : IAtualizarSenhaClienteUseCase
 
         return new ResponseAtualizarClienteJson()
         {
-            Mensagem = "SENHA ATUALIZADA",
+            Mensagem = "Senha atualizada com sucesso",
             Sucesso = true,
-            DataDeAtualizacao = DateTime.Now
+            DataDeAtualizacao = DateTime.UtcNow
         };
     }
 
@@ -57,22 +62,16 @@ public class AtualizarSenhaClienteUseCase : IAtualizarSenhaClienteUseCase
         }
     }
 
-    private void EmailESenhaValidation(Domain.Entities.Cliente? cliente, RequestAtualizarSenhaClienteJson request)
+    private void SenhaValidation(RequestAtualizarSenhaClienteJson request, Domain.Entities.Cliente cliente)
     {
-        if (cliente == null)
+        if (!_passwordEncryptor.Verify(request.SenhaAtual, cliente.Senha))
         {
-            throw new BusinessException(ResourceMessagesExceptions.EMAIL_NAO_CADASTRADO);
-        }
-    }
-
-    private void SenhaValidation(string senhaAtual, RequestAtualizarSenhaClienteJson request)
-    {
-        if (senhaAtual != request.SenhaAtual)
-        {
-            throw new BusinessException(ResourceMessagesExceptions.SENHA_ATUAL);
+            throw new BusinessException(ResourceMessagesExceptions.SENHA_INCORRETA);
         }
 
-        if (request.NovaSenha == senhaAtual)
+        var novaSenhaEncriptada = _passwordEncryptor.Encript(request.NovaSenha);
+
+        if (novaSenhaEncriptada == cliente.Senha)
         {
             throw new BusinessException(ResourceMessagesExceptions.SENHA_IGUAL);
         }

@@ -18,7 +18,7 @@ namespace Banking.Application.UseCases.Cliente.Ler.ByToken
             _contaRepository = contaRepository;
         }
 
-        public async Task<ResponseGetClienteByToken> Execute()
+        public async Task<ResponseGetClienteByTokenJson> Execute()
         {
             var cliente = await _loggedCliente.GetClienteByToken();
 
@@ -30,7 +30,7 @@ namespace Banking.Application.UseCases.Cliente.Ler.ByToken
             if (conta == null)
                 throw new BusinessException(ResourceMessagesExceptions.CONTA_NAO_ENCONTRADA);
 
-            return new ResponseGetClienteByToken()
+            return new ResponseGetClienteByTokenJson()
             {
                 Nome = cliente.Nome,
                 Email = cliente.Email,

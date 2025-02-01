@@ -4,6 +4,6 @@ namespace Banking.Application.UseCases.Cliente.Ler.ByToken
 {
     public interface IGetClienteByTokenUseCase
     {
-        public Task<ResponseGetClienteByToken> Execute();
+        public Task<ResponseGetClienteByTokenJson> Execute();
     }
 }
