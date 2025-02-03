@@ -74,7 +74,7 @@ namespace Banking.Application.UseCases.Cliente.AtualizarSenha.AtualizarSenhaClie
 
             if (request.novaSenha != request.confirmarSenha)
             {
-                throw new BusinessException(ResourceMessagesExceptions.SENHAS_DEVER_COINCIDIR);
+                throw new BusinessException(ResourceMessagesExceptions.SENHAS_DEVEM_COINCIDIR);
             }
         }
     }

@@ -50,6 +50,7 @@ public class ClienteController : ControllerBase
     [HttpDelete]
     [Route("DeletarCliente")]
     [ProducesResponseType(typeof(ResponseDeletarClienteJson), StatusCodes.Status200OK)]
+    [AuthenticatedUser]
     public async Task<IActionResult> DeletarCliente([FromBody] RequestDeletarClienteJson request,
         [FromServices] IDeletarClienteUseCase useCase)
     {

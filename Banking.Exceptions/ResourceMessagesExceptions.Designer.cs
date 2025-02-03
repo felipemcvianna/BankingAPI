@@ -180,9 +180,9 @@ namespace Banking.Exceptions {
         /// <summary>
         ///   Consulta uma cadeia de caracteres localizada semelhante a As senhas devem coincidir.
         /// </summary>
-        public static string SENHAS_DEVER_COINCIDIR {
+        public static string SENHAS_DEVEM_COINCIDIR {
             get {
-                return ResourceManager.GetString("SENHAS_DEVER_COINCIDIR", resourceCulture);
+                return ResourceManager.GetString("SENHAS_DEVEM_COINCIDIR", resourceCulture);
             }
         }
         
