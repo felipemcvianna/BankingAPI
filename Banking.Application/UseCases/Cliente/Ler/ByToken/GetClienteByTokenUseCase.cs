@@ -40,6 +40,7 @@ namespace Banking.Application.UseCases.Cliente.Ler.ByToken
                     numeroBanco =  conta.NumeroBanco,
                     numeroAgencia = conta.NumeroAgencia,
                     dataCriacao = conta.DataCriacao,
+                    Saldo = conta.Saldo,
                 }
             };
         }

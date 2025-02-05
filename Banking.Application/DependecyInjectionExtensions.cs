@@ -7,8 +7,9 @@ using Banking.Application.UseCases.Cliente.Deletar;
 using Banking.Application.UseCases.Cliente.Ler.ByEmail;
 using Banking.Application.UseCases.Cliente.Ler.ByToken;
 using Banking.Application.UseCases.Cliente.Registrar;
-using Banking.Application.UseCases.Conta;
 using Banking.Application.UseCases.Conta.Deletar;
+using Banking.Application.UseCases.Conta.Registrar;
+using Banking.Application.UseCases.Transacao.ExecutarTransacao;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Banking.Application;
@@ -46,6 +47,10 @@ public static class DependecyInjectionExtensions
 
         //Login use cases
         services.AddScoped<ILoginUseCase, LoginUseCase>();
+
+        //Transferencia Use Case
+        services.AddScoped<IExecutarTransacaoUseCase, ExecutarTransacaoUseCase>();
+        services.AddScoped<ITransacaoService, TransacaoService>();
         return services;
     }
 

@@ -1,6 +1,6 @@
 using AutoMapper;
 using Banking.Application.Services.Encryption;
-using Banking.Application.UseCases.Conta;
+using Banking.Application.UseCases.Conta.Registrar;
 using Banking.Communication.Requests.Cliente;
 using Banking.Communication.Response.Cliente;
 using Banking.Domain.Repositories;
@@ -47,7 +47,7 @@ public class RegistrarClienteUseCase : IRegistrarClienteUseCase
         cliente.Senha = _passwordEncryptor.Encript(request.Senha);
 
         var numeroConta = await _registrarContaUseCase.Execute(cliente.UserIdentifier);
-        cliente.NumeroConta = numeroConta.NumeroConta;
+        cliente.NumeroConta = numeroConta.NumeroConta;       
 
         await _gravarClienteRepository.Add(cliente);
         await _unitOfWork.Commit();

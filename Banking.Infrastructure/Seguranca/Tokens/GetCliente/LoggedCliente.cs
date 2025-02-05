@@ -17,7 +17,7 @@ namespace Banking.Infrastructure.Seguranca.Tokens.GetCliente
             _dbContext = dbContext;
         }
 
-        public async Task<Cliente> GetClienteByToken()
+        public async Task<Cliente?> GetClienteByToken()
         {
             var token = _tokenRequest.Value();
 
@@ -29,9 +29,7 @@ namespace Banking.Infrastructure.Seguranca.Tokens.GetCliente
 
             var securityIdentifier = Guid.Parse(identifier);
 
-            return await _dbContext.Clientes
-                .AsNoTracking()
-                .FirstAsync(c => c.UserIdentifier.Equals(securityIdentifier));
+            return await _dbContext.Clientes.AsNoTracking().FirstOrDefaultAsync(x => x.UserIdentifier == securityIdentifier);
 
         }
     }

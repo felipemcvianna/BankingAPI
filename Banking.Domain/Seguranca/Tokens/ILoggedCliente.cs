@@ -4,6 +4,6 @@ namespace Banking.Domain.Seguranca.Tokens
 {
     public interface ILoggedCliente
     {
-        public Task<Cliente> GetClienteByToken();
+        public Task<Cliente?> GetClienteByToken();
     }
 }

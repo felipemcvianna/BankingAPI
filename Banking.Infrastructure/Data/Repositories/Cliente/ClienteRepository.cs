@@ -46,4 +46,8 @@ public class ClienteRepository : IGravarClienteRepository, ILerCLienteRepository
             throw new Exception("Erro ao tentar deletar o cliente. Verifique dependências.", ex);
         }
     }
+
+    public async Task<Domain.Entities.Cliente?> GetClienteByNumeroConta(int numeroConta) => 
+        await _context.Clientes.FirstOrDefaultAsync(x => x.NumeroConta == numeroConta);
+    
 }

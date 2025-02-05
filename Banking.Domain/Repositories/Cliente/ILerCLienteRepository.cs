@@ -8,4 +8,5 @@ public interface ILerCLienteRepository
     public Task<Entities.Cliente?> GetClienteByEmail(string email);
 
     public Task<bool> ExisteClienteComIdentificador(Guid userIdentifier);
+    public Task<Entities.Cliente?> GetClienteByNumeroConta(int numeroConta);
 }

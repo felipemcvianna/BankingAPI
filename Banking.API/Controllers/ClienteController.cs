@@ -5,8 +5,11 @@ using Banking.Application.UseCases.Cliente.Deletar;
 using Banking.Application.UseCases.Cliente.Ler.ByEmail;
 using Banking.Application.UseCases.Cliente.Ler.ByToken;
 using Banking.Application.UseCases.Cliente.Registrar;
+using Banking.Application.UseCases.Transacao.ExecutarTransacao;
 using Banking.Communication.Requests.Cliente;
+using Banking.Communication.Requests.Transacao;
 using Banking.Communication.Response.Cliente;
+using Banking.Communication.Response.Transacao;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Banking.API.Controllers;
@@ -61,7 +64,7 @@ public class ClienteController : ControllerBase
 
     [HttpPatch]
     [Route("AtualizarSenhaCliente")]
-    [ProducesResponseType(typeof(ResponseAtualizarClienteJson), StatusCodes.Status200OK)]    
+    [ProducesResponseType(typeof(ResponseAtualizarClienteJson), StatusCodes.Status200OK)]
     public async Task<IActionResult> AtualizarSenhaCliente([FromBody] RequestAtualizarSenhaClienteJson request,
         [FromServices] IAtualizarSenhaClienteUseCase useCase)
     {
@@ -75,6 +78,16 @@ public class ClienteController : ControllerBase
     [ProducesResponseType(typeof(ResponseAtualizarClienteJson), StatusCodes.Status200OK)]
     public async Task<IActionResult> AtualizarSenhaClienteAutenticado([FromBody] RequestAtualizarSenhaClienteAutenticadoJson request,
         [FromServices] IAtualizarSenhaClienteAutenticadoUseCase _useCase)
+    {
+        var result = await _useCase.Execute(request);
+
+        return Ok(result);
+    }
+    [HttpPost]
+    [Route("ExecutarTransferencia")]
+    [ProducesResponseType(typeof(ResponseExecutarTransacaoJson), StatusCodes.Status200OK)]
+    [AuthenticatedUser]
+    public async Task<IActionResult> ExecutarTransferencia([FromBody] RequestExecutarTransacaoJson request, [FromServices] IExecutarTransacaoUseCase _useCase)
     {
         var result = await _useCase.Execute(request);
 
