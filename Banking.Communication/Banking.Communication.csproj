@@ -7,10 +7,6 @@
     </PropertyGroup>
 
     <ItemGroup>
-      <Folder Include="Requests\Conta\" />
-    </ItemGroup>
-
-    <ItemGroup>
       <Compile Remove="Requests\Conta\RequestRegistrarContaJson.cs" />
     </ItemGroup>
 

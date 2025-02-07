@@ -11,7 +11,7 @@
     </ItemGroup>
 
     <ItemGroup>
-      <Folder Include="Repositories\Transferencia\" />
+      <Folder Include="Repositories\Transacoes\Transferencia\" />
     </ItemGroup>
 
 </Project>

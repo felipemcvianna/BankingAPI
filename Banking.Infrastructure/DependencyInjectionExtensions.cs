@@ -1,13 +1,17 @@
 using Banking.Domain.Repositories;
 using Banking.Domain.Repositories.Cliente;
 using Banking.Domain.Repositories.Conta;
+using Banking.Domain.Repositories.Transacoes.Deposito;
 using Banking.Domain.Seguranca.Tokens;
+using Banking.Domain.Seguranca.Transacoes;
 using Banking.Infrastructure.Data.Repositories;
 using Banking.Infrastructure.Data.Repositories.Cliente;
 using Banking.Infrastructure.Data.Repositories.Conta;
+using Banking.Infrastructure.Data.Repositories.Transacoes.Deposito;
 using Banking.Infrastructure.Seguranca.Tokens.Acesso.Generator;
 using Banking.Infrastructure.Seguranca.Tokens.GetCliente;
 using Banking.Infrastructure.Seguranca.Tokens.Validator;
+using Banking.Infrastructure.Seguranca.Transacao;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -22,6 +26,7 @@ public static class DependencyInjectionExtensions
         services.AddRepositories();
         services.AddTokens(configuration);
         services.AddLoggedCliente();
+        services.AddSegurancaTransacao(configuration);
         return services;
     }
 
@@ -43,6 +48,9 @@ public static class DependencyInjectionExtensions
         //CONTA REPOSITORIES
         services.AddScoped<IGravarContaRepository, ContaRepository>();
         services.AddScoped<ILerContaRepository, ContaRepository>();
+
+        //DEPOSITO REPOSITORIES
+        services.AddScoped<IGravarDepositoRepository, DepositoRepository>();
         return services;
     }
 
@@ -56,7 +64,12 @@ public static class DependencyInjectionExtensions
 
         return services;
     }
-
+    private static IServiceCollection AddSegurancaTransacao(this IServiceCollection services, IConfiguration configuration)
+    {
+        var chaveSegura = configuration.GetValue<string>("Settings:Transacoes:ChaveSegura");
+        services.AddScoped<ISegurancaTransacao>(options => new SegurancaTransacao($"{Guid.NewGuid()}|{DateTime.UtcNow.Ticks}", chaveSegura!));
+        return services;
+    }
     private static IServiceCollection AddLoggedCliente(this IServiceCollection services)
         => services.AddScoped<ILoggedCliente, LoggedCliente>();
 

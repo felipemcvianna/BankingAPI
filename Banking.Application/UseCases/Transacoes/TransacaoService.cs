@@ -1,11 +1,9 @@
-﻿
-using Banking.Domain.Repositories.Cliente;
+﻿using Banking.Domain.Repositories.Cliente;
 using Banking.Domain.Repositories.Conta;
-using Banking.Domain.Seguranca.Tokens;
 using Banking.Exceptions;
 using Banking.Exceptions.ExceptionBase;
 
-namespace Banking.Application.UseCases.Transacao.ExecutarTransacao
+namespace Banking.Application.UseCases.Transacao
 {
     public class TransacaoService : ITransacaoService
     {
@@ -21,7 +19,12 @@ namespace Banking.Application.UseCases.Transacao.ExecutarTransacao
             _gravarContaRepository = gravarContaRepository;
             _clienteRepository = clienteRepository;
         }
-        public async Task ExecutarTransacao(Domain.Entities.Conta contaOrigem, Domain.Entities.Conta contaDestino, double valor)
+
+        public void ExecutarDeposito(Domain.Entities.Conta conta, double valorDeposito)
+        {
+            conta.AdicionarSaldo(valorDeposito);
+        }
+        public async Task ExecutarTransferencia(Domain.Entities.Conta contaOrigem, Domain.Entities.Conta contaDestino, double valor)
         {
             await using var transaction = await _gravarContaRepository.ComecarTransacaoAsync();
 
@@ -41,11 +44,11 @@ namespace Banking.Application.UseCases.Transacao.ExecutarTransacao
                 await _gravarContaRepository.Atualizar(contaDestino);
                 await transaction.CommitAsync();
             }
-            catch 
+            catch
             {
                 transaction.Rollback();
                 throw;
-            }            
+            }
         }
 
         public async Task<Domain.Entities.Cliente> ObterClienteByNumeroConta(int numeroConta)

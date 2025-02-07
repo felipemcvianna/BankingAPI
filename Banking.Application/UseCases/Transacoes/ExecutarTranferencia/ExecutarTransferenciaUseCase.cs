@@ -1,28 +1,23 @@
-﻿using System.Transactions;
-using Banking.Communication.Requests.Transacao;
-using Banking.Communication.Response.Transacao;
-using Banking.Domain.Repositories.Cliente;
-using Banking.Domain.Repositories.Conta;
+﻿using Banking.Communication.Requests.Conta.Transacao;
+using Banking.Communication.Response.Conta.Transacao;
 using Banking.Domain.Seguranca.Tokens;
-using Banking.Exceptions;
 using Banking.Exceptions.ExceptionBase;
 
-namespace Banking.Application.UseCases.Transacao.ExecutarTransacao
+namespace Banking.Application.UseCases.Transacao.ExecutarTranferencia
 {
-    public class ExecutarTransacaoUseCase : IExecutarTransacaoUseCase
+    public class ExecutarTransferenciaUseCase : IExecutarTransferenciaUseCase
     {
         private readonly ILoggedCliente _loggedCliente;
         private readonly ITransacaoService _transacaoService;
-
-        public ExecutarTransacaoUseCase(ILoggedCliente loggedCliente, ITransacaoService transacaoService)
+        public ExecutarTransferenciaUseCase(ILoggedCliente loggedCliente, ITransacaoService transacaoService)
         {
             _loggedCliente = loggedCliente;
             _transacaoService = transacaoService;
         }
-
-        public async Task<ResponseExecutarTransacaoJson> Execute(RequestExecutarTransacaoJson request)
+        public async Task<ResponseExecutarTransferenciaJson> Execute(RequestExecutarTransacaoJson request)
         {
-
+            if (!double.TryParse(request.valorTransacao, out double valor) || valor <= 0)
+                throw new BusinessException("O valor da transação é inválido.");
 
             var clienteAutenticado = await _loggedCliente.GetClienteByToken();
             var contaOrigem = await _transacaoService.ObterConta(clienteAutenticado!.UserIdentifier, clienteAutenticado.NumeroConta);
@@ -31,11 +26,9 @@ namespace Banking.Application.UseCases.Transacao.ExecutarTransacao
             var clienteDestino = await _transacaoService.ObterClienteByNumeroConta(request.numeroConta);
             var contaDestino = await _transacaoService.ObterConta(request.numeroConta, request.numeroBanco, request.numeroAgencia);
 
-            await _transacaoService.ExecutarTransacao(contaOrigem, contaDestino, request.valorTransacao);
+            await _transacaoService.ExecutarTransferencia(contaOrigem, contaDestino, valor);
 
-
-
-            return new ResponseExecutarTransacaoJson()
+            return new ResponseExecutarTransferenciaJson()
             {
                 contaOrigem = new Domain.Entities.AuxiliarTransacao()
                 {
@@ -51,11 +44,11 @@ namespace Banking.Application.UseCases.Transacao.ExecutarTransacao
                 },
                 nomeClienteOrigem = clienteAutenticado.Nome,
                 nomeClienteDestino = clienteDestino.Nome,
-                valorTransacao = request.valorTransacao,
+                valorTransacao = valor,
                 CPFCliteOrigem = clienteAutenticado.CPF,
-                CPFClienteDestino = clienteDestino.CPF
+                CPFClienteDestino = clienteDestino.CPF,
+                // numeroTransacao = SegurancaTransacao.GerarNumeroTransacao()
             };
-
         }
     }
 }

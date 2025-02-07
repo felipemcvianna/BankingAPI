@@ -3,6 +3,7 @@ using System;
 using Banking.Infrastructure;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Banking.Infrastructure.Migrations
 {
     [DbContext(typeof(BankingDbContext))]
-    partial class BankingDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250205233042_Atualizando_Propriedades_Transacao")]
+    partial class Atualizando_Propriedades_Transacao
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -88,34 +91,6 @@ namespace Banking.Infrastructure.Migrations
                     b.ToTable("Contas");
                 });
 
-            modelBuilder.Entity("Banking.Domain.Entities.Deposito", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("integer");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
-
-                    b.Property<string>("CPFCliente")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("Nome")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("NumeroDeposito")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<double>("ValorDeposito")
-                        .HasColumnType("double precision");
-
-                    b.HasKey("Id");
-
-                    b.ToTable("Depositos");
-                });
-
             modelBuilder.Entity("Banking.Domain.Entities.Transacao", b =>
                 {
                     b.Property<int>("Id")
@@ -153,34 +128,6 @@ namespace Banking.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Transacoes");
-                });
-
-            modelBuilder.Entity("Banking.Domain.Entities.Deposito", b =>
-                {
-                    b.OwnsOne("Banking.Domain.Entities.AuxiliarTransacao", "ContaDeposito", b1 =>
-                        {
-                            b1.Property<int>("DepositoId")
-                                .HasColumnType("integer");
-
-                            b1.Property<int>("numeroAgencia")
-                                .HasColumnType("integer");
-
-                            b1.Property<int>("numeroBanco")
-                                .HasColumnType("integer");
-
-                            b1.Property<int>("numeroConta")
-                                .HasColumnType("integer");
-
-                            b1.HasKey("DepositoId");
-
-                            b1.ToTable("Depositos");
-
-                            b1.WithOwner()
-                                .HasForeignKey("DepositoId");
-                        });
-
-                    b.Navigation("ContaDeposito")
-                        .IsRequired();
                 });
 
             modelBuilder.Entity("Banking.Domain.Entities.Transacao", b =>

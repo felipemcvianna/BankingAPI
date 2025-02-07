@@ -30,10 +30,7 @@ namespace Banking.Application.UseCases.Conta.Registrar
                 NumeroConta = numeroConta,
                 UserIdentifier = userIdentifier
             };
-
-            conta.AdicionarSaldo(1500);
-
-
+           
             await ValidarSeContaExiste(conta.NumeroConta);
 
             await _gravarRepository.Add(conta);

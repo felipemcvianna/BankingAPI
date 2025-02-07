@@ -1,8 +1,8 @@
 ﻿using Banking.Domain.Entities;
 
-namespace Banking.Communication.Response.Transacao
+namespace Banking.Communication.Response.Conta.Transacao
 {
-    public class ResponseExecutarTransacaoJson
+    public class ResponseExecutarTransferenciaJson
     {
         public string nomeClienteOrigem { get; set; } = default!;
         public string nomeClienteDestino { get; set; } = default!;
@@ -11,6 +11,8 @@ namespace Banking.Communication.Response.Transacao
         public string CPFClienteDestino { get; set; } = default!;
         public AuxiliarTransacao contaOrigem { get; set; } = default!;
         public AuxiliarTransacao contaDestino { get; set; } = default!;
-        public double valorTransacao { get; set; }
+        public double valorTransacao { get; set; } = default!;
+        public string numeroTransacao { get; set; } = default!;
+        public DateTime DataTransacao { get; set; }
     }
 }
