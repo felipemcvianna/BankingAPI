@@ -22,8 +22,4 @@
       <ProjectReference Include="..\Banking.Exceptions\Banking.Exceptions.csproj" />
     </ItemGroup>
 
-    <ItemGroup>
-      <Folder Include="Data\Repositories\Transacoes\Transferencia\" />
-    </ItemGroup>
-
 </Project>
