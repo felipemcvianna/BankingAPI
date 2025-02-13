@@ -59,10 +59,9 @@ namespace Banking.Infrastructure.Data.Repositories.Conta
             return await _context.Clientes.FirstOrDefaultAsync(x => x.NumeroConta == numeroConta);
         }
 
-        public async Task Atualizar(Domain.Entities.Conta conta)
+        public void Atualizar(Domain.Entities.Conta conta)
         {
             _context.Contas.Update(conta); 
-            await _context.SaveChangesAsync(); 
         }
 
         public async Task<IDbContextTransaction> ComecarTransacaoAsync()

@@ -9,7 +9,7 @@ namespace Banking.Domain.Repositories.Conta
         public Task Add(Entities.Conta conta);
         public void DeletarConta(Entities.Conta conta);
 
-        public Task Atualizar(Entities.Conta conta);
+        public void Atualizar(Entities.Conta conta);
 
         public Task<IDbContextTransaction> ComecarTransacaoAsync();
     }

@@ -1,28 +1,33 @@
 using Banking.Domain.Entities;
 using Microsoft.EntityFrameworkCore;
 
-namespace Banking.Infrastructure;
+namespace Banking.Infrastructure.Data;
 
 public class BankingDbContext : DbContext
 {
     public BankingDbContext(DbContextOptions<BankingDbContext> options) : base(options)
-    { 
+    {
     }
 
     public DbSet<Cliente> Clientes { get; set; }
-    public DbSet<Transacao> Transacoes { get; set; }
+    public DbSet<Transferencia> Transferencias { get; set; }
     public DbSet<Conta> Contas { get; set; }
     public DbSet<Deposito> Depositos { get; set; }
+
+    public DbSet<Saque> Saques { get; set; }
+
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Transacao>()
-            .OwnsOne(t => t.contaOrigem);
+        modelBuilder.Entity<Transferencia>()
+            .OwnsOne(t => t.ContaOrigem);
 
-        modelBuilder.Entity<Transacao>()
-            .OwnsOne(t => t.contaDestino);
+        modelBuilder.Entity<Transferencia>()
+            .OwnsOne(t => t.ContaDestino);
 
         modelBuilder.Entity<Deposito>()
             .OwnsOne(t => t.ContaDeposito);
-    }
 
+        modelBuilder.Entity<Saque>()
+            .OwnsOne(t => t.ContaSaque);
+    }
 }

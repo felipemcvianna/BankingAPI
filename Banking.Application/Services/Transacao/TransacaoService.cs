@@ -1,9 +1,11 @@
-﻿using Banking.Domain.Repositories.Cliente;
+﻿using Banking.Communication.Requests.Conta.Transacao;
+using Banking.Domain.Entities;
+using Banking.Domain.Repositories.Cliente;
 using Banking.Domain.Repositories.Conta;
 using Banking.Exceptions;
 using Banking.Exceptions.ExceptionBase;
 
-namespace Banking.Application.UseCases.Transacao
+namespace Banking.Application.Services.Transacao
 {
     public class TransacaoService : ITransacaoService
     {
@@ -14,17 +16,28 @@ namespace Banking.Application.UseCases.Transacao
         public TransacaoService(ILerContaRepository lerContaRepository,
             IGravarContaRepository gravarContaRepository, ILerCLienteRepository clienteRepository)
         {
-
             _lerContaRepository = lerContaRepository;
             _gravarContaRepository = gravarContaRepository;
             _clienteRepository = clienteRepository;
         }
 
-        public void ExecutarDeposito(Domain.Entities.Conta conta, double valorDeposito)
+        public void ExecutarDeposito(Conta conta, double valorDeposito)
         {
             conta.AdicionarSaldo(valorDeposito);
         }
-        public async Task ExecutarTransferencia(Domain.Entities.Conta contaOrigem, Domain.Entities.Conta contaDestino, double valor)
+
+        public async Task<Conta> ExecutarSaque(RequestSaqueJson request)
+        {
+            var conta = await ObterConta(request.numeroConta, request.numeroBanco,
+                request.numeroAgencia);
+
+            conta.RemoverSaldo(request.ValorTransacao);
+
+            return conta;
+        }
+
+        public async Task ExecutarTransferencia(Conta contaOrigem, Conta contaDestino,
+            double valor)
         {
             await using var transaction = await _gravarContaRepository.ComecarTransacaoAsync();
 
@@ -40,18 +53,18 @@ namespace Banking.Application.UseCases.Transacao
                 contaOrigem.RemoverSaldo(valor);
                 contaDestino.AdicionarSaldo(valor);
 
-                await _gravarContaRepository.Atualizar(contaOrigem);
-                await _gravarContaRepository.Atualizar(contaDestino);
+                _gravarContaRepository.Atualizar(contaOrigem);
+                _gravarContaRepository.Atualizar(contaDestino);
                 await transaction.CommitAsync();
             }
             catch
             {
-                transaction.Rollback();
+                await transaction.RollbackAsync();
                 throw;
             }
         }
 
-        public async Task<Domain.Entities.Cliente> ObterClienteByNumeroConta(int numeroConta)
+        public async Task<Cliente> ObterClienteByNumeroConta(int numeroConta)
         {
             var cliente = await _clienteRepository.GetClienteByNumeroConta(numeroConta);
 
@@ -61,7 +74,7 @@ namespace Banking.Application.UseCases.Transacao
             return cliente;
         }
 
-        public async Task<Domain.Entities.Conta> ObterConta(int numeroConta, int numeroBanco, int numeroAgencia)
+        public async Task<Conta> ObterConta(int numeroConta, int numeroBanco, int numeroAgencia)
         {
             var conta = await _lerContaRepository.ObterConta(numeroConta, numeroBanco, numeroAgencia);
 
@@ -70,7 +83,8 @@ namespace Banking.Application.UseCases.Transacao
 
             return conta;
         }
-        public async Task<Domain.Entities.Conta> ObterConta(Guid userIdentifier, int numeroConta)
+
+        public async Task<Conta> ObterConta(Guid userIdentifier, int numeroConta)
         {
             var conta = await _lerContaRepository.ObterConta(userIdentifier, numeroConta);
 

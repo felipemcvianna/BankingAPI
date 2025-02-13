@@ -1,5 +1,6 @@
 using Banking.Application.Services.AutoMapper;
 using Banking.Application.Services.Encryption;
+using Banking.Application.Services.Transacao;
 using Banking.Application.UseCases.Acesso.Login;
 using Banking.Application.UseCases.Cliente.AtualizarSenha.AtualizarSenhaClienteAutenticado;
 using Banking.Application.UseCases.Cliente.AtualizarSenha.AtualizarSenhaEMail;
@@ -9,7 +10,8 @@ using Banking.Application.UseCases.Cliente.Ler.ByToken;
 using Banking.Application.UseCases.Cliente.Registrar;
 using Banking.Application.UseCases.Conta.Deletar;
 using Banking.Application.UseCases.Conta.Registrar;
-using Banking.Application.UseCases.Transacao;
+using Banking.Application.UseCases.Conta.Transacoes.ExecutarTranferencia;
+using Banking.Application.UseCases.Conta.Transacoes.Sacar;
 using Banking.Application.UseCases.Transacao.Depositar;
 using Banking.Application.UseCases.Transacao.ExecutarTranferencia;
 using Microsoft.Extensions.DependencyInjection;
@@ -56,6 +58,9 @@ public static class DependecyInjectionExtensions
 
         //Deposito Use Case
         services.AddScoped<IDepositarUseCase, DepositarUseCase>();
+        
+        //Saque Use Case
+        services.AddScoped<ISaqueUseCase, SaqueUseCase>();
         return services;
     }
 

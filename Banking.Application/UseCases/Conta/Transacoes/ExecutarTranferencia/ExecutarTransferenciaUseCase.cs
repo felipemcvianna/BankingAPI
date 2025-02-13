@@ -1,9 +1,11 @@
-﻿using Banking.Communication.Requests.Conta.Transacao;
+﻿using Banking.Application.Services.Transacao;
+using Banking.Application.UseCases.Transacao.ExecutarTranferencia;
+using Banking.Communication.Requests.Conta.Transacao;
 using Banking.Communication.Response.Conta.Transacao;
 using Banking.Domain.Seguranca.Tokens;
 using Banking.Exceptions.ExceptionBase;
 
-namespace Banking.Application.UseCases.Transacao.ExecutarTranferencia
+namespace Banking.Application.UseCases.Conta.Transacoes.ExecutarTranferencia
 {
     public class ExecutarTransferenciaUseCase : IExecutarTransferenciaUseCase
     {
@@ -45,7 +47,7 @@ namespace Banking.Application.UseCases.Transacao.ExecutarTranferencia
                 nomeClienteOrigem = clienteAutenticado.Nome,
                 nomeClienteDestino = clienteDestino.Nome,
                 valorTransacao = valor,
-                CPFCliteOrigem = clienteAutenticado.CPF,
+                CPFClienteOrigem = clienteAutenticado.CPF,
                 CPFClienteDestino = clienteDestino.CPF,
                 // numeroTransacao = SegurancaTransacao.GerarNumeroTransacao()
             };

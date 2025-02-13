@@ -2,6 +2,7 @@
 using System.Security.Claims;
 using Banking.Domain.Entities;
 using Banking.Domain.Seguranca.Tokens;
+using Banking.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 
 namespace Banking.Infrastructure.Seguranca.Tokens.GetCliente

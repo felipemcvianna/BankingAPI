@@ -7,7 +7,7 @@ namespace Banking.Communication.Response.Conta.Transacao
         public string nomeClienteOrigem { get; set; } = default!;
         public string nomeClienteDestino { get; set; } = default!;
 
-        public string CPFCliteOrigem { get; set; } = default!;
+        public string CPFClienteOrigem { get; set; } = default!;
         public string CPFClienteDestino { get; set; } = default!;
         public AuxiliarTransacao contaOrigem { get; set; } = default!;
         public AuxiliarTransacao contaDestino { get; set; } = default!;

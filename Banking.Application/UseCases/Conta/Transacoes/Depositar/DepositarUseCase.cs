@@ -1,9 +1,9 @@
-﻿using Banking.Communication.Requests.Conta.Transacao;
+﻿using Banking.Application.Services.Transacao;
+using Banking.Communication.Requests.Conta.Transacao;
 using Banking.Communication.Response.Conta.Transacao;
 using Banking.Domain.Repositories;
 using Banking.Domain.Repositories.Transacoes.Deposito;
 using Banking.Domain.Seguranca.Transacoes;
-using Banking.Exceptions;
 using Banking.Exceptions.ExceptionBase;
 
 namespace Banking.Application.UseCases.Transacao.Depositar
@@ -35,12 +35,8 @@ namespace Banking.Application.UseCases.Transacao.Depositar
                 throw new BusinessException("O valor da transação é inválido.");
 
             var conta = await _transacaoService.ObterConta(request.numeroConta, request.numeroBanco, request.numeroAgencia);
-            if (conta == null)
-                throw new BusinessException(ResourceMessagesExceptions.CONTA_NAO_ENCONTRADA);
 
             var cliente = await _transacaoService.ObterClienteByNumeroConta(conta.NumeroConta);
-            if (cliente == null)
-                throw new BusinessException(ResourceMessagesExceptions.CLIENTE_NAO_ENCONTRADO);
 
             _transacaoService.ExecutarDeposito(conta, valor);
 

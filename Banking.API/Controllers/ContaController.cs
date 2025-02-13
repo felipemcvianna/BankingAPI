@@ -1,5 +1,6 @@
 ﻿using Banking.API.Attributes;
 using Banking.Application.UseCases.Cliente.Deletar;
+using Banking.Application.UseCases.Conta.Transacoes.Sacar;
 using Banking.Application.UseCases.Transacao.Depositar;
 using Banking.Application.UseCases.Transacao.ExecutarTranferencia;
 using Banking.Communication.Requests.Cliente;
@@ -18,9 +19,10 @@ namespace Banking.API.Controllers
         [Route("Transferir")]
         [ProducesResponseType(typeof(ResponseExecutarTransferenciaJson), StatusCodes.Status201Created)]
         [AuthenticatedUser]
-        public async Task<IActionResult> Transferencia([FromBody] RequestExecutarTransacaoJson request, [FromServices] IExecutarTransferenciaUseCase _useCase)
+        public async Task<IActionResult> Transferencia([FromBody] RequestExecutarTransacaoJson request,
+            [FromServices] IExecutarTransferenciaUseCase useCase)
         {
-            var result = await _useCase.Execute(request);
+            var result = await useCase.Execute(request);
 
             return Ok(result);
         }
@@ -28,9 +30,10 @@ namespace Banking.API.Controllers
         [HttpPost]
         [Route("Depositar")]
         [ProducesResponseType(typeof(ResponseDepositarJson), StatusCodes.Status201Created)]
-        public async Task<IActionResult> Depositar([FromBody] RequestExecutarTransacaoJson request, [FromServices] IDepositarUseCase _useCase)
+        public async Task<IActionResult> Depositar([FromBody] RequestExecutarTransacaoJson request,
+            [FromServices] IDepositarUseCase useCase)
         {
-            var result = await _useCase.Execute(request);
+            var result = await useCase.Execute(request);
 
             return Ok(result);
         }
@@ -40,12 +43,22 @@ namespace Banking.API.Controllers
         [ProducesResponseType(typeof(ResponseDeletarClienteJson), StatusCodes.Status200OK)]
         [AuthenticatedUser]
         public async Task<IActionResult> DeletarConta([FromBody] RequestDeletarClienteJson request,
-        [FromServices] IDeletarClienteUseCase useCase)
+            [FromServices] IDeletarClienteUseCase useCase)
         {
             var result = await useCase.Execute(request);
 
             return Ok(result);
         }
 
+        [HttpPost]
+        [Route("Sacar")]
+        [ProducesResponseType(typeof(ResponseSaqueJson), StatusCodes.Status200OK)]
+        public async Task<IActionResult> Sacar([FromBody] RequestSaqueJson request,
+            [FromServices] ISaqueUseCase useCase)
+        {
+            var result = await useCase.Execute(request);
+
+            return Ok(result);
+        }
     }
 }
