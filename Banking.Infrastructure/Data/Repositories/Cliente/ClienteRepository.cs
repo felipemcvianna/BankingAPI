@@ -27,6 +27,7 @@ public class ClienteRepository : IGravarClienteRepository, ILerCLienteRepository
     public async Task<bool> ExisteClienteComEmail(string email)
         => await _context.Clientes.AnyAsync(x =>
             (!string.IsNullOrEmpty(email) && x.Email.Equals(email)));
+
     public async Task<bool> ExisteClienteComIdentificador(Guid userIdentifier)
         => await _context.Clientes.AnyAsync(c => c.UserIdentifier.Equals(userIdentifier));
 
@@ -47,7 +48,6 @@ public class ClienteRepository : IGravarClienteRepository, ILerCLienteRepository
         }
     }
 
-    public async Task<Domain.Entities.Cliente?> GetClienteByNumeroConta(int numeroConta) => 
+    public async Task<Domain.Entities.Cliente?> GetClienteByNumeroConta(int numeroConta) =>
         await _context.Clientes.FirstOrDefaultAsync(x => x.NumeroConta == numeroConta);
-    
 }

@@ -34,7 +34,8 @@ namespace Banking.Application.UseCases.Transacao.Depositar
             if (!double.TryParse(request.valorTransacao, out double valor) || valor <= 0)
                 throw new BusinessException("O valor da transação é inválido.");
 
-            var conta = await _transacaoService.ObterConta(request.numeroConta, request.numeroBanco, request.numeroAgencia);
+            var conta = await _transacaoService.ObterConta(request.numeroConta, request.numeroBanco,
+                request.numeroAgencia);
 
             var cliente = await _transacaoService.ObterClienteByNumeroConta(conta.NumeroConta);
 
@@ -68,6 +69,5 @@ namespace Banking.Application.UseCases.Transacao.Depositar
                 NumeroDeposito = deposito.NumeroDeposito
             };
         }
-
     }
 }

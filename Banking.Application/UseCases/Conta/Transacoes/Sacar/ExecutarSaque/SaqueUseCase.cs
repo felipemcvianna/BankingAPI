@@ -10,7 +10,7 @@ using Banking.Domain.Seguranca.Transacoes;
 using Banking.Exceptions;
 using Banking.Exceptions.ExceptionBase;
 
-namespace Banking.Application.UseCases.Conta.Transacoes.Sacar
+namespace Banking.Application.UseCases.Conta.Transacoes.Sacar.ExecutarSaque
 {
     public class SaqueUseCase : ISaqueUseCase
     {
@@ -36,6 +36,8 @@ namespace Banking.Application.UseCases.Conta.Transacoes.Sacar
 
         public async Task<ResponseSaqueJson> Execute(RequestSaqueJson request)
         {
+            await SaqueValidator(request);
+
             var cliente = await _transacaoService.ObterClienteByNumeroConta(request.numeroConta);
 
             if (!_encryptor.Verify(request.Senha, cliente.Senha))
@@ -60,13 +62,26 @@ namespace Banking.Application.UseCases.Conta.Transacoes.Sacar
             _gravarContaRepository.Atualizar(contaSaque);
             await _gravarSaqueRepository.Add(saque);
             await _unitOfWork.Commit();
-            
+
             return new ResponseSaqueJson()
             {
                 NumeroTransacao = saque.NumeroSaque,
                 ValorSaque = request.ValorTransacao,
                 SaldoAtual = contaSaque.Saldo
             };
+        }
+
+        private async Task SaqueValidator(RequestSaqueJson request)
+        {
+            var validate = new ExecutarSaqueValidator();
+
+            var result = await validate.ValidateAsync(request);
+
+            if (!result.IsValid)
+            {
+                var errorsList = result.Errors.Select(x => x.ErrorMessage).ToList();
+                throw new ErrorsOnValidateExceptions(errorsList);
+            }
         }
     }
 }

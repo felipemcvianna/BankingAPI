@@ -35,6 +35,7 @@ public class ClienteController : ControllerBase
 
         return Ok(result);
     }
+
     [HttpGet]
     [Route("LerCLientePeloToken")]
     [ProducesResponseType(typeof(ResponseGetClienteByTokenJson), StatusCodes.Status200OK)]
@@ -44,7 +45,7 @@ public class ClienteController : ControllerBase
         var result = await _useCase.Execute();
 
         return Ok(result);
-    }    
+    }
 
     [HttpPatch]
     [Route("AtualizarSenhaCliente")]
@@ -56,16 +57,17 @@ public class ClienteController : ControllerBase
 
         return Ok(result);
     }
+
     [HttpPatch]
     [Route("AtualizarSenhaClienteAutenticado")]
     [AuthenticatedUser]
     [ProducesResponseType(typeof(ResponseAtualizarClienteJson), StatusCodes.Status200OK)]
-    public async Task<IActionResult> AtualizarSenhaClienteAutenticado([FromBody] RequestAtualizarSenhaClienteAutenticadoJson request,
+    public async Task<IActionResult> AtualizarSenhaClienteAutenticado(
+        [FromBody] RequestAtualizarSenhaClienteAutenticadoJson request,
         [FromServices] IAtualizarSenhaClienteAutenticadoUseCase _useCase)
     {
         var result = await _useCase.Execute(request);
 
         return Ok(result);
     }
-    
 }

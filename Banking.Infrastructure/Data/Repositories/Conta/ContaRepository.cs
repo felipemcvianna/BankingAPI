@@ -24,9 +24,9 @@ namespace Banking.Infrastructure.Data.Repositories.Conta
         {
             return _context.Contas.ToList();
         }
+
         public async Task<int> ObterUltimoNumeroConta()
         {
-
             var ultimaConta = await _context.Contas
                 .OrderByDescending(x => x.NumeroConta)
                 .FirstOrDefaultAsync();
@@ -44,14 +44,14 @@ namespace Banking.Infrastructure.Data.Repositories.Conta
         public async Task<Domain.Entities.Conta?> ObterConta(Guid userIdentifier, int numeroConta)
         {
             return await _context.Contas.Where(x => x.UserIdentifier.Equals(userIdentifier)
-            && x.NumeroConta == numeroConta).FirstOrDefaultAsync();
-
+                                                    && x.NumeroConta == numeroConta).FirstOrDefaultAsync();
         }
+
         public async Task<Domain.Entities.Conta?> ObterConta(int numeroConta, int numeroBanco, int numeroAgencia)
         {
             return await _context.Contas.FirstOrDefaultAsync(x => x.NumeroConta == numeroConta &&
-            x.NumeroBanco == numeroBanco &&
-            x.NumeroAgencia == numeroAgencia);
+                                                                  x.NumeroBanco == numeroBanco &&
+                                                                  x.NumeroAgencia == numeroAgencia);
         }
 
         public async Task<Domain.Entities.Cliente?> ObterClienteConta(int numeroConta)
@@ -61,12 +61,12 @@ namespace Banking.Infrastructure.Data.Repositories.Conta
 
         public void Atualizar(Domain.Entities.Conta conta)
         {
-            _context.Contas.Update(conta); 
+            _context.Contas.Update(conta);
         }
 
         public async Task<IDbContextTransaction> ComecarTransacaoAsync()
         {
-           return await _context.Database.BeginTransactionAsync();
+            return await _context.Database.BeginTransactionAsync();
         }
     }
 }

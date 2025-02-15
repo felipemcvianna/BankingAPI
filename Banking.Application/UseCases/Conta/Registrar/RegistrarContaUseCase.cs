@@ -14,7 +14,6 @@ namespace Banking.Application.UseCases.Conta.Registrar
         {
             _gravarRepository = gravarRepository;
             _lerContaRepository = lerContaRepository;
-
         }
 
         public async Task<ResponseRegistrarContaJson> Execute(Guid userIdentifier)
@@ -30,7 +29,7 @@ namespace Banking.Application.UseCases.Conta.Registrar
                 NumeroConta = numeroConta,
                 UserIdentifier = userIdentifier
             };
-           
+
             await ValidarSeContaExiste(conta.NumeroConta);
 
             await _gravarRepository.Add(conta);

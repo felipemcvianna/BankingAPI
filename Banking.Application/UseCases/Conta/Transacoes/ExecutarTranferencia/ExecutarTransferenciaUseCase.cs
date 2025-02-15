@@ -8,6 +8,7 @@ using Banking.Domain.Repositories;
 using Banking.Domain.Repositories.Transacoes.Transferencia;
 using Banking.Domain.Seguranca.Tokens;
 using Banking.Domain.Seguranca.Transacoes;
+using Banking.Exceptions;
 using Banking.Exceptions.ExceptionBase;
 
 namespace Banking.Application.UseCases.Conta.Transacoes.ExecutarTranferencia
@@ -39,8 +40,12 @@ namespace Banking.Application.UseCases.Conta.Transacoes.ExecutarTranferencia
                 throw new BusinessException("O valor da transação é inválido.");
 
             var clienteAutenticado = await _loggedCliente.GetClienteByToken();
+
+            if (clienteAutenticado == null)
+                throw new BusinessException(ResourceMessagesExceptions.CLIENTE_NAO_ENCONTRADO);
+
             var contaOrigem =
-                await _transacaoService.ObterConta(clienteAutenticado!.UserIdentifier, clienteAutenticado.NumeroConta);
+                await _transacaoService.ObterConta(clienteAutenticado.UserIdentifier, clienteAutenticado.NumeroConta);
 
 
             var clienteDestino = await _transacaoService.ObterClienteByNumeroConta(request.numeroConta);

@@ -9,6 +9,7 @@ public class DeletarClienteValidator : AbstractValidator<RequestDeletarClienteJs
     public DeletarClienteValidator()
     {
         RuleFor(x => x.Senha.Length).GreaterThanOrEqualTo(6).WithMessage(ResourceMessagesExceptions.SENHA_VAZIA);
-        RuleFor(x => x.confirmarSenha.Length).GreaterThanOrEqualTo(6).WithMessage(ResourceMessagesExceptions.SENHA_VAZIA);
+        RuleFor(x => x.confirmarSenha.Length).GreaterThanOrEqualTo(6)
+            .WithMessage(ResourceMessagesExceptions.SENHA_VAZIA);
     }
 }

@@ -1,6 +1,8 @@
 ﻿using Banking.API.Attributes;
 using Banking.Application.UseCases.Cliente.Deletar;
 using Banking.Application.UseCases.Conta.Transacoes.Sacar;
+using Banking.Application.UseCases.Conta.Transacoes.Sacar.ExecutarSaque;
+using Banking.Application.UseCases.Conta.Transacoes.Sacar.LerSaque.GetAllSaques;
 using Banking.Application.UseCases.Transacao.Depositar;
 using Banking.Application.UseCases.Transacao.ExecutarTranferencia;
 using Banking.Communication.Requests.Cliente;
@@ -57,6 +59,16 @@ namespace Banking.API.Controllers
             [FromServices] ISaqueUseCase useCase)
         {
             var result = await useCase.Execute(request);
+
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("GetAllSaque")]
+        [AuthenticatedUser]
+        public async Task<IActionResult> GetAllSaques([FromServices] IGetAllSaquesUseCase useCase)
+        {
+            var result = await useCase.Execute();
 
             return Ok(result);
         }

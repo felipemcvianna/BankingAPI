@@ -5,6 +5,6 @@
         public double ValorSaque { get; set; } = default!;
         public DateTime DataSaque { get; set; } = DateTime.UtcNow;
         public string NumeroTransacao { get; set; } = default!;
-        public double SaldoAtual { get; set; } 
+        public double SaldoAtual { get; set; }
     }
 }

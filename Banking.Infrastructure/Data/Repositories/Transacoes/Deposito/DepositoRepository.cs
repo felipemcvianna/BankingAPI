@@ -10,6 +10,7 @@ namespace Banking.Infrastructure.Data.Repositories.Transacoes.Deposito
         {
             _context = context;
         }
+
         public async Task Add(Domain.Entities.Deposito deposito) => await _context.Depositos.AddAsync(deposito);
     }
 }

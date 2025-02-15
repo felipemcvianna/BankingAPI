@@ -17,7 +17,8 @@ namespace Banking.Application.UseCases.Cliente.AtualizarSenha.AtualizarSenhaClie
         private readonly IGravarClienteRepository _gravarClienteRepository;
 
         public AtualizarSenhaClienteAutenticadoUseCase(ILoggedCliente loggedCliente,
-            IUnitOfWork unitOfWork, PasswordEncryptor passwordEncryptor, IGravarClienteRepository gravarClienteRepository)
+            IUnitOfWork unitOfWork, PasswordEncryptor passwordEncryptor,
+            IGravarClienteRepository gravarClienteRepository)
         {
             _loggedCliente = loggedCliente;
             _unitOfWork = unitOfWork;
@@ -27,26 +28,24 @@ namespace Banking.Application.UseCases.Cliente.AtualizarSenha.AtualizarSenhaClie
 
         public async Task<ResponseAtualizarClienteJson> Execute(RequestAtualizarSenhaClienteAutenticadoJson request)
         {
+            await Validator(request);
 
-          
-                await Validator(request);
+            var cliente = await _loggedCliente.GetClienteByToken();
 
-                var cliente = await _loggedCliente.GetClienteByToken();
+            SenhaValidation(request, cliente, _passwordEncryptor);
 
-                SenhaValidation(request, cliente, _passwordEncryptor);
+            cliente.Senha = _passwordEncryptor.Encript(request.novaSenha);
 
-                cliente.Senha = _passwordEncryptor.Encript(request.novaSenha);
+            _gravarClienteRepository.AtualizarSenhaCliente(cliente);
 
-                _gravarClienteRepository.AtualizarSenhaCliente(cliente);
+            await _unitOfWork.Commit();
 
-                await _unitOfWork.Commit();
-
-                return new ResponseAtualizarClienteJson()
-                {
-                    Mensagem = "Senha atualizada com sucesso",
-                    Sucesso = true,
-                    DataDeAtualizacao = DateTime.UtcNow 
-                };            
+            return new ResponseAtualizarClienteJson()
+            {
+                Mensagem = "Senha atualizada com sucesso",
+                Sucesso = true,
+                DataDeAtualizacao = DateTime.UtcNow
+            };
         }
 
         public async Task Validator(RequestAtualizarSenhaClienteAutenticadoJson request)
@@ -59,12 +58,14 @@ namespace Banking.Application.UseCases.Cliente.AtualizarSenha.AtualizarSenhaClie
                 throw new ErrorsOnValidateExceptions(result.Errors.Select(x => x.ErrorMessage).ToList());
         }
 
-        private static void SenhaValidation(RequestAtualizarSenhaClienteAutenticadoJson request, Domain.Entities.Cliente cliente, PasswordEncryptor _passwordEncryptor)
+        private static void SenhaValidation(RequestAtualizarSenhaClienteAutenticadoJson request,
+            Domain.Entities.Cliente cliente, PasswordEncryptor _passwordEncryptor)
         {
             if (!_passwordEncryptor.Verify(request.senhaAtual, cliente.Senha))
             {
                 throw new BusinessException(ResourceMessagesExceptions.SENHA_INCORRETA);
             }
+
             var novaSenhaEncriptada = _passwordEncryptor.Encript(request.novaSenha);
 
             if (novaSenhaEncriptada == cliente.Senha)

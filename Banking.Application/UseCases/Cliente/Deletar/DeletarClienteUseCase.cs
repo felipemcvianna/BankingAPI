@@ -50,7 +50,6 @@ public class DeletarClienteUseCase : IDeletarClienteUseCase
         {
             Mensagem = $"{cliente.Nome}, conta removida com sucesso",
             Sucesso = true,
-
         };
     }
 
@@ -67,11 +66,10 @@ public class DeletarClienteUseCase : IDeletarClienteUseCase
 
     public void VerifyPasswords(Domain.Entities.Cliente cliente, RequestDeletarClienteJson request)
     {
-
         if (!_passwordEncryptor.Verify(request.Senha, cliente.Senha))
             throw new BusinessException(ResourceMessagesExceptions.SENHA_INCORRETA);
 
-        if(request.Senha != request.confirmarSenha)
+        if (request.Senha != request.confirmarSenha)
             throw new BusinessException(ResourceMessagesExceptions.SENHAS_DEVEM_COINCIDIR);
     }
 }

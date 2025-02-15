@@ -47,7 +47,7 @@ public class RegistrarClienteUseCase : IRegistrarClienteUseCase
         cliente.Senha = _passwordEncryptor.Encript(request.Senha);
 
         var numeroConta = await _registrarContaUseCase.Execute(cliente.UserIdentifier);
-        cliente.NumeroConta = numeroConta.NumeroConta;       
+        cliente.NumeroConta = numeroConta.NumeroConta;
 
         await _gravarClienteRepository.Add(cliente);
         await _unitOfWork.Commit();

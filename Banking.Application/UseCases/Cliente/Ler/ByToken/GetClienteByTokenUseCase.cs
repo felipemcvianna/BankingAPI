@@ -37,13 +37,12 @@ namespace Banking.Application.UseCases.Cliente.Ler.ByToken
                 contaCliente = new Communication.Response.Conta.ResponseGetContaByTokenJson()
                 {
                     numeroConta = conta.NumeroConta,
-                    numeroBanco =  conta.NumeroBanco,
+                    numeroBanco = conta.NumeroBanco,
                     numeroAgencia = conta.NumeroAgencia,
                     dataCriacao = conta.DataCriacao,
                     Saldo = conta.Saldo,
                 }
             };
         }
-
     }
 }

@@ -12,7 +12,8 @@ namespace Banking.API.Controllers
         [HttpPost]
         [Route("Login")]
         [ProducesResponseType(typeof(ResponseLoginJson), StatusCodes.Status200OK)]
-        public async Task<IActionResult> Login([FromBody] RequestLoginJson request, [FromServices] ILoginUseCase useCase)
+        public async Task<IActionResult> Login([FromBody] RequestLoginJson request,
+            [FromServices] ILoginUseCase useCase)
         {
             var response = await useCase.Execute(request);
 

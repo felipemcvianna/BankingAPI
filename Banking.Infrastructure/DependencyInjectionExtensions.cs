@@ -59,6 +59,7 @@ public static class DependencyInjectionExtensions
 
         //SAQUE REPOSITORIES
         services.AddScoped<IGravarSaqueRepository, SaqueRepository>();
+        services.AddScoped<ILerSaqueRepository, SaqueRepository>();
 
         //TRANSFERENCIA REPOSITORIES
         services.AddScoped<IGravarTransferenciaRepository, TransferenciaRepository>();

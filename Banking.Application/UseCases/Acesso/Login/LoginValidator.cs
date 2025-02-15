@@ -13,10 +13,8 @@ namespace Banking.Application.UseCases.Acesso.Login
         public LoginValidator()
         {
             RuleFor(x => x.Email).NotEmpty().WithMessage("O CAMPO EMAIL DEVE SER PREENCHIDO");
-            When(x => !string.IsNullOrEmpty(x.Email), () =>
-            {
-                RuleFor(x => x.Email).EmailAddress().WithMessage("EMAIL INVÁLIDO");
-            });
+            When(x => !string.IsNullOrEmpty(x.Email),
+                () => { RuleFor(x => x.Email).EmailAddress().WithMessage("EMAIL INVÁLIDO"); });
             RuleFor(x => x.Senha.Length).GreaterThanOrEqualTo(6).WithMessage("A SENHA DEVE TER MAIS DE 6 CARACTERES");
         }
     }

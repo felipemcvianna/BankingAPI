@@ -5,7 +5,6 @@ namespace Banking.API.Token
 {
     public class HttpContextTokenValue : ITokenRequest
     {
-
         private readonly IHttpContextAccessor _httpcontextAccessor;
 
         public HttpContextTokenValue(IHttpContextAccessor _httpcontext) => _httpcontextAccessor = _httpcontext;

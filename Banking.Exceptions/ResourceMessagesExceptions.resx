@@ -168,4 +168,19 @@
   <data name="USUARIO_SEM_PERMISSAO" xml:space="preserve">
     <value>O usuário não tem permissão de acesso</value>
   </data>
+  <data name="VALOR_SAQUE_VAZIO" xml:space="preserve">
+    <value>Informe um valor de saque válido</value>
+  </data>
+  <data name="VALOR_SAQUE_INVALIDO" xml:space="preserve">
+    <value>O valor do saque deve ser maior que Zero</value>
+  </data>
+  <data name="NUMERO_AGENCIA_VAZIO" xml:space="preserve">
+    <value>Digite o número da agência</value>
+  </data>
+  <data name="NUMERO_CONTA_VAZIO" xml:space="preserve">
+    <value>Digite o número da conta</value>
+  </data>
+  <data name="NUMERO_BANCO_VAZIO" xml:space="preserve">
+    <value>Digite o número do banco</value>
+  </data>
 </root>
