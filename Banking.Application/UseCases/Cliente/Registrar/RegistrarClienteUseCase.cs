@@ -1,6 +1,6 @@
 using AutoMapper;
 using Banking.Application.Services.Encryption;
-using Banking.Application.UseCases.Conta;
+using Banking.Application.UseCases.Conta.Registrar;
 using Banking.Communication.Requests.Cliente;
 using Banking.Communication.Response.Cliente;
 using Banking.Domain.Repositories;

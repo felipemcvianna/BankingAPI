@@ -1,5 +1,4 @@
-﻿
-using System.IdentityModel.Tokens.Jwt;
+﻿using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using Banking.Domain.Seguranca.Tokens;
 using Banking.Exceptions.ExceptionBase;
@@ -19,7 +18,6 @@ namespace Banking.Infrastructure.Seguranca.Tokens.Validator
 
         public Guid ValidateAndGetUserIdentifier(string token)
         {
-
             var validationParameters = new TokenValidationParameters
             {
                 ValidateAudience = false,

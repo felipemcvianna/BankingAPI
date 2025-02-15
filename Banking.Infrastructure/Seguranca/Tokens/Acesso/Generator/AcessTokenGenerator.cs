@@ -27,7 +27,8 @@ namespace Banking.Infrastructure.Seguranca.Tokens.Acesso.Generator
             var tokenDescriptor = new SecurityTokenDescriptor()
             {
                 Expires = DateTime.UtcNow.AddMinutes(_expirationTimeMinutes),
-                SigningCredentials = new SigningCredentials(SecurityKey(_signingKey), SecurityAlgorithms.HmacSha256Signature),
+                SigningCredentials =
+                    new SigningCredentials(SecurityKey(_signingKey), SecurityAlgorithms.HmacSha256Signature),
                 Subject = new ClaimsIdentity(claims)
             };
 
@@ -37,6 +38,5 @@ namespace Banking.Infrastructure.Seguranca.Tokens.Acesso.Generator
 
             return tokenHandler.WriteToken(securityToken);
         }
-       
     }
 }

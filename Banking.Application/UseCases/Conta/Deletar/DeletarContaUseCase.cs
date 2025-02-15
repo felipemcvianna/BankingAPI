@@ -1,5 +1,4 @@
-﻿
-using Banking.Domain.Repositories.Conta;
+﻿using Banking.Domain.Repositories.Conta;
 using Banking.Exceptions.ExceptionBase;
 
 namespace Banking.Application.UseCases.Conta.Deletar
@@ -26,4 +25,3 @@ namespace Banking.Application.UseCases.Conta.Deletar
         }
     }
 }
-

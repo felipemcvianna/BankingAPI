@@ -10,9 +10,7 @@ public class GetClienteValidator : AbstractValidator<RequestGetCliente>
     {
         RuleFor(x => x.Email)
             .NotEmpty().WithMessage(ResourceMessagesExceptions.EMAIL_VAZIO);
-        When(x => !string.IsNullOrEmpty(x.Email), () =>
-        {
-            RuleFor(x => x.Email).EmailAddress().WithMessage(ResourceMessagesExceptions.EMAIL_INVALIDO);
-        });
+        When(x => !string.IsNullOrEmpty(x.Email),
+            () => { RuleFor(x => x.Email).EmailAddress().WithMessage(ResourceMessagesExceptions.EMAIL_INVALIDO); });
     }
 }

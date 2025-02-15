@@ -2,7 +2,7 @@
 using Banking.Domain.Repositories.Conta;
 using Banking.Exceptions.ExceptionBase;
 
-namespace Banking.Application.UseCases.Conta
+namespace Banking.Application.UseCases.Conta.Registrar
 {
     public class RegistrarContaUseCase : IRegistrarContaUseCase
     {
@@ -14,7 +14,6 @@ namespace Banking.Application.UseCases.Conta
         {
             _gravarRepository = gravarRepository;
             _lerContaRepository = lerContaRepository;
-
         }
 
         public async Task<ResponseRegistrarContaJson> Execute(Guid userIdentifier)
@@ -23,13 +22,11 @@ namespace Banking.Application.UseCases.Conta
             var numeroAgencia = ObterNumeroAgencia();
             var numeroConta = await GerarNumeroConta();
 
-            var conta = new Domain.Entities.Conta
+            var conta = new Domain.Entities.Conta(numeroAgencia, numeroBanco, numeroConta, userIdentifier)
             {
-                DataCriacao = DateTime.UtcNow,
                 NumeroAgencia = numeroAgencia,
                 NumeroBanco = numeroBanco,
                 NumeroConta = numeroConta,
-                Saldo = 0,
                 UserIdentifier = userIdentifier
             };
 

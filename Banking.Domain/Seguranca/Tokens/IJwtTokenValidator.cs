@@ -3,6 +3,5 @@
     public interface IJwtTokenValidator
     {
         public Guid ValidateAndGetUserIdentifier(string token);
-
     }
 }

@@ -44,8 +44,8 @@ namespace Banking.Application.UseCases.Acesso.Login
                     AcessToken = _acessTokenGenerator.GenerateToken(clienteLogin.UserIdentifier)
                 }
             };
-
         }
+
         private void Validator(RequestLoginJson request)
         {
             var loginValidator = new LoginValidator();

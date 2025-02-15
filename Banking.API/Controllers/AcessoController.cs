@@ -12,19 +12,20 @@ namespace Banking.API.Controllers
         [HttpPost]
         [Route("Login")]
         [ProducesResponseType(typeof(ResponseLoginJson), StatusCodes.Status200OK)]
-        public async Task<IActionResult> Login([FromBody] RequestLoginJson request, [FromServices] ILoginUseCase _useCase)
+        public async Task<IActionResult> Login([FromBody] RequestLoginJson request,
+            [FromServices] ILoginUseCase useCase)
         {
-            var response = await _useCase.Execute(request);
+            var response = await useCase.Execute(request);
 
             return Ok(response);
         }
-
-        [HttpPost]
-        [Route("Logout")]
-        [ProducesResponseType(typeof(ResponseRegistrarClienteJson), StatusCodes.Status201Created)]
-        public async Task<IActionResult> Logout([FromBody] RequestLoginJson request)
-        {
-            return Ok();
-        }
+        //
+        // [HttpPost]
+        // [Route("Logout")]
+        // [ProducesResponseType(typeof(ResponseRegistrarClienteJson), StatusCodes.Status201Created)]
+        // public async Task<IActionResult> Logout([FromBody] RequestLoginJson request)
+        // {
+        //     return Ok();
+        // }
     }
 }

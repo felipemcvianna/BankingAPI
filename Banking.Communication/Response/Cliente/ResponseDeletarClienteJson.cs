@@ -2,6 +2,6 @@ namespace Banking.Communication.Response.Cliente;
 
 public class ResponseDeletarClienteJson
 {
-    public string Nome { get; set; }
-    public string Email { get; set; }
+    public string Mensagem { get; set; } = default!;
+    public bool Sucesso { get; set; }
 }

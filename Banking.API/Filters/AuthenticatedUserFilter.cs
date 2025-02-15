@@ -57,7 +57,9 @@ namespace Banking.API.Filters
             }
             catch
             {
-                context.Result = new UnauthorizedObjectResult(new ResponseTokenErrorJson(ResourceMessagesExceptions.USUARIO_SEM_PERMISSAO));
+                context.Result =
+                    new UnauthorizedObjectResult(
+                        new ResponseTokenErrorJson(ResourceMessagesExceptions.USUARIO_SEM_PERMISSAO));
             }
         }
     }

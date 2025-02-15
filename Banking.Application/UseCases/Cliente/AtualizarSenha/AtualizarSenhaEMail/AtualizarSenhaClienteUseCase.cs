@@ -78,7 +78,7 @@ public class AtualizarSenhaClienteUseCase : IAtualizarSenhaClienteUseCase
 
         if (request.NovaSenha != request.ConfirmarNovaSenha)
         {
-            throw new BusinessException(ResourceMessagesExceptions.SENHAS_DEVER_COINCIDIR);
+            throw new BusinessException(ResourceMessagesExceptions.SENHAS_DEVEM_COINCIDIR);
         }
     }
 }
