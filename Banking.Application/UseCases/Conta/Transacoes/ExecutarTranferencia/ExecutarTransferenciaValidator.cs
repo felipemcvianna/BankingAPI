@@ -2,16 +2,15 @@ using Banking.Communication.Requests.Conta.Transacao;
 using Banking.Exceptions;
 using FluentValidation;
 
-namespace Banking.Application.UseCases.Conta.Transacoes.Sacar.ExecutarSaque;
+namespace Banking.Application.UseCases.Conta.Transacoes.ExecutarTranferencia;
 
-public class ExecutarSaqueValidator : CommomContaValidator<RequestSaqueJson>
+public class ExecutarTransferenciaValidator : CommomContaValidator<RequestExecutarTransacaoJson>
 {
-    public ExecutarSaqueValidator()
+    public ExecutarTransferenciaValidator()
     {
-        RuleFor(x => x.ValorTransacao)
+        RuleFor(x => x.valorTransacao)
             .NotEmpty().WithMessage(ResourceMessagesExceptions.VALOR_TRANSFERENCIA_VAZIO)
             .Must(valor => double.TryParse(valor, out var resultado) && resultado > 0)
             .WithMessage(ResourceMessagesExceptions.VALOR_TRANSFERENCIA_INVALIDO);
-        RuleFor(x => x.Senha.Length).GreaterThanOrEqualTo(6).WithMessage(ResourceMessagesExceptions.SENHA_VAZIA);
     }
 }

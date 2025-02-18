@@ -31,7 +31,7 @@ namespace Banking.Application.Services.Transacao
             var conta = await ObterConta(request.numeroConta, request.numeroBanco,
                 request.numeroAgencia);
 
-            conta.RemoverSaldo(request.ValorTransacao);
+            conta.RemoverSaldo(double.Parse(request.ValorTransacao));
 
             return conta;
         }

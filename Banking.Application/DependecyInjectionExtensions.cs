@@ -10,6 +10,7 @@ using Banking.Application.UseCases.Cliente.Ler.ByToken;
 using Banking.Application.UseCases.Cliente.Registrar;
 using Banking.Application.UseCases.Conta.Deletar;
 using Banking.Application.UseCases.Conta.Registrar;
+using Banking.Application.UseCases.Conta.Transacoes.Depositar;
 using Banking.Application.UseCases.Conta.Transacoes.ExecutarTranferencia;
 using Banking.Application.UseCases.Conta.Transacoes.Sacar;
 using Banking.Application.UseCases.Conta.Transacoes.Sacar.ExecutarSaque;

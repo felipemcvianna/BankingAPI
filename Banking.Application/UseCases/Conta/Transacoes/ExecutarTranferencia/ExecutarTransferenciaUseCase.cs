@@ -36,8 +36,9 @@ namespace Banking.Application.UseCases.Conta.Transacoes.ExecutarTranferencia
 
         public async Task<ResponseExecutarTransferenciaJson> Execute(RequestExecutarTransacaoJson request)
         {
-            if (!double.TryParse(request.valorTransacao, out double valor) || valor <= 0)
-                throw new BusinessException("O valor da transação é inválido.");
+            await TransferenciaValidator(request);
+
+            double.TryParse(request.valorTransacao, out double valor);
 
             var clienteAutenticado = await _loggedCliente.GetClienteByToken();
 
@@ -83,6 +84,18 @@ namespace Banking.Application.UseCases.Conta.Transacoes.ExecutarTranferencia
             await _unitOfWork.Commit();
 
             return _mapper.Map<ResponseExecutarTransferenciaJson>(transferencia);
+        }
+
+        private async Task TransferenciaValidator(RequestExecutarTransacaoJson request)
+        {
+            var validator = new ExecutarTransferenciaValidator();
+
+            var result = await validator.ValidateAsync(request);
+
+            if (!result.IsValid)
+            {
+                throw new ErrorsOnValidateExceptions(result.Errors.Select(x => x.ErrorMessage).ToList());
+            }
         }
     }
 }
