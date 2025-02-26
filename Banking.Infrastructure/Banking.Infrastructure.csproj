@@ -18,6 +18,7 @@
     </ItemGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Banking.Communication\Banking.Communication.csproj" />
       <ProjectReference Include="..\Banking.Domain\Banking.Domain.csproj" />
       <ProjectReference Include="..\Banking.Exceptions\Banking.Exceptions.csproj" />
     </ItemGroup>

@@ -1,6 +1,10 @@
 using Banking.Domain.Repositories.Cliente;
 using Microsoft.EntityFrameworkCore;
 using System;
+using Banking.Communication.Response.Conta.Transacao;
+using Banking.Domain.Entities;
+using Banking.Exceptions;
+using Banking.Exceptions.ExceptionBase;
 
 namespace Banking.Infrastructure.Data.Repositories.Cliente;
 
@@ -50,4 +54,22 @@ public class ClienteRepository : IGravarClienteRepository, ILerCLienteRepository
 
     public async Task<Domain.Entities.Cliente?> GetClienteByNumeroConta(int numeroConta) =>
         await _context.Clientes.FirstOrDefaultAsync(x => x.NumeroConta == numeroConta);
+
+    public async Task<ContaAndCliente> GetClienteAndConta(int numeroConta)
+    {
+        var clienteConta = await _context.Clientes.Include(c => c.Conta)
+            .FirstOrDefaultAsync(x => x.NumeroConta == numeroConta);
+
+        if (clienteConta == null)
+        {
+            throw new BusinessException(ResourceMessagesExceptions.CLIENTE_NAO_ENCONTRADO);
+        }
+
+        return new ContaAndCliente()
+        {
+            Nome = clienteConta.Nome,
+            CPF = clienteConta.CPF,
+            Conta = clienteConta.Conta
+        };
+    }
 }

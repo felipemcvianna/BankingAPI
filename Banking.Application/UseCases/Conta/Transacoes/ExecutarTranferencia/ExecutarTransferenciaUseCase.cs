@@ -5,6 +5,7 @@ using Banking.Communication.Requests.Conta.Transacao;
 using Banking.Communication.Response.Conta.Transacao;
 using Banking.Domain.Entities;
 using Banking.Domain.Repositories;
+using Banking.Domain.Repositories.Cliente;
 using Banking.Domain.Repositories.Transacoes.Transferencia;
 using Banking.Domain.Seguranca.Tokens;
 using Banking.Domain.Seguranca.Transacoes;
@@ -21,10 +22,11 @@ namespace Banking.Application.UseCases.Conta.Transacoes.ExecutarTranferencia
         private readonly IGravarTransferenciaRepository _gravarTransferenciaRepository;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
+        private readonly ILerCLienteRepository _clienteRepository;
 
         public ExecutarTransferenciaUseCase(ILoggedCliente loggedCliente, ITransacaoService transacaoService,
             ISegurancaTransacao segurancaTransacao, IGravarTransferenciaRepository gravarTransferenciaRepository,
-            IUnitOfWork unitOfWork, IMapper mapper)
+            IUnitOfWork unitOfWork, IMapper mapper, ILerCLienteRepository clienteRepository)
         {
             _loggedCliente = loggedCliente;
             _transacaoService = transacaoService;
@@ -32,28 +34,25 @@ namespace Banking.Application.UseCases.Conta.Transacoes.ExecutarTranferencia
             _gravarTransferenciaRepository = gravarTransferenciaRepository;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _clienteRepository = clienteRepository;
         }
 
         public async Task<ResponseExecutarTransferenciaJson> Execute(RequestExecutarTransacaoJson request)
         {
             await TransferenciaValidator(request);
 
-            double.TryParse(request.valorTransacao, out double valor);
+            var valor = double.Parse(request.valorTransacao);
 
-            var clienteAutenticado = await _loggedCliente.GetClienteByToken();
-
-            if (clienteAutenticado == null)
-                throw new BusinessException(ResourceMessagesExceptions.CLIENTE_NAO_ENCONTRADO);
+            var clienteAutenticado = await _loggedCliente.GetClienteByToken() ??
+                                     throw new BusinessException(ResourceMessagesExceptions.CLIENTE_NAO_ENCONTRADO);
 
             var contaOrigem =
                 await _transacaoService.ObterConta(clienteAutenticado.UserIdentifier, clienteAutenticado.NumeroConta);
 
 
-            var clienteDestino = await _transacaoService.ObterClienteByNumeroConta(request.numeroConta);
-            var contaDestino =
-                await _transacaoService.ObterConta(request.numeroConta, request.numeroBanco, request.numeroAgencia);
+            var contaClienteDestino = await _clienteRepository.GetClienteAndConta(request.numeroConta);
 
-            await _transacaoService.ExecutarTransferencia(contaOrigem, contaDestino, valor);
+            await _transacaoService.ExecutarTransferencia(contaOrigem, contaClienteDestino.Conta, valor);
 
             var numeroTransacao = _segurancaTransacao.GerarNumeroTransacao();
 
@@ -67,18 +66,18 @@ namespace Banking.Application.UseCases.Conta.Transacoes.ExecutarTranferencia
                 },
                 ContaDestino = new AuxiliarTransacao()
                 {
-                    numeroAgencia = contaDestino.NumeroAgencia,
-                    numeroBanco = contaDestino.NumeroBanco,
-                    numeroConta = contaDestino.NumeroConta,
+                    numeroAgencia = contaClienteDestino.Conta.NumeroAgencia,
+                    numeroBanco = contaClienteDestino.Conta.NumeroBanco,
+                    numeroConta = contaClienteDestino.Conta.NumeroConta,
                 },
-                NomeClienteDestino = clienteDestino.Nome,
+                NomeClienteDestino = contaClienteDestino.Nome,
                 NomeClienteOrigem = clienteAutenticado.Nome,
                 ValorTransacao = valor,
                 NumeroTransacao = numeroTransacao,
-                CpfClienteDestino = clienteDestino.CPF,
+                CpfClienteDestino = contaClienteDestino.CPF,
                 CpfClienteOrigem = clienteAutenticado.CPF
             };
-            contaDestino.AdicionarTransferencia(transferencia);
+            contaClienteDestino.Conta.AdicionarTransferencia(transferencia);
 
             await _gravarTransferenciaRepository.Add(transferencia);
             await _unitOfWork.Commit();
