@@ -9,5 +9,6 @@ namespace Banking.Communication.Response.Conta
     public class ResponseRegistrarContaJson
     {
         public int NumeroConta { get; set; }
+        public Domain.Entities.Conta Conta { get; set; }
     }
 }
