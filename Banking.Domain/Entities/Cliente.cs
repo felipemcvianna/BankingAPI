@@ -9,4 +9,7 @@ public class Cliente
     public string CPF { get; set; }
     public string Senha { get; set; }
     public Guid UserIdentifier { get; set; }
+
+    public Conta Conta { get; set; }
+    public int ContaId { get; set; }
 }

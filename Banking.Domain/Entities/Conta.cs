@@ -7,6 +7,9 @@ public class Conta
     public int NumeroBanco { get; set; }
     public int NumeroConta { get; set; }
 
+    public Cliente Cliente { get; set; }
+    public int ClienteId { get; set; }
+
     public double Saldo
     {
         get => _saldo;
