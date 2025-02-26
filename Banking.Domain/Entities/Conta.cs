@@ -7,6 +7,9 @@ public class Conta
     public int NumeroBanco { get; set; }
     public int NumeroConta { get; set; }
 
+    public Cliente Cliente { get; set; }
+    public int ClienteId { get; set; }
+
     public double Saldo
     {
         get => _saldo;
@@ -36,17 +39,11 @@ public class Conta
 
     public void AdicionarSaldo(double valor)
     {
-        if (valor < 0)
-            throw new InvalidOperationException("O valor a ser adicionado n�o pode ser negativo.");
-
         Saldo += valor;
     }
 
     public void RemoverSaldo(double valor)
     {
-        if (valor <= 0)
-            throw new InvalidOperationException("O valor a ser removido deve ser positivo.");
-
         if (valor > _saldo)
             throw new InvalidOperationException("Saldo insuficiente.");
 

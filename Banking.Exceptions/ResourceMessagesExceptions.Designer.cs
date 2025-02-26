@@ -240,20 +240,20 @@ namespace Banking.Exceptions {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to O valor do saque deve ser maior que Zero.
+        ///   Looks up a localized string similar to O valor deve ser maior que Zero.
         /// </summary>
-        public static string VALOR_SAQUE_INVALIDO {
+        public static string VALOR_TRANSFERENCIA_INVALIDO {
             get {
-                return ResourceManager.GetString("VALOR_SAQUE_INVALIDO", resourceCulture);
+                return ResourceManager.GetString("VALOR_TRANSFERENCIA_INVALIDO", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to Informe um valor de saque válido.
+        ///   Looks up a localized string similar to Informe um valor válido.
         /// </summary>
-        public static string VALOR_SAQUE_VAZIO {
+        public static string VALOR_TRANSFERENCIA_VAZIO {
             get {
-                return ResourceManager.GetString("VALOR_SAQUE_VAZIO", resourceCulture);
+                return ResourceManager.GetString("VALOR_TRANSFERENCIA_VAZIO", resourceCulture);
             }
         }
     }

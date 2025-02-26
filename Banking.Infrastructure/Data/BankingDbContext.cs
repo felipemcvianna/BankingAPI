@@ -29,5 +29,11 @@ public class BankingDbContext : DbContext
 
         modelBuilder.Entity<Saque>()
             .OwnsOne(t => t.ContaSaque);
+        
+        modelBuilder.Entity<Cliente>()
+            .HasOne(c => c.Conta)
+            .WithOne(c => c.Cliente)
+            .HasForeignKey<Cliente>(c => c.ContaId); 
+
     }
 }

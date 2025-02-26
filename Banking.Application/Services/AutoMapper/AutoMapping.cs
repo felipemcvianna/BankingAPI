@@ -13,6 +13,7 @@ public class AutoMapping : Profile
         RegisterRequestToDomain();
         RegisterDomainToRequest();
         TransferenciaDomainToRequest();
+        DepositoDomainToRequest();
     }
 
     private void RegisterRequestToDomain()
@@ -30,5 +31,16 @@ public class AutoMapping : Profile
     private void TransferenciaDomainToRequest()
     {
         CreateMap<Transferencia, ResponseExecutarTransferenciaJson>();
+    }
+
+    private void DepositoDomainToRequest()
+    {
+        CreateMap<Deposito, ResponseDepositarJson>()
+            .ForMember(response => response.numeroBanco, opt
+                => opt.MapFrom(deposito => deposito.ContaDeposito.numeroBanco))
+            .ForMember(response => response.numeroAgencia, opt
+                => opt.MapFrom(deposito => deposito.ContaDeposito.numeroAgencia))
+            .ForMember(response => response.numeroConta, opt
+                => opt.MapFrom(deposito => deposito.ContaDeposito.numeroConta));
     }
 }

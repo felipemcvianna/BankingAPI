@@ -38,6 +38,8 @@ namespace Banking.Application.UseCases.Conta.Transacoes.Sacar.ExecutarSaque
         {
             await SaqueValidator(request);
 
+            double.TryParse(request.ValorTransacao, out var valorSaque);
+
             var cliente = await _transacaoService.ObterClienteByNumeroConta(request.numeroConta);
 
             if (!_encryptor.Verify(request.Senha, cliente.Senha))
@@ -48,7 +50,7 @@ namespace Banking.Application.UseCases.Conta.Transacoes.Sacar.ExecutarSaque
             var saque = new Saque()
             {
                 NumeroSaque = _segurancaTransacao.GerarNumeroTransacao(),
-                ValorSaque = request.ValorTransacao,
+                ValorSaque = valorSaque,
                 ContaSaque = new AuxiliarTransacao()
                 {
                     numeroAgencia = contaSaque.NumeroAgencia,
@@ -66,7 +68,7 @@ namespace Banking.Application.UseCases.Conta.Transacoes.Sacar.ExecutarSaque
             return new ResponseSaqueJson()
             {
                 NumeroTransacao = saque.NumeroSaque,
-                ValorSaque = request.ValorTransacao,
+                ValorSaque = valorSaque,
                 SaldoAtual = contaSaque.Saldo
             };
         }
