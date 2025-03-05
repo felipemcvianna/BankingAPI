@@ -27,7 +27,7 @@ public class RegistrarClienteUseCase : IRegistrarClienteUseCase
         IGravarClienteRepository gravarClienteRepository,
         ILerCLienteRepository lerCLienteRepository, IUnitOfWork unitOfWork,
         IRegistrarContaUseCase contaUseCase, PasswordEncryptor passwordEncryptor,
-        IAcessTokenGenerator AcessTokenGenerator)
+        IAcessTokenGenerator acessTokenGenerator)
     {
         _mapper = mapper;
         _gravarClienteRepository = gravarClienteRepository;
@@ -35,7 +35,7 @@ public class RegistrarClienteUseCase : IRegistrarClienteUseCase
         _unitOfWork = unitOfWork;
         _registrarContaUseCase = contaUseCase;
         _passwordEncryptor = passwordEncryptor;
-        _acessTokenGenerator = AcessTokenGenerator;
+        _acessTokenGenerator = acessTokenGenerator;
     }
 
 
@@ -47,7 +47,7 @@ public class RegistrarClienteUseCase : IRegistrarClienteUseCase
         cliente.Senha = _passwordEncryptor.Encript(request.Senha);
 
         var responseRegistrarConta = await _registrarContaUseCase.Execute(cliente.UserIdentifier);
-        cliente.NumeroConta = responseRegistrarConta.NumeroConta;
+        cliente.NumeroConta = responseRegistrarConta.Conta.NumeroConta;
         cliente.Conta = responseRegistrarConta.Conta;
 
         await _gravarClienteRepository.Add(cliente);
