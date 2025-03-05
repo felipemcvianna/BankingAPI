@@ -33,5 +33,21 @@ namespace Banking.Infrastructure.Seguranca.Tokens.GetCliente
             return await _dbContext.Clientes.AsNoTracking()
                 .FirstOrDefaultAsync(x => x.UserIdentifier == securityIdentifier);
         }
+
+        public async Task<Cliente?> GetClienteAndContaByToken()
+        {
+            var token = _tokenRequest.Value();
+
+            var tokenHandler = new JwtSecurityTokenHandler();
+
+            var jwtSecurityToken = tokenHandler.ReadJwtToken(token);
+
+            var identifier = jwtSecurityToken.Claims.First(c => c.Type == ClaimTypes.Sid).Value;
+
+            var securityIdentifier = Guid.Parse(identifier);
+
+            return await _dbContext.Clientes.Include(e => e.Conta)
+                .FirstOrDefaultAsync(x => x.UserIdentifier == securityIdentifier);
+        }
     }
 }

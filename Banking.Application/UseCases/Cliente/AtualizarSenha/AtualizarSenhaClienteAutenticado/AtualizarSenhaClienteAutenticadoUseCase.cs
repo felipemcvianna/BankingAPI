@@ -32,10 +32,9 @@ namespace Banking.Application.UseCases.Cliente.AtualizarSenha.AtualizarSenhaClie
 
             var cliente = await _loggedCliente.GetClienteByToken();
 
-            if (cliente == null)
-                throw new BusinessException(ResourceMessagesExceptions.CLIENTE_NAO_ENCONTRADO);
+            SenhaValidation(request, cliente, _passwordEncryptor);
 
-            cliente.Senha = SenhaValidation(request, cliente);
+            cliente.Senha = _passwordEncryptor.Encript(request.novaSenha);
 
             _gravarClienteRepository.AtualizarSenhaCliente(cliente);
 
@@ -49,7 +48,7 @@ namespace Banking.Application.UseCases.Cliente.AtualizarSenha.AtualizarSenhaClie
             };
         }
 
-        private async Task Validator(RequestAtualizarSenhaClienteAutenticadoJson request)
+        public async Task Validator(RequestAtualizarSenhaClienteAutenticadoJson request)
         {
             var validator = new AtualizarSenhaClienteAutenticadoValidator();
 
@@ -59,8 +58,8 @@ namespace Banking.Application.UseCases.Cliente.AtualizarSenha.AtualizarSenhaClie
                 throw new ErrorsOnValidateExceptions(result.Errors.Select(x => x.ErrorMessage).ToList());
         }
 
-        private string SenhaValidation(RequestAtualizarSenhaClienteAutenticadoJson request,
-            Domain.Entities.Cliente cliente)
+        private static void SenhaValidation(RequestAtualizarSenhaClienteAutenticadoJson request,
+            Domain.Entities.Cliente cliente, PasswordEncryptor _passwordEncryptor)
         {
             if (!_passwordEncryptor.Verify(request.senhaAtual, cliente.Senha))
             {
@@ -78,8 +77,6 @@ namespace Banking.Application.UseCases.Cliente.AtualizarSenha.AtualizarSenhaClie
             {
                 throw new BusinessException(ResourceMessagesExceptions.SENHAS_DEVEM_COINCIDIR);
             }
-
-            return novaSenhaEncriptada;
         }
     }
 }
