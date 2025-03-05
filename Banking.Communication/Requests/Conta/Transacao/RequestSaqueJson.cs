@@ -4,7 +4,7 @@ namespace Banking.Communication.Requests.Conta.Transacao
 {
     public class RequestSaqueJson : AuxiliarTransacao
     {
-        public string ValorTransacao { get; set; }
-        public string Senha { get; set; }
+        public string ValorTransacao { get; set; } = string.Empty;
+        public string Senha { get; set; }= string.Empty;
     }
 }

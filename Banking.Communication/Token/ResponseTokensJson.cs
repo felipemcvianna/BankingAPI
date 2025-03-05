@@ -2,6 +2,6 @@
 {
     public class ResponseTokensJson
     {
-        public string AcessToken { get; set; }
+        public string AcessToken { get; set; } = string.Empty;
     }
 }

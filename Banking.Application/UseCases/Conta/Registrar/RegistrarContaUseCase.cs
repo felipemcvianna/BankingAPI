@@ -36,7 +36,7 @@ namespace Banking.Application.UseCases.Conta.Registrar
 
             return new ResponseRegistrarContaJson()
             {
-                NumeroConta = conta.NumeroConta
+                Conta = conta
             };
         }
 

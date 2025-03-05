@@ -8,7 +8,7 @@ public class RegistrarClienteValidator : AbstractValidator<RequestRegistrarClien
 {
     public RegistrarClienteValidator()
     {
-        RuleFor(x => x.Nome.Length).NotEmpty().WithMessage(ResourceMessagesExceptions.NOME_VAZIO);
+        RuleFor(x => x.Nome).NotEmpty().WithMessage(ResourceMessagesExceptions.NOME_VAZIO);
         RuleFor(x => x.CPF.Length).GreaterThanOrEqualTo(11).WithMessage(ResourceMessagesExceptions.CPF_INVALIDO);
         RuleFor(x => x.Email).NotEmpty().WithMessage(ResourceMessagesExceptions.EMAIL_VAZIO);
         When(x => !string.IsNullOrEmpty(x.Email),
