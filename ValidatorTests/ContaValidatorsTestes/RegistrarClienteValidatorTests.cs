@@ -3,6 +3,7 @@ using Banking.Exceptions;
 using CommomTestsUtilities;
 using FluentValidation;
 using Shouldly;
+using Xunit.Sdk;
 
 namespace ValidatorsTests.ContaValidatorsTestes;
 
@@ -92,5 +93,32 @@ public class RegistrarClienteValidatorTests
             e.PropertyName == "Nome" &&
             e.ErrorMessage == ResourceMessagesExceptions.NOME_VAZIO
         );
+    }
+
+    [Fact]
+    public async Task RegistrarCliente_SenhaVazia_DeveRetornarErrorDeValidacao()
+    {
+        var validator = new RegistrarClienteValidator();
+        var request = RegistrarClienteBuilder.Build();
+        request.Senha = string.Empty;
+
+        var result = await validator.ValidateAsync(request);
+        result.IsValid.ShouldBeFalse();
+        result.Errors.Count.ShouldBe(1);
+        result.Errors.ShouldContain(e =>
+            e.PropertyName == "Senha.Length" && e.ErrorMessage == ResourceMessagesExceptions.SENHA_VAZIA);
+    }
+
+    [Fact]
+    public async Task RegistrarCliente_SenhaInvalida_DeveRetornarErrorDeValidacao()
+    {
+        var validator = new RegistrarClienteValidator();
+        var request = RegistrarClienteBuilder.Build(1);
+
+        var result = await validator.ValidateAsync(request);
+        result.IsValid.ShouldBeFalse();
+        result.Errors.Count.ShouldBe(1);
+        result.Errors.ShouldContain(e =>
+            e.PropertyName == "Senha.Length" && e.ErrorMessage == ResourceMessagesExceptions.SENHA_VAZIA);
     }
 }

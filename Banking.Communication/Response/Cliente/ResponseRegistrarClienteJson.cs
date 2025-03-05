@@ -4,6 +4,6 @@ namespace Banking.Communication.Response.Cliente;
 
 public class ResponseRegistrarClienteJson
 {
-    public string Nome { get; set; }
-    public ResponseTokensJson Tokens { get; set; }
+    public string Nome { get; set; } = string.Empty;
+    public ResponseTokensJson Tokens { get; set; } = null!;
 }
