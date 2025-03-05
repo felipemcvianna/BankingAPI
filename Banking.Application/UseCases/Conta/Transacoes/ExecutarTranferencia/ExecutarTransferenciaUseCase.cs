@@ -43,16 +43,15 @@ namespace Banking.Application.UseCases.Conta.Transacoes.ExecutarTranferencia
 
             var valor = double.Parse(request.valorTransacao);
 
-            var clienteAutenticado = await _loggedCliente.GetClienteByToken() ??
+            var clienteAutenticado = await _loggedCliente.GetClienteAndContaByToken() ??
                                      throw new BusinessException(ResourceMessagesExceptions.CLIENTE_NAO_ENCONTRADO);
 
-            var contaOrigem =
-                await _transacaoService.ObterConta(clienteAutenticado.UserIdentifier, clienteAutenticado.NumeroConta);
+            var contaClienteDestino = await _clienteRepository.GetClienteByNumeroConta(request.numeroConta);
 
+            if (contaClienteDestino == null)
+                throw new BusinessException(ResourceMessagesExceptions.CLIENTE_NAO_ENCONTRADO);
 
-            var contaClienteDestino = await _clienteRepository.GetClienteAndConta(request.numeroConta);
-
-            await _transacaoService.ExecutarTransferencia(contaOrigem, contaClienteDestino.Conta, valor);
+            await _transacaoService.ExecutarTransferencia(clienteAutenticado.Conta, contaClienteDestino.Conta, valor);
 
             var numeroTransacao = _segurancaTransacao.GerarNumeroTransacao();
 
@@ -60,9 +59,9 @@ namespace Banking.Application.UseCases.Conta.Transacoes.ExecutarTranferencia
             {
                 ContaOrigem = new AuxiliarTransacao()
                 {
-                    numeroAgencia = contaOrigem.NumeroAgencia,
-                    numeroBanco = contaOrigem.NumeroBanco,
-                    numeroConta = contaOrigem.NumeroConta,
+                    numeroAgencia = clienteAutenticado.Conta.NumeroAgencia,
+                    numeroBanco = clienteAutenticado.Conta.NumeroBanco,
+                    numeroConta = clienteAutenticado.Conta.NumeroConta,
                 },
                 ContaDestino = new AuxiliarTransacao()
                 {
