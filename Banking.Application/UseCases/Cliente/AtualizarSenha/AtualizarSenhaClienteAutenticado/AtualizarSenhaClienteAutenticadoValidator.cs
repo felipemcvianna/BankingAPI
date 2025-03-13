@@ -14,12 +14,19 @@ namespace Banking.Application.UseCases.Cliente.AtualizarSenha.AtualizarSenhaClie
     {
         public AtualizarSenhaClienteAutenticadoValidator()
         {
-            RuleFor(x => x.senhaAtual.Length).GreaterThanOrEqualTo(6)
-                .WithMessage(ResourceMessagesExceptions.SENHA_VAZIA);
-            RuleFor(x => x.novaSenha.Length).GreaterThanOrEqualTo(6)
-                .WithMessage(ResourceMessagesExceptions.SENHA_VAZIA);
-            RuleFor(x => x.confirmarSenha.Length).GreaterThanOrEqualTo(6)
-                .WithMessage(ResourceMessagesExceptions.SENHA_VAZIA);
+            RuleFor(x => x.senhaAtual)
+                .NotEmpty().WithMessage(ResourceMessagesExceptions.SENHA_VAZIA)
+                .MinimumLength(6).WithMessage(ResourceMessagesExceptions.SENHA_VAZIA);
+
+            RuleFor(x => x.novaSenha)
+                .NotEmpty().WithMessage(ResourceMessagesExceptions.SENHA_VAZIA)
+                .MinimumLength(6).WithMessage(ResourceMessagesExceptions.SENHA_VAZIA)
+                .NotEqual(x => x.senhaAtual).WithMessage(ResourceMessagesExceptions.SENHA_IGUAL);
+
+            RuleFor(x => x.confirmarSenha)
+                .NotEmpty().WithMessage(ResourceMessagesExceptions.SENHA_VAZIA)
+                .MinimumLength(6).WithMessage(ResourceMessagesExceptions.SENHA_VAZIA)
+                .Equal(x => x.novaSenha).WithMessage(ResourceMessagesExceptions.SENHAS_DEVEM_COINCIDIR);
         }
     }
 }

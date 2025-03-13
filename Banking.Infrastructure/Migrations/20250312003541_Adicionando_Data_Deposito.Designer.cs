@@ -3,6 +3,7 @@ using System;
 using Banking.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Banking.Infrastructure.Migrations
 {
     [DbContext(typeof(BankingDbContext))]
-    partial class BankingDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250312003541_Adicionando_Data_Deposito")]
+    partial class Adicionando_Data_Deposito
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -105,17 +108,17 @@ namespace Banking.Infrastructure.Migrations
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<int>("Id"));
 
-                    b.Property<int?>("ContaId")
-                        .HasColumnType("integer");
-
-                    b.Property<string>("CpfCliente")
+                    b.Property<string>("CPFCliente")
                         .IsRequired()
                         .HasColumnType("text");
+
+                    b.Property<int?>("ContaId")
+                        .HasColumnType("integer");
 
                     b.Property<DateTime>("DataDeposito")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("NomeCliente")
+                    b.Property<string>("Nome")
                         .IsRequired()
                         .HasColumnType("text");
 

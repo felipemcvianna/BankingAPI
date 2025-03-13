@@ -2,7 +2,7 @@ using Banking.Communication.Requests.Conta.Transacao;
 using Banking.Exceptions;
 using FluentValidation;
 
-namespace Banking.Application.UseCases.Conta.Transacoes.Depositar;
+namespace Banking.Application.UseCases.Conta.Transacoes.Deposito.Depositar;
 
 public class DepositarValidator : CommomContaValidator<RequestExecutarTransacaoJson>
 {

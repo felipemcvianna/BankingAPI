@@ -1,14 +1,16 @@
 ﻿using Banking.API.Attributes;
 using Banking.Application.UseCases.Cliente.Deletar;
-using Banking.Application.UseCases.Conta.Transacoes.Sacar;
+using Banking.Application.UseCases.Conta.Transacoes.Deposito.Depositar;
+using Banking.Application.UseCases.Conta.Transacoes.Deposito.GetAllDepositos;
+using Banking.Application.UseCases.Conta.Transacoes.Deposito.GetDepositoByPeriodo;
 using Banking.Application.UseCases.Conta.Transacoes.Sacar.ExecutarSaque;
 using Banking.Application.UseCases.Conta.Transacoes.Sacar.LerSaque.GetAllSaques;
-using Banking.Application.UseCases.Transacao.Depositar;
 using Banking.Application.UseCases.Transacao.ExecutarTranferencia;
 using Banking.Communication.Requests.Cliente;
 using Banking.Communication.Requests.Conta.Transacao;
 using Banking.Communication.Response.Cliente;
 using Banking.Communication.Response.Conta.Transacao;
+using Banking.Exceptions.ExceptionBase;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Banking.API.Controllers
@@ -64,11 +66,32 @@ namespace Banking.API.Controllers
         }
 
         [HttpGet]
-        [Route("GetAllSaque")]
+        [Route("GetAllSaques")]
         [AuthenticatedUser]
         public async Task<IActionResult> GetAllSaques([FromServices] IGetAllSaquesUseCase useCase)
         {
             var result = await useCase.Execute();
+
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("GetAllDepositos")]
+        [AuthenticatedUser]
+        public async Task<IActionResult> GetAllDepositos([FromServices] IGetAllDepositosUseCase useCase)
+        {
+            var result = await useCase.Execute();
+
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("GetDepositoByPeriodo")]
+        [AuthenticatedUser]
+        public async Task<IActionResult> GetDepositoByPeriodo([FromServices] IGetDepositoByPeriodoUseCase useCase,
+            [FromQuery] RequestGetDepositoByPeriodo request)
+        {
+            var result = await useCase.Execute(request);
 
             return Ok(result);
         }

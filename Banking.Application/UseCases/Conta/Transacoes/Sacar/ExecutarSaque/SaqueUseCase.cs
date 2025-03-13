@@ -4,6 +4,7 @@ using Banking.Communication.Requests.Conta.Transacao;
 using Banking.Communication.Response.Conta.Transacao;
 using Banking.Domain.Entities;
 using Banking.Domain.Repositories;
+using Banking.Domain.Repositories.Cliente;
 using Banking.Domain.Repositories.Conta;
 using Banking.Domain.Repositories.Transacoes.Saque;
 using Banking.Domain.Seguranca.Transacoes;
@@ -20,11 +21,12 @@ namespace Banking.Application.UseCases.Conta.Transacoes.Sacar.ExecutarSaque
         private readonly PasswordEncryptor _encryptor;
         private readonly IGravarContaRepository _gravarContaRepository;
         private readonly IGravarSaqueRepository _gravarSaqueRepository;
+        private readonly ILerCLienteRepository _clienteRepository;
 
         public SaqueUseCase(ISegurancaTransacao segurancaTransacao,
             ITransacaoService transacaoService, IUnitOfWork unitOfWork,
             PasswordEncryptor encryptor, IGravarContaRepository gravarContaRepository,
-            IGravarSaqueRepository gravarSaqueRepository)
+            IGravarSaqueRepository gravarSaqueRepository, ILerCLienteRepository clienteRepository)
         {
             _segurancaTransacao = segurancaTransacao;
             _transacaoService = transacaoService;
@@ -32,6 +34,7 @@ namespace Banking.Application.UseCases.Conta.Transacoes.Sacar.ExecutarSaque
             _encryptor = encryptor;
             _gravarContaRepository = gravarContaRepository;
             _gravarSaqueRepository = gravarSaqueRepository;
+            _clienteRepository = clienteRepository;
         }
 
         public async Task<ResponseSaqueJson> Execute(RequestSaqueJson request)
@@ -40,12 +43,15 @@ namespace Banking.Application.UseCases.Conta.Transacoes.Sacar.ExecutarSaque
 
             double.TryParse(request.ValorTransacao, out var valorSaque);
 
-            var cliente = await _transacaoService.ObterClienteByNumeroConta(request.numeroConta);
+            var cliente = await _clienteRepository.GetClienteByNumeroConta(request.numeroConta);
+
+            if (cliente == null)
+                throw new BusinessException(ResourceMessagesExceptions.CLIENTE_NAO_ENCONTRADO);
 
             if (!_encryptor.Verify(request.Senha, cliente.Senha))
                 throw new BusinessException(ResourceMessagesExceptions.SENHA_INCORRETA);
 
-            var contaSaque = await _transacaoService.ExecutarSaque(request);
+            _transacaoService.ExecutarSaque(cliente.Conta, valorSaque);
 
             var saque = new Saque()
             {
@@ -53,15 +59,15 @@ namespace Banking.Application.UseCases.Conta.Transacoes.Sacar.ExecutarSaque
                 ValorSaque = valorSaque,
                 ContaSaque = new AuxiliarTransacao()
                 {
-                    numeroAgencia = contaSaque.NumeroAgencia,
-                    numeroConta = contaSaque.NumeroConta,
-                    numeroBanco = contaSaque.NumeroBanco,
+                    numeroAgencia = cliente.Conta.NumeroAgencia,
+                    numeroConta = cliente.Conta.NumeroConta,
+                    numeroBanco = cliente.Conta.NumeroBanco,
                 }
             };
 
-            contaSaque.AdicionarSaques(saque);
+            cliente.Conta.AdicionarSaques(saque);
 
-            _gravarContaRepository.Atualizar(contaSaque);
+            _gravarContaRepository.Atualizar(cliente.Conta);
             await _gravarSaqueRepository.Add(saque);
             await _unitOfWork.Commit();
 
@@ -69,11 +75,11 @@ namespace Banking.Application.UseCases.Conta.Transacoes.Sacar.ExecutarSaque
             {
                 NumeroTransacao = saque.NumeroSaque,
                 ValorSaque = valorSaque,
-                SaldoAtual = contaSaque.Saldo
+                SaldoAtual = cliente.Conta.Saldo
             };
         }
 
-        private async Task SaqueValidator(RequestSaqueJson request)
+        private static async Task SaqueValidator(RequestSaqueJson request)
         {
             var validate = new ExecutarSaqueValidator();
 

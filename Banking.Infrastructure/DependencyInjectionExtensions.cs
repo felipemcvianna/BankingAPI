@@ -56,6 +56,7 @@ public static class DependencyInjectionExtensions
 
         //DEPOSITO REPOSITORIES
         services.AddScoped<IGravarDepositoRepository, DepositoRepository>();
+        services.AddScoped<ILerDepositosRepository, DepositoRepository>();
 
         //SAQUE REPOSITORIES
         services.AddScoped<IGravarSaqueRepository, SaqueRepository>();

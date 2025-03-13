@@ -9,16 +9,11 @@ namespace Banking.Application.Services.Transacao
 {
     public class TransacaoService : ITransacaoService
     {
-        private readonly ILerContaRepository _lerContaRepository;
         private readonly IGravarContaRepository _gravarContaRepository;
-        private readonly ILerCLienteRepository _clienteRepository;
 
-        public TransacaoService(ILerContaRepository lerContaRepository,
-            IGravarContaRepository gravarContaRepository, ILerCLienteRepository clienteRepository)
-        {
-            _lerContaRepository = lerContaRepository;
+        public TransacaoService(IGravarContaRepository gravarContaRepository)
+        {   
             _gravarContaRepository = gravarContaRepository;
-            _clienteRepository = clienteRepository;
         }
 
         public void ExecutarDeposito(Conta conta, double valorDeposito)
@@ -26,14 +21,9 @@ namespace Banking.Application.Services.Transacao
             conta.AdicionarSaldo(valorDeposito);
         }
 
-        public async Task<Conta> ExecutarSaque(RequestSaqueJson request)
+        public void ExecutarSaque(Conta conta, double valorSaque)
         {
-            var conta = await ObterConta(request.numeroConta, request.numeroBanco,
-                request.numeroAgencia);
-
-            conta.RemoverSaldo(double.Parse(request.ValorTransacao));
-
-            return conta;
+            conta.RemoverSaldo(valorSaque);
         }
 
         public async Task ExecutarTransferencia(Conta contaOrigem, Conta contaDestino,
@@ -62,36 +52,6 @@ namespace Banking.Application.Services.Transacao
                 await transaction.RollbackAsync();
                 throw;
             }
-        }
-
-        public async Task<Cliente> ObterClienteByNumeroConta(int numeroConta)
-        {
-            var cliente = await _clienteRepository.GetClienteByNumeroConta(numeroConta);
-
-            if (cliente == null)
-                throw new BusinessException(ResourceMessagesExceptions.CLIENTE_NAO_ENCONTRADO);
-
-            return cliente;
-        }
-
-        public async Task<Conta> ObterConta(int numeroConta, int numeroBanco, int numeroAgencia)
-        {
-            var conta = await _lerContaRepository.ObterConta(numeroConta, numeroBanco, numeroAgencia);
-
-            if (conta == null)
-                throw new BusinessException(ResourceMessagesExceptions.CONTA_NAO_ENCONTRADA);
-
-            return conta;
-        }
-
-        public async Task<Conta> ObterConta(Guid userIdentifier, int numeroConta)
-        {
-            var conta = await _lerContaRepository.ObterConta(userIdentifier, numeroConta);
-
-            if (conta == null)
-                throw new BusinessException(ResourceMessagesExceptions.CONTA_NAO_ENCONTRADA);
-
-            return conta;
         }
     }
 }

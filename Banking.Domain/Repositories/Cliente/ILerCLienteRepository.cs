@@ -1,5 +1,3 @@
-using Banking.Domain.Entities;
-
 namespace Banking.Domain.Repositories.Cliente;
 
 public interface ILerCLienteRepository
@@ -11,6 +9,4 @@ public interface ILerCLienteRepository
 
     public Task<bool> ExisteClienteComIdentificador(Guid userIdentifier);
     public Task<Entities.Cliente?> GetClienteByNumeroConta(int numeroConta);
-
-    public Task<ContaAndCliente> GetClienteAndConta(int numeroConta);
 }
