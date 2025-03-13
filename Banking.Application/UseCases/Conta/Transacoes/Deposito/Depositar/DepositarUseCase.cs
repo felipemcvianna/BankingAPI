@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Banking.Application.Services.Transacao;
-using Banking.Application.UseCases.Transacao.Depositar;
 using Banking.Communication.Requests.Conta.Transacao;
 using Banking.Communication.Response.Conta.Transacao;
 using Banking.Domain.Repositories;
@@ -10,7 +9,7 @@ using Banking.Domain.Seguranca.Transacoes;
 using Banking.Exceptions;
 using Banking.Exceptions.ExceptionBase;
 
-namespace Banking.Application.UseCases.Conta.Transacoes.Depositar
+namespace Banking.Application.UseCases.Conta.Transacoes.Deposito.Depositar
 {
     public class DepositarUseCase : IDepositarUseCase
     {
@@ -49,8 +48,8 @@ namespace Banking.Application.UseCases.Conta.Transacoes.Depositar
 
             var deposito = new Domain.Entities.Deposito
             {
-                CPFCliente = cliente.CPF,
-                Nome = cliente.Nome,
+                CpfCliente = cliente.CPF,
+                NomeCliente = cliente.Nome,
                 ContaDeposito = new Domain.Entities.AuxiliarTransacao
                 {
                     numeroAgencia = cliente.Conta.NumeroAgencia,
@@ -58,6 +57,7 @@ namespace Banking.Application.UseCases.Conta.Transacoes.Depositar
                     numeroBanco = cliente.Conta.NumeroBanco
                 },
                 ValorDeposito = valorTransacao,
+                DataDeposito = DateTime.UtcNow,
                 NumeroDeposito = _segurancaTransacao.GerarNumeroTransacao()
             };
 

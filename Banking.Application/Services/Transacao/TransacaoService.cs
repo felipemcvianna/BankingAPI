@@ -9,13 +9,10 @@ namespace Banking.Application.Services.Transacao
 {
     public class TransacaoService : ITransacaoService
     {
-        private readonly ILerContaRepository _lerContaRepository;
         private readonly IGravarContaRepository _gravarContaRepository;
 
-        public TransacaoService(ILerContaRepository lerContaRepository,
-            IGravarContaRepository gravarContaRepository, ILerCLienteRepository clienteRepository)
-        {
-            _lerContaRepository = lerContaRepository;
+        public TransacaoService(IGravarContaRepository gravarContaRepository)
+        {   
             _gravarContaRepository = gravarContaRepository;
         }
 
@@ -55,26 +52,6 @@ namespace Banking.Application.Services.Transacao
                 await transaction.RollbackAsync();
                 throw;
             }
-        }
-
-        public async Task<Conta> ObterConta(int numeroConta, int numeroBanco, int numeroAgencia)
-        {
-            var conta = await _lerContaRepository.ObterConta(numeroConta, numeroBanco, numeroAgencia);
-
-            if (conta == null)
-                throw new BusinessException(ResourceMessagesExceptions.CONTA_NAO_ENCONTRADA);
-
-            return conta;
-        }
-
-        public async Task<Conta> ObterConta(Guid userIdentifier, int numeroConta)
-        {
-            var conta = await _lerContaRepository.ObterConta(userIdentifier, numeroConta);
-
-            if (conta == null)
-                throw new BusinessException(ResourceMessagesExceptions.CONTA_NAO_ENCONTRADA);
-
-            return conta;
         }
     }
 }

@@ -33,7 +33,10 @@ public class AtualizarSenhaClienteUseCase : IAtualizarSenhaClienteUseCase
         if (cliente == null)
             throw new BusinessException(ResourceMessagesExceptions.CLIENTE_NAO_ENCONTRADO);
 
-        SenhaValidation(request, cliente);
+        if (!_passwordEncryptor.Verify(request.SenhaAtual, cliente.Senha))
+        {
+            throw new BusinessException(ResourceMessagesExceptions.SENHA_INCORRETA);
+        }
 
         cliente.Senha = _passwordEncryptor.Encript(request.NovaSenha);
 
@@ -59,26 +62,6 @@ public class AtualizarSenhaClienteUseCase : IAtualizarSenhaClienteUseCase
         if (!result.IsValid)
         {
             throw new ErrorsOnValidateExceptions(result.Errors.Select(x => x.ErrorMessage).ToList());
-        }
-    }
-
-    private void SenhaValidation(RequestAtualizarSenhaClienteJson request, Domain.Entities.Cliente cliente)
-    {
-        if (!_passwordEncryptor.Verify(request.SenhaAtual, cliente.Senha))
-        {
-            throw new BusinessException(ResourceMessagesExceptions.SENHA_INCORRETA);
-        }
-
-        var novaSenhaEncriptada = _passwordEncryptor.Encript(request.NovaSenha);
-
-        if (novaSenhaEncriptada == cliente.Senha)
-        {
-            throw new BusinessException(ResourceMessagesExceptions.SENHA_IGUAL);
-        }
-
-        if (request.NovaSenha != request.ConfirmarNovaSenha)
-        {
-            throw new BusinessException(ResourceMessagesExceptions.SENHAS_DEVEM_COINCIDIR);
         }
     }
 }

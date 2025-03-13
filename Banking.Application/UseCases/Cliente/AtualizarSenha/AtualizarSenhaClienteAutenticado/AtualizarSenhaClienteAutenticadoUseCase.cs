@@ -6,6 +6,7 @@ using Banking.Domain.Repositories.Cliente;
 using Banking.Domain.Seguranca.Tokens;
 using Banking.Exceptions;
 using Banking.Exceptions.ExceptionBase;
+using FluentValidation.Results;
 
 namespace Banking.Application.UseCases.Cliente.AtualizarSenha.AtualizarSenhaClienteAutenticado
 {
@@ -32,7 +33,11 @@ namespace Banking.Application.UseCases.Cliente.AtualizarSenha.AtualizarSenhaClie
 
             var cliente = await _loggedCliente.GetClienteByToken();
 
-            SenhaValidation(request, cliente, _passwordEncryptor);
+            if (cliente == null)
+                throw new BusinessException(ResourceMessagesExceptions.CLIENTE_NAO_ENCONTRADO);
+
+            if (!_passwordEncryptor.Verify(request.senhaAtual, cliente.Senha))
+                throw new ErrorsOnValidateExceptions(ResourceMessagesExceptions.SENHA_INCORRETA);
 
             cliente.Senha = _passwordEncryptor.Encript(request.novaSenha);
 
@@ -48,35 +53,14 @@ namespace Banking.Application.UseCases.Cliente.AtualizarSenha.AtualizarSenhaClie
             };
         }
 
-        public async Task Validator(RequestAtualizarSenhaClienteAutenticadoJson request)
+        private async Task Validator(RequestAtualizarSenhaClienteAutenticadoJson request)
         {
             var validator = new AtualizarSenhaClienteAutenticadoValidator();
 
             var result = await validator.ValidateAsync(request);
-
+            
             if (!result.IsValid)
                 throw new ErrorsOnValidateExceptions(result.Errors.Select(x => x.ErrorMessage).ToList());
-        }
-
-        private static void SenhaValidation(RequestAtualizarSenhaClienteAutenticadoJson request,
-            Domain.Entities.Cliente cliente, PasswordEncryptor _passwordEncryptor)
-        {
-            if (!_passwordEncryptor.Verify(request.senhaAtual, cliente.Senha))
-            {
-                throw new BusinessException(ResourceMessagesExceptions.SENHA_INCORRETA);
-            }
-
-            var novaSenhaEncriptada = _passwordEncryptor.Encript(request.novaSenha);
-
-            if (novaSenhaEncriptada == cliente.Senha)
-            {
-                throw new BusinessException(ResourceMessagesExceptions.SENHA_IGUAL);
-            }
-
-            if (request.novaSenha != request.confirmarSenha)
-            {
-                throw new BusinessException(ResourceMessagesExceptions.SENHAS_DEVEM_COINCIDIR);
-            }
         }
     }
 }

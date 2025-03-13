@@ -41,8 +41,6 @@ public class AutoMapping : Profile
             .ForMember(response => response.numeroAgencia, opt
                 => opt.MapFrom(deposito => deposito.ContaDeposito.numeroAgencia))
             .ForMember(response => response.numeroConta, opt
-                => opt.MapFrom(deposito => deposito.ContaDeposito.numeroConta))
-            .ForMember(response => response.DataDeposito, opt
-                => opt.MapFrom(deposito => deposito.DataDeposito.ToLocalTime()));
+                => opt.MapFrom(deposito => deposito.ContaDeposito.numeroConta));
     }
 }
