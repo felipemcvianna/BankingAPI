@@ -6,5 +6,5 @@ public class Saque
     public AuxiliarTransacao ContaSaque { get; set; } = null!;
     public double ValorSaque { get; set; }
     public string NumeroSaque { get; set; } = null!;
-    public DateTime DataSaque { get; private set; } = DateTime.UtcNow;
+    public DateTime DataSaque { get; private set; } = DateTime.Now;
 }
