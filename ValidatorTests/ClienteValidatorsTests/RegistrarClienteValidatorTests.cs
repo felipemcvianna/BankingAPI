@@ -1,11 +1,9 @@
 using Banking.Application.UseCases.Cliente.Registrar;
 using Banking.Exceptions;
 using CommomTestsUtilities;
-using FluentValidation;
 using Shouldly;
-using Xunit.Sdk;
 
-namespace ValidatorsTests.ContaValidatorsTestes;
+namespace ValidatorsTests.ClienteValidatorsTests;
 
 public class RegistrarClienteValidatorTests
 {
@@ -14,7 +12,7 @@ public class RegistrarClienteValidatorTests
     {
         var validator = new RegistrarClienteValidator();
 
-        var request = RegistrarClienteBuilder.Build();
+        var request = ClienteBuilder.RegistrarClienteBuild();
 
         var result = await validator.ValidateAsync(request);
 
@@ -26,7 +24,7 @@ public class RegistrarClienteValidatorTests
     {
         var validator = new RegistrarClienteValidator();
 
-        var request = RegistrarClienteBuilder.Build();
+        var request = ClienteBuilder.RegistrarClienteBuild();
 
         request.Email = string.Empty;
 
@@ -46,7 +44,7 @@ public class RegistrarClienteValidatorTests
     {
         var validator = new RegistrarClienteValidator();
 
-        var request = RegistrarClienteBuilder.Build();
+        var request = ClienteBuilder.RegistrarClienteBuild();
         request.Email = "felip";
 
         var result = await validator.ValidateAsync(request);
@@ -61,7 +59,7 @@ public class RegistrarClienteValidatorTests
     [Fact]
     public async Task RegistrarCliente_CPFVazio_DeveRetornarErrorDeValidacao()
     {
-        var request = RegistrarClienteBuilder.Build();
+        var request = ClienteBuilder.RegistrarClienteBuild();
         var validator = new RegistrarClienteValidator();
         request.CPF = string.Empty;
 
@@ -79,7 +77,7 @@ public class RegistrarClienteValidatorTests
     {
         var validator = new RegistrarClienteValidator();
 
-        var request = RegistrarClienteBuilder.Build();
+        var request = ClienteBuilder.RegistrarClienteBuild();
 
         request.Nome = string.Empty;
 
@@ -95,25 +93,17 @@ public class RegistrarClienteValidatorTests
         );
     }
 
-    [Fact]
-    public async Task RegistrarCliente_SenhaVazia_DeveRetornarErrorDeValidacao()
+    [Theory]
+    [InlineData(1)]
+    [InlineData(2)]
+    [InlineData(3)]
+    [InlineData(4)]
+    [InlineData(5)]
+    [InlineData(0)]
+    public async Task RegistrarCliente_SenhaInvalida_DeveRetornarErrorDeValidacao(int tamanhoSenha)
     {
         var validator = new RegistrarClienteValidator();
-        var request = RegistrarClienteBuilder.Build();
-        request.Senha = string.Empty;
-
-        var result = await validator.ValidateAsync(request);
-        result.IsValid.ShouldBeFalse();
-        result.Errors.Count.ShouldBe(1);
-        result.Errors.ShouldContain(e =>
-            e.PropertyName == "Senha.Length" && e.ErrorMessage == ResourceMessagesExceptions.SENHA_VAZIA);
-    }
-
-    [Fact]
-    public async Task RegistrarCliente_SenhaInvalida_DeveRetornarErrorDeValidacao()
-    {
-        var validator = new RegistrarClienteValidator();
-        var request = RegistrarClienteBuilder.Build(1);
+        var request = ClienteBuilder.RegistrarClienteBuild(tamanhoSenha);
 
         var result = await validator.ValidateAsync(request);
         result.IsValid.ShouldBeFalse();
