@@ -10,12 +10,13 @@ using Banking.Application.UseCases.Cliente.Ler.ByToken;
 using Banking.Application.UseCases.Cliente.Registrar;
 using Banking.Application.UseCases.Conta.Deletar;
 using Banking.Application.UseCases.Conta.Registrar;
-using Banking.Application.UseCases.Conta.Transacoes.Depositar;
+using Banking.Application.UseCases.Conta.Transacoes.Deposito.Depositar;
+using Banking.Application.UseCases.Conta.Transacoes.Deposito.GetAllDepositos;
+using Banking.Application.UseCases.Conta.Transacoes.Deposito.GetDepositoByPeriodo;
 using Banking.Application.UseCases.Conta.Transacoes.ExecutarTranferencia;
 using Banking.Application.UseCases.Conta.Transacoes.Sacar;
 using Banking.Application.UseCases.Conta.Transacoes.Sacar.ExecutarSaque;
 using Banking.Application.UseCases.Conta.Transacoes.Sacar.LerSaque.GetAllSaques;
-using Banking.Application.UseCases.Transacao.Depositar;
 using Banking.Application.UseCases.Transacao.ExecutarTranferencia;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -61,6 +62,8 @@ public static class DependecyInjectionExtensions
 
         //Deposito Use Case
         services.AddScoped<IDepositarUseCase, DepositarUseCase>();
+        services.AddScoped<IGetAllDepositosUseCase, GetAllDepositosUseCase>();
+        services.AddScoped<IGetDepositoByPeriodoUseCase, GetDepositoByPeriodoUseCase>();
 
         //Saque Use Case
         services.AddScoped<ISaqueUseCase, SaqueUseCase>();
