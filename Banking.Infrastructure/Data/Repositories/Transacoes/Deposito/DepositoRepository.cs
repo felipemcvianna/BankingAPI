@@ -27,5 +27,8 @@ namespace Banking.Infrastructure.Data.Repositories.Transacoes.Deposito
                 .Where(d => d.DataDeposito >= startDate && d.DataDeposito <= variavelTeste)
                 .ToListAsync();
         }
+
+        public async Task<List<Domain.Entities.Deposito>> ObterDepositoByData(DateTime dataDeposito) =>
+            await _context.Depositos.Where(d => d.DataDeposito.Date == dataDeposito.Date).ToListAsync();
     }
 }

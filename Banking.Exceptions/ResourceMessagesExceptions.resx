@@ -183,4 +183,13 @@
   <data name="NUMERO_BANCO_VAZIO" xml:space="preserve">
     <value>Digite o número do banco</value>
   </data>
+  <data name="DATA_NO_FUTURO" xml:space="preserve">
+    <value>A data de deposito não pode ser no futuro</value>
+  </data>
+  <data name="DATA_VAZIA" xml:space="preserve">
+    <value>Preencha o campo Data corretamente</value>
+  </data>
+  <data name="DATA_FORMATO_INVALIDO" xml:space="preserve">
+    <value>Informe a data com o seguinte formato válido dd/MM/yyyy</value>
+  </data>
 </root>

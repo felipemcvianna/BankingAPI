@@ -2,6 +2,7 @@
 using Banking.Application.UseCases.Cliente.Deletar;
 using Banking.Application.UseCases.Conta.Transacoes.Deposito.Depositar;
 using Banking.Application.UseCases.Conta.Transacoes.Deposito.GetAllDepositos;
+using Banking.Application.UseCases.Conta.Transacoes.Deposito.GetDepositoByData;
 using Banking.Application.UseCases.Conta.Transacoes.Deposito.GetDepositoByPeriodo;
 using Banking.Application.UseCases.Conta.Transacoes.Sacar.ExecutarSaque;
 using Banking.Application.UseCases.Conta.Transacoes.Sacar.LerSaque.GetAllSaques;
@@ -78,6 +79,7 @@ namespace Banking.API.Controllers
         [HttpGet]
         [Route("GetAllDepositos")]
         [AuthenticatedUser]
+        [ProducesResponseType(typeof(List<ResponseDepositarJson>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetAllDepositos([FromServices] IGetAllDepositosUseCase useCase)
         {
             var result = await useCase.Execute();
@@ -88,8 +90,21 @@ namespace Banking.API.Controllers
         [HttpGet]
         [Route("GetDepositoByPeriodo")]
         [AuthenticatedUser]
+        [ProducesResponseType(typeof(List<ResponseDepositarJson>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetDepositoByPeriodo([FromServices] IGetDepositoByPeriodoUseCase useCase,
             [FromQuery] RequestGetDepositoByPeriodo request)
+        {
+            var result = await useCase.Execute(request);
+
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("GetDepositoByData")]
+        [AuthenticatedUser]
+        [ProducesResponseType(typeof(List<ResponseDepositarJson>), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetDepositoByData([FromQuery] RequestGetDepositoByData request,
+            [FromServices] IGetDepositoByDataUseCase useCase)
         {
             var result = await useCase.Execute(request);
 

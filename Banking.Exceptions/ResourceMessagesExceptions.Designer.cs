@@ -96,6 +96,33 @@ namespace Banking.Exceptions {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Informe a data com o seguinte formato válido dd/MM/yyyy.
+        /// </summary>
+        public static string DATA_FORMATO_INVALIDO {
+            get {
+                return ResourceManager.GetString("DATA_FORMATO_INVALIDO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to A data de deposito não pode ser no futuro.
+        /// </summary>
+        public static string DATA_NO_FUTURO {
+            get {
+                return ResourceManager.GetString("DATA_NO_FUTURO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Preencha o campo Data corretamente.
+        /// </summary>
+        public static string DATA_VAZIA {
+            get {
+                return ResourceManager.GetString("DATA_VAZIA", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Digite um Email válido.
         /// </summary>
         public static string EMAIL_INVALIDO {
