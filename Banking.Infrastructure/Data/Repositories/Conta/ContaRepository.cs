@@ -46,14 +46,6 @@ namespace Banking.Infrastructure.Data.Repositories.Conta
             return await _context.Contas.Where(x => x.UserIdentifier.Equals(userIdentifier)
                                                     && x.NumeroConta == numeroConta).FirstOrDefaultAsync();
         }
-
-        public async Task<Domain.Entities.Conta?> ObterConta(int numeroConta, int numeroBanco, int numeroAgencia)
-        {
-            return await _context.Contas.FirstOrDefaultAsync(x => x.NumeroConta == numeroConta &&
-                                                                  x.NumeroBanco == numeroBanco &&
-                                                                  x.NumeroAgencia == numeroAgencia);
-        }
-
         public async Task<Domain.Entities.Cliente?> ObterClienteConta(int numeroConta)
         {
             return await _context.Clientes.FirstOrDefaultAsync(x => x.NumeroConta == numeroConta);

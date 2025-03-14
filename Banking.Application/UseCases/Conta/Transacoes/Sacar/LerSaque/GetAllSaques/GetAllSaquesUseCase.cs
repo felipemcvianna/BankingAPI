@@ -30,5 +30,5 @@ public class GetAllSaquesUseCase : IGetAllSaquesUseCase
             cliente.Conta.NumeroAgencia);
 
         return saques;
-    }
+    }   
 }

@@ -3,7 +3,6 @@ using AutoMapper;
 using Banking.Communication.Requests.Conta.Transacao;
 using Banking.Communication.Response.Conta.Transacao;
 using Banking.Domain.Repositories.Transacoes.Deposito;
-using Banking.Exceptions.ExceptionBase;
 
 namespace Banking.Application.UseCases.Conta.Transacoes.Deposito.GetDepositoByPeriodo;
 
