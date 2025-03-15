@@ -7,7 +7,7 @@ using Microsoft.OpenApi.Models;
 
 var builder = WebApplication.CreateBuilder(args);
 
-builder.Services.AddControllers();
+builder.Services.AddControllers(options => options.Filters.Add(typeof(ExceptionFilter)));
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(opt =>
 {
@@ -44,7 +44,7 @@ builder.Services.AddSwaggerGen(opt =>
 
 builder.Services.AddInfrastrucutre(builder.Configuration);
 builder.Services.AddApplication();
-builder.Services.AddMvc(options => options.Filters.Add(typeof(ExceptionFilter)));
+
 builder.Services.AddScoped<ITokenRequest, HttpContextTokenValue>();
 builder.Services.AddHttpContextAccessor();
 builder.Services.AddRouting(opt => opt.LowercaseUrls = true);
