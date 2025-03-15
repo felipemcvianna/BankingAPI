@@ -192,4 +192,7 @@
   <data name="DATA_FORMATO_INVALIDO" xml:space="preserve">
     <value>Informe a data com o seguinte formato válido dd/MM/yyyy</value>
   </data>
+  <data name="DEPOSITO_NAO_ENCONTRADO" xml:space="preserve">
+    <value>Não foi possível encontrar o deposito</value>
+  </data>
 </root>

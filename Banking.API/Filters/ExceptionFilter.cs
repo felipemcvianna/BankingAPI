@@ -1,6 +1,5 @@
 using System.Net;
 using Banking.Exceptions.ExceptionBase;
-using Banking.Exceptions.ExceptionBase.Deposito;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
 
@@ -16,10 +15,20 @@ public class ExceptionFilter : IExceptionFilter
             return;
         }
 
-        HandleRegisterException(context);
-        HandleDeleteException(context);
-        HandleDataDepositoExceptions(context);
+        switch (context.Exception)
+        {
+            case ErrorsOnValidateExceptions:
+                HandleRegisterException(context);
+                return;
+            case BusinessException:
+                HandleDeleteException(context);
+                return;
+            case DepositoException:
+                HandleDepositoExceptions(context);
+                return;
+        }
     }
+
 
     private void HandleRegisterException(ExceptionContext context)
     {
@@ -35,9 +44,9 @@ public class ExceptionFilter : IExceptionFilter
         context.Result = new ObjectResult(exception.Errors);
     }
 
-    private void HandleDataDepositoExceptions(ExceptionContext context)
+    private void HandleDepositoExceptions(ExceptionContext context)
     {
-        if (context.Exception is not DataDepositoException exception) return;
+        if (context.Exception is not DepositoException exception) return;
         context.HttpContext.Response.StatusCode = (int)HttpStatusCode.BadRequest;
         context.Result = new ObjectResult(exception.Errors);
     }
