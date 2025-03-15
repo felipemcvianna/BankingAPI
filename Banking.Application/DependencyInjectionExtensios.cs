@@ -13,6 +13,7 @@ using Banking.Application.UseCases.Conta.Registrar;
 using Banking.Application.UseCases.Conta.Transacoes.Deposito.Depositar;
 using Banking.Application.UseCases.Conta.Transacoes.Deposito.GetAllDepositos;
 using Banking.Application.UseCases.Conta.Transacoes.Deposito.GetDepositoByData;
+using Banking.Application.UseCases.Conta.Transacoes.Deposito.GetDepositoByNumero;
 using Banking.Application.UseCases.Conta.Transacoes.Deposito.GetDepositoByPeriodo;
 using Banking.Application.UseCases.Conta.Transacoes.ExecutarTranferencia;
 using Banking.Application.UseCases.Conta.Transacoes.Sacar.ExecutarSaque;
@@ -65,6 +66,7 @@ public static class DependencyInjectionExtensions
         services.AddScoped<IGetDepositoByPeriodoUseCase, GetDepositoByPeriodoUseCase>();
         services.AddScoped<IGetAllDepositosUseCase, GetAllDepositosUseCase>();
         services.AddScoped<IGetDepositoByDataUseCase, GetDepositoByDataUseCase>();
+        services.AddScoped<IGetDepositoByNumeroUseCase, GetDepositoByNumeroUseCase>();
 
 
         //Saque Use Case

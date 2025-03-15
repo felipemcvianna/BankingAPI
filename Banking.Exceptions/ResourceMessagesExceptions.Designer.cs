@@ -123,6 +123,15 @@ namespace Banking.Exceptions {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Não foi possível encontrar o deposito.
+        /// </summary>
+        public static string DEPOSITO_NAO_ENCONTRADO {
+            get {
+                return ResourceManager.GetString("DEPOSITO_NAO_ENCONTRADO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Digite um Email válido.
         /// </summary>
         public static string EMAIL_INVALIDO {

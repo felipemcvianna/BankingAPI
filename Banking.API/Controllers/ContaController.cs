@@ -3,11 +3,13 @@ using Banking.Application.UseCases.Cliente.Deletar;
 using Banking.Application.UseCases.Conta.Transacoes.Deposito.Depositar;
 using Banking.Application.UseCases.Conta.Transacoes.Deposito.GetAllDepositos;
 using Banking.Application.UseCases.Conta.Transacoes.Deposito.GetDepositoByData;
+using Banking.Application.UseCases.Conta.Transacoes.Deposito.GetDepositoByNumero;
 using Banking.Application.UseCases.Conta.Transacoes.Deposito.GetDepositoByPeriodo;
 using Banking.Application.UseCases.Conta.Transacoes.Sacar.ExecutarSaque;
 using Banking.Application.UseCases.Conta.Transacoes.Sacar.LerSaque.GetAllSaques;
 using Banking.Application.UseCases.Transacao.ExecutarTranferencia;
 using Banking.Communication.Requests.Cliente;
+using Banking.Communication.Requests.Conta.Deposito;
 using Banking.Communication.Requests.Conta.Transacao;
 using Banking.Communication.Response.Cliente;
 using Banking.Communication.Response.Conta.Transacao;
@@ -92,7 +94,7 @@ namespace Banking.API.Controllers
         [AuthenticatedUser]
         [ProducesResponseType(typeof(List<ResponseDepositarJson>), StatusCodes.Status200OK)]
         public async Task<IActionResult> GetDepositoByPeriodo([FromServices] IGetDepositoByPeriodoUseCase useCase,
-            [FromQuery] RequestGetDepositoByPeriodo request)
+            [FromQuery] RequestGetDepositoByPeriodoJson request)
         {
             var result = await useCase.Execute(request);
 
@@ -103,8 +105,20 @@ namespace Banking.API.Controllers
         [Route("GetDepositoByData")]
         [AuthenticatedUser]
         [ProducesResponseType(typeof(List<ResponseDepositarJson>), StatusCodes.Status200OK)]
-        public async Task<IActionResult> GetDepositoByData([FromQuery] RequestGetDepositoByData request,
+        public async Task<IActionResult> GetDepositoByData([FromQuery] RequestGetDepositoByDataJson request,
             [FromServices] IGetDepositoByDataUseCase useCase)
+        {
+            var result = await useCase.Execute(request);
+
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("GetDepositoByNumero")]
+        [AuthenticatedUser]
+        [ProducesResponseType(typeof(ResponseDepositarJson), StatusCodes.Status200OK)]
+        public async Task<IActionResult> GetDepositoByNumero([FromQuery] RequestGetDepositoByNumeroJson request,
+            [FromServices] IGetDepositoByNumeroUseCase useCase)
         {
             var result = await useCase.Execute(request);
 
