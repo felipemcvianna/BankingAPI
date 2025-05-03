@@ -1,7 +1,7 @@
 ﻿using Banking.Communication.Requests.Conta.Transacao;
 using Banking.Communication.Response.Conta.Transacao;
 
-namespace Banking.Application.UseCases.Conta.Transacoes.Sacar.ExecutarSaque
+namespace Banking.Application.UseCases.Conta.Transacoes.Saques.Sacar
 {
     public interface ISaqueUseCase
     {

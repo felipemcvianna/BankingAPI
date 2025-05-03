@@ -11,7 +11,7 @@ using Banking.Domain.Seguranca.Transacoes;
 using Banking.Exceptions;
 using Banking.Exceptions.ExceptionBase;
 
-namespace Banking.Application.UseCases.Conta.Transacoes.Sacar.ExecutarSaque
+namespace Banking.Application.UseCases.Conta.Transacoes.Saques.Sacar
 {
     public class SaqueUseCase : ISaqueUseCase
     {
