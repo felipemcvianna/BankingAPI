@@ -4,7 +4,7 @@ using Banking.Domain.Seguranca.Tokens;
 using Banking.Exceptions;
 using Banking.Exceptions.ExceptionBase;
 
-namespace Banking.Application.UseCases.Conta.Transacoes.Sacar.LerSaque.GetAllSaques;
+namespace Banking.Application.UseCases.Conta.Transacoes.Saques.LerSaque.GetAllSaques;
 
 public class GetAllSaquesUseCase : IGetAllSaquesUseCase
 {
