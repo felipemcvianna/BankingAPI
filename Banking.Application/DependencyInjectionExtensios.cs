@@ -15,10 +15,9 @@ using Banking.Application.UseCases.Conta.Transacoes.Deposito.GetAllDepositos;
 using Banking.Application.UseCases.Conta.Transacoes.Deposito.GetDepositoByData;
 using Banking.Application.UseCases.Conta.Transacoes.Deposito.GetDepositoByNumero;
 using Banking.Application.UseCases.Conta.Transacoes.Deposito.GetDepositoByPeriodo;
-using Banking.Application.UseCases.Conta.Transacoes.ExecutarTranferencia;
 using Banking.Application.UseCases.Conta.Transacoes.Sacar.ExecutarSaque;
 using Banking.Application.UseCases.Conta.Transacoes.Sacar.LerSaque.GetAllSaques;
-using Banking.Application.UseCases.Transacao.ExecutarTranferencia;
+using Banking.Application.UseCases.Conta.Transacoes.Transferencias.ExecutarTranferencia;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Banking.Application;

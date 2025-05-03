@@ -7,7 +7,7 @@ using Banking.Application.UseCases.Conta.Transacoes.Deposito.GetDepositoByNumero
 using Banking.Application.UseCases.Conta.Transacoes.Deposito.GetDepositoByPeriodo;
 using Banking.Application.UseCases.Conta.Transacoes.Sacar.ExecutarSaque;
 using Banking.Application.UseCases.Conta.Transacoes.Sacar.LerSaque.GetAllSaques;
-using Banking.Application.UseCases.Transacao.ExecutarTranferencia;
+using Banking.Application.UseCases.Conta.Transacoes.Transferencias.ExecutarTranferencia;
 using Banking.Communication.Requests.Cliente;
 using Banking.Communication.Requests.Conta.Deposito;
 using Banking.Communication.Requests.Conta.Transacao;

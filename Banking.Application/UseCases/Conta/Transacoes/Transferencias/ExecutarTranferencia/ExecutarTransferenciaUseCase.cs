@@ -1,6 +1,5 @@
 ﻿using AutoMapper;
 using Banking.Application.Services.Transacao;
-using Banking.Application.UseCases.Transacao.ExecutarTranferencia;
 using Banking.Communication.Requests.Conta.Transacao;
 using Banking.Communication.Response.Conta.Transacao;
 using Banking.Domain.Entities;
@@ -12,7 +11,7 @@ using Banking.Domain.Seguranca.Transacoes;
 using Banking.Exceptions;
 using Banking.Exceptions.ExceptionBase;
 
-namespace Banking.Application.UseCases.Conta.Transacoes.ExecutarTranferencia
+namespace Banking.Application.UseCases.Conta.Transacoes.Transferencias.ExecutarTranferencia
 {
     public class ExecutarTransferenciaUseCase : IExecutarTransferenciaUseCase
     {

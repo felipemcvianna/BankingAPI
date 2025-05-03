@@ -2,7 +2,7 @@ using Banking.Communication.Requests.Conta.Transacao;
 using Banking.Exceptions;
 using FluentValidation;
 
-namespace Banking.Application.UseCases.Conta.Transacoes.ExecutarTranferencia;
+namespace Banking.Application.UseCases.Conta.Transacoes.Transferencias.ExecutarTranferencia;
 
 public class ExecutarTransferenciaValidator : CommomContaValidator<RequestExecutarTransacaoJson>
 {

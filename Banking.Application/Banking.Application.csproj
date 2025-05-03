@@ -27,6 +27,7 @@
 
     <ItemGroup>
       <Folder Include="UseCases\Cliente\AtualizarEmail\" />
+      <Folder Include="UseCases\Conta\Transacoes\Transferencias\" />
     </ItemGroup>
 
 </Project>
