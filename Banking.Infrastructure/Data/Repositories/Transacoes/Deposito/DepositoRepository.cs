@@ -1,6 +1,4 @@
-﻿using System.Globalization;
-using Banking.Domain.Repositories.Transacoes.Deposito;
-using Banking.Exceptions.ExceptionBase;
+﻿using Banking.Domain.Repositories.Transacoes.Deposito;
 using Microsoft.EntityFrameworkCore;
 
 namespace Banking.Infrastructure.Data.Repositories.Transacoes.Deposito

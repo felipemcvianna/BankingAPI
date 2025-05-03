@@ -7,6 +7,9 @@
             "ExpirationTimeMinutes": 10,
             "SigningKey": "h34jg9PJnD9kkdLK45b9Adsd345LJNMx"
 
+        },
+        "Transacoes":{
+            "ChaveSegura": "CHAVE AQUI"
         }
     }
 }

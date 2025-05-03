@@ -1,7 +1,7 @@
-namespace Banking.Communication.Requests.Conta.Transacao;
+namespace Banking.Communication.Requests.Conta.Deposito;
 
 public class RequestGetDepositoByPeriodoJson
 {
-    public required string DataInicial { get; set; }
-    public required string DataFinal { get; set; }
+    public string? DataInicial { get; set; }
+    public string? DataFinal { get; set; }
 }

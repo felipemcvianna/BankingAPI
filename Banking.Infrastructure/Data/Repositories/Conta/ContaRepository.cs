@@ -1,5 +1,4 @@
-﻿using System.Data;
-using Banking.Domain.Repositories.Conta;
+﻿using Banking.Domain.Repositories.Conta;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Storage;
 

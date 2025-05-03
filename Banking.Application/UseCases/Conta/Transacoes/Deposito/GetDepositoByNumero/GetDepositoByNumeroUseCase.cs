@@ -22,7 +22,6 @@ public class GetDepositoByNumeroUseCase : IGetDepositoByNumeroUseCase
     {
         var deposito = await _lerDepositosRepository.ObterDepositoPorNumero(request.NumeroDeposito);
 
-
         if (deposito == null)
         {
             throw new DepositoException(ResourceMessagesExceptions.DEPOSITO_NAO_ENCONTRADO);

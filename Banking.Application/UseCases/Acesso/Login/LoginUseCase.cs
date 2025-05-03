@@ -1,6 +1,7 @@
 ﻿using Banking.Application.Services.Encryption;
 using Banking.Communication.Requests.Login;
 using Banking.Communication.Response.Login;
+using Banking.Communication.Token;
 using Banking.Domain.Repositories.Cliente;
 using Banking.Domain.Seguranca.Tokens;
 using Banking.Exceptions;
@@ -26,24 +27,30 @@ namespace Banking.Application.UseCases.Acesso.Login
         public async Task<ResponseLoginJson> Execute(RequestLoginJson request)
         {
             Validator(request);
-
-            var clienteLogin = await _lerCLienteRepository.GetClienteByEmail(request.Email);
-
-            if (clienteLogin == null)
-                throw new BusinessException(ResourceMessagesExceptions.EMAIL_NAO_CADASTRADO);
-
-            if (!ValidatePassword(request.Senha, clienteLogin.Senha))
-                throw new BusinessException(ResourceMessagesExceptions.SENHA_INCORRETA);
-
-
-            return new ResponseLoginJson()
+            try
             {
-                Nome = clienteLogin.Nome,
-                Tokens = new Communication.Token.ResponseTokensJson
+                var clienteLogin = await _lerCLienteRepository.GetClienteByEmail(request.Email);
+                
+                if (clienteLogin == null)
+                    throw new BusinessException(ResourceMessagesExceptions.EMAIL_NAO_CADASTRADO);
+
+                if (!ValidatePassword(request.Senha, clienteLogin.Senha))
+                    throw new BusinessException(ResourceMessagesExceptions.SENHA_INCORRETA);
+
+
+                return new ResponseLoginJson()
                 {
-                    AcessToken = _acessTokenGenerator.GenerateToken(clienteLogin.UserIdentifier)
-                }
-            };
+                    Nome = clienteLogin.Nome,
+                    Tokens = new ResponseTokensJson
+                    {
+                        AcessToken = _acessTokenGenerator.GenerateToken(clienteLogin.UserIdentifier)
+                    }
+                };
+            }
+            catch (InvalidOperationException ex)
+            {
+                throw new InfraestruturaException(ex.Message);
+            }
         }
 
         private void Validator(RequestLoginJson request)

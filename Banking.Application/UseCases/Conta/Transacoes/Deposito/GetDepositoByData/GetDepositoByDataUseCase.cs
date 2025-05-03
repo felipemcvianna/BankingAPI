@@ -1,10 +1,10 @@
 using System.Globalization;
 using AutoMapper;
-using Banking.Communication.Requests.Conta.Transacao;
+using Banking.Communication.Requests.Conta.Deposito;
 using Banking.Communication.Response.Conta.Transacao;
 using Banking.Domain.Repositories.Transacoes.Deposito;
 using Banking.Exceptions;
-using Banking.Exceptions.ExceptionBase.Deposito;
+using Banking.Exceptions.ExceptionBase;
 using static System.Globalization.CultureInfo;
 
 namespace Banking.Application.UseCases.Conta.Transacoes.Deposito.GetDepositoByData;
@@ -20,11 +20,10 @@ public class GetDepositoByDataUseCase : IGetDepositoByDataUseCase
         _mapper = mapper;
     }
 
-    public async Task<List<ResponseDepositarJson>> Execute(RequestGetDepositoByData request)
+    public async Task<List<ResponseDepositarJson>> Execute(RequestGetDepositoByDataJson request)
     {
         if (string.IsNullOrEmpty(request.DataDeposito))
             throw new DataDepositoException(ResourceMessagesExceptions.DATA_VAZIA);
-
 
         if (!DateTime.TryParseExact(request.DataDeposito, "dd/MM/yyyy", InvariantCulture,
                 DateTimeStyles.None, out var dataDeposito))
