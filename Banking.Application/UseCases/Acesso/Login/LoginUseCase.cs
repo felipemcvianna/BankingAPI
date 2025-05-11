@@ -27,30 +27,23 @@ namespace Banking.Application.UseCases.Acesso.Login
         public async Task<ResponseLoginJson> Execute(RequestLoginJson request)
         {
             Validator(request);
-            try
+
+            var clienteLogin = await _lerCLienteRepository.GetClienteByEmail(request.Email);
+
+            if (clienteLogin == null)
+                throw new BusinessException(ResourceMessagesExceptions.EMAIL_NAO_CADASTRADO);
+
+            if (!_passwordEncryptor.Verify(request.Senha, clienteLogin.Senha))
+                throw new BusinessException(ResourceMessagesExceptions.SENHA_INCORRETA);
+            
+            return new ResponseLoginJson()
             {
-                var clienteLogin = await _lerCLienteRepository.GetClienteByEmail(request.Email);
-                
-                if (clienteLogin == null)
-                    throw new BusinessException(ResourceMessagesExceptions.EMAIL_NAO_CADASTRADO);
-
-                if (!ValidatePassword(request.Senha, clienteLogin.Senha))
-                    throw new BusinessException(ResourceMessagesExceptions.SENHA_INCORRETA);
-
-
-                return new ResponseLoginJson()
+                Nome = clienteLogin.Nome,
+                Tokens = new ResponseTokensJson
                 {
-                    Nome = clienteLogin.Nome,
-                    Tokens = new ResponseTokensJson
-                    {
-                        AcessToken = _acessTokenGenerator.GenerateToken(clienteLogin.UserIdentifier)
-                    }
-                };
-            }
-            catch (InvalidOperationException ex)
-            {
-                throw new InfraestruturaException(ex.Message);
-            }
+                    AcessToken = _acessTokenGenerator.GenerateToken(clienteLogin.UserIdentifier)
+                }
+            };
         }
 
         private void Validator(RequestLoginJson request)
@@ -64,11 +57,6 @@ namespace Banking.Application.UseCases.Acesso.Login
                 var errorsMessages = result.Errors.Select(x => x.ErrorMessage).ToList();
                 throw new BusinessException(errorsMessages);
             }
-        }
-
-        private bool ValidatePassword(string senhaRequest, string senhaRegistrada)
-        {
-            return _passwordEncryptor.Verify(senhaRequest, senhaRegistrada);
         }
     }
 }

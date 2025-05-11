@@ -1,4 +1,5 @@
-﻿using Banking.API.Attributes;
+﻿using System.Data;
+using Banking.API.Attributes;
 using Banking.Application.UseCases.Cliente.Deletar;
 using Banking.Application.UseCases.Conta.Transacoes.Deposito.Depositar;
 using Banking.Application.UseCases.Conta.Transacoes.Deposito.GetAllDepositos;
@@ -13,7 +14,7 @@ using Banking.Communication.Requests.Conta.Deposito;
 using Banking.Communication.Requests.Conta.Transacao;
 using Banking.Communication.Response.Cliente;
 using Banking.Communication.Response.Conta.Transacao;
-using Banking.Exceptions.ExceptionBase;
+using Banking.Exceptions;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Banking.API.Controllers
@@ -108,9 +109,16 @@ namespace Banking.API.Controllers
         public async Task<IActionResult> GetDepositoByData([FromQuery] RequestGetDepositoByDataJson request,
             [FromServices] IGetDepositoByDataUseCase useCase)
         {
-            var result = await useCase.Execute(request);
+            try
+            {
+                var result = await useCase.Execute(request);
 
-            return Ok(result);
+                return Ok(result);
+            }
+            catch (FormatException)
+            {
+                throw new DataException(ResourceMessagesExceptions.DATA_FORMATO_INVALIDO);
+            }
         }
 
         [HttpGet]
