@@ -9,12 +9,14 @@ using Banking.Application.UseCases.Conta.Transacoes.Deposito.GetDepositoByPeriod
 using Banking.Application.UseCases.Conta.Transacoes.Saques.LerSaque.GetAllSaques;
 using Banking.Application.UseCases.Conta.Transacoes.Saques.Sacar;
 using Banking.Application.UseCases.Conta.Transacoes.Transferencias.ExecutarTranferencia;
+using Banking.Application.UseCases.Conta.Transacoes.Transferencias.GetAllTransferencias;
 using Banking.Communication.Requests.Cliente;
 using Banking.Communication.Requests.Conta.Deposito;
 using Banking.Communication.Requests.Conta.Transacao;
 using Banking.Communication.Response.Cliente;
 using Banking.Communication.Response.Conta.Transacao;
 using Banking.Exceptions;
+using Banking.Exceptions.ExceptionBase;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Banking.API.Controllers
@@ -129,6 +131,16 @@ namespace Banking.API.Controllers
             [FromServices] IGetDepositoByNumeroUseCase useCase)
         {
             var result = await useCase.Execute(request);
+
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("GetallTransferencias")]
+        [AuthenticatedUser]
+        public async Task<IActionResult> GetAllTransferencias([FromServices] IGetAllTransferenciasUseCase useCase)
+        {
+            var result = await useCase.Execute();
 
             return Ok(result);
         }

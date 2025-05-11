@@ -18,6 +18,7 @@ using Banking.Application.UseCases.Conta.Transacoes.Deposito.GetDepositoByPeriod
 using Banking.Application.UseCases.Conta.Transacoes.Saques.LerSaque.GetAllSaques;
 using Banking.Application.UseCases.Conta.Transacoes.Saques.Sacar;
 using Banking.Application.UseCases.Conta.Transacoes.Transferencias.ExecutarTranferencia;
+using Banking.Application.UseCases.Conta.Transacoes.Transferencias.GetAllTransferencias;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Banking.Application;
@@ -59,6 +60,7 @@ public static class DependencyInjectionExtensions
         //Transferencia Use Case
         services.AddScoped<IExecutarTransferenciaUseCase, ExecutarTransferenciaUseCase>();
         services.AddScoped<ITransacaoService, TransacaoService>();
+        services.AddScoped<IGetAllTransferenciasUseCase, GetAllTransferenciasUseCaseUseCase>();
 
         //Deposito Use Case
         services.AddScoped<IDepositarUseCase, DepositarUseCase>();

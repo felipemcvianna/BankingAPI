@@ -1,8 +1,9 @@
 using Banking.Domain.Repositories.Transacoes.Transferencia;
+using Microsoft.EntityFrameworkCore;
 
 namespace Banking.Infrastructure.Data.Repositories.Transacoes.Transferencia;
 
-public class TransferenciaRepository : IGravarTransferenciaRepository
+public class TransferenciaRepository : IGravarTransferenciaRepository, ILerTransferenciaRepository
 {
     private readonly BankingDbContext _context;
 
@@ -13,4 +14,9 @@ public class TransferenciaRepository : IGravarTransferenciaRepository
 
     public async Task Add(Domain.Entities.Transferencia transferencia) =>
         await _context.Transferencias.AddAsync(transferencia);
+
+    public async Task<List<Domain.Entities.Transferencia>> GetAllTransferenciasAsync(string cpfCliente) =>
+        await _context.Transferencias
+            .AsNoTracking()
+            .Where(x => x.CpfClienteOrigem == cpfCliente).ToListAsync();
 }
