@@ -2,18 +2,11 @@ namespace Banking.Exceptions.ExceptionBase;
 
 public class ErrorsOnValidateExceptions : BankingExceptions
 {
-    public List<string> Erros { get; set; } = new();
-
-    public ErrorsOnValidateExceptions(List<string> errors)
+    public ErrorsOnValidateExceptions(string error) : base(error)
     {
-        Erros = errors;
     }
 
-    public ErrorsOnValidateExceptions(string erro)
+    public ErrorsOnValidateExceptions(List<string> errors) : base(errors)
     {
-        Erros = new List<string>()
-        {
-            erro
-        };
     }
 }

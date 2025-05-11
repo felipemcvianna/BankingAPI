@@ -1,15 +1,12 @@
 namespace Banking.Exceptions.ExceptionBase;
 
-public class BankingExceptions : SystemException
+public class BankingExceptions : Exception, ICustomHttpException
 {
-    public List<string> Errors { get; set; }
+    private List<string> Errors { get; set; } = new List<string>();
 
     public BankingExceptions(string error)
     {
-        Errors = new List<string>()
-        {
-            error
-        };
+        Errors.Add(error);
     }
 
     public BankingExceptions(List<string> errors)
@@ -17,7 +14,7 @@ public class BankingExceptions : SystemException
         Errors = errors;
     }
 
-    public BankingExceptions()
-    {
-    }
+    public int StatusCodes => 400;
+
+    object ICustomHttpException.ToResult() => Errors;
 }

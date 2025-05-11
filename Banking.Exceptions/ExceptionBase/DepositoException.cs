@@ -2,15 +2,11 @@ namespace Banking.Exceptions.ExceptionBase;
 
 public class DepositoException : BankingExceptions
 {
-    public DepositoException(List<string> errors)
+    public DepositoException(string error) : base(error)
     {
-        Errors = errors;
     }
 
-    public DepositoException(string error)
+    public DepositoException(List<string> errors) : base(errors)
     {
-        Errors = new List<string> { error };
     }
-
-    public List<string> Errors { get; set; }
 }
