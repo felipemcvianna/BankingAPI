@@ -26,8 +26,10 @@ namespace Banking.Infrastructure.Data.Repositories.Transacoes.Deposito
                 .ToListAsync();
         }
 
-        public async Task<List<Domain.Entities.Deposito>> ObterDepositoByData(DateTime dataDeposito) =>
-            await _context.Depositos.Where(d => d.DataDeposito.Date == dataDeposito.Date).ToListAsync();
+        public async Task<List<Domain.Entities.Deposito>> ObterDepositoByData(DateTime dataDeposito, int idCliente) =>
+            await _context.Depositos
+                .Where(d => d.DataDeposito.Date == dataDeposito.Date && d.IdCliente == idCliente)
+                .ToListAsync();
 
         public async Task<Domain.Entities.Deposito?> ObterDepositoPorNumero(string numeroDeposito) =>
             await _context.Depositos.FirstOrDefaultAsync(x => x.NumeroDeposito == numeroDeposito);

@@ -50,6 +50,7 @@ namespace Banking.Application.UseCases.Conta.Transacoes.Deposito.Depositar
             var deposito = new Domain.Entities.Deposito
             {
                 CpfCliente = cliente.CPF,
+                IdCliente = cliente.Id,
                 NomeCliente = cliente.Nome,
                 ContaDeposito = new Domain.Entities.AuxiliarTransacao
                 {
