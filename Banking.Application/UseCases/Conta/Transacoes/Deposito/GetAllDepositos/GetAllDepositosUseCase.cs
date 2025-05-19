@@ -28,7 +28,7 @@ public class GetAllDepositosUseCase : IGetAllDepositosUseCase
         if (cliente == null)
             throw new BusinessException(ResourceMessagesExceptions.CLIENTE_NAO_ENCONTRADO);
 
-        var listaDepositos = await _lerDepositosRepository.GetAllDepositos(cliente.CPF);
+        var listaDepositos = await _lerDepositosRepository.GetAllDepositos(cliente.Id);
 
         var response = _mapper.Map<List<ResponseDepositarJson>>(listaDepositos);
 

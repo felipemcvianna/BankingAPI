@@ -14,15 +14,16 @@ namespace Banking.Infrastructure.Data.Repositories.Transacoes.Deposito
 
         public async Task Add(Domain.Entities.Deposito deposito) => await _context.Depositos.AddAsync(deposito);
 
-        public async Task<List<Domain.Entities.Deposito>> GetAllDepositos(string cpfCliente) =>
-            await _context.Depositos.Where(x => x.CpfCliente == cpfCliente).ToListAsync();
+        public async Task<List<Domain.Entities.Deposito>> GetAllDepositos(int idCliente) =>
+            await _context.Depositos.Where(x => x.IdCliente == idCliente).ToListAsync();
 
-        public async Task<List<Domain.Entities.Deposito>> GetDepositosByPeriodo(DateTime startDate, DateTime endDate)
+        public async Task<List<Domain.Entities.Deposito>> GetDepositosByPeriodo(DateTime startDate, DateTime endDate,
+            int idCliente)
         {
             var dataAux = endDate.AddDays(1);
 
             return await _context.Depositos
-                .Where(d => d.DataDeposito >= startDate && d.DataDeposito <= dataAux)
+                .Where(d => d.DataDeposito >= startDate && d.DataDeposito <= dataAux && d.IdCliente == idCliente)
                 .ToListAsync();
         }
 
@@ -31,7 +32,8 @@ namespace Banking.Infrastructure.Data.Repositories.Transacoes.Deposito
                 .Where(d => d.DataDeposito.Date == dataDeposito.Date && d.IdCliente == idCliente)
                 .ToListAsync();
 
-        public async Task<Domain.Entities.Deposito?> ObterDepositoPorNumero(string numeroDeposito) =>
-            await _context.Depositos.FirstOrDefaultAsync(x => x.NumeroDeposito == numeroDeposito);
+        public async Task<Domain.Entities.Deposito?> ObterDepositoPorNumero(string numeroDeposito, int idCliente) =>
+            await _context.Depositos.FirstOrDefaultAsync(x =>
+                x.NumeroDeposito == numeroDeposito && x.IdCliente == idCliente);
     }
 }

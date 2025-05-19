@@ -5,6 +5,7 @@ using Banking.Communication.Requests.Conta.Deposito;
 using Banking.Communication.Requests.Conta.Transacao;
 using Banking.Communication.Response.Conta.Transacao;
 using Banking.Domain.Repositories.Transacoes.Deposito;
+using Banking.Domain.Seguranca.Tokens;
 using Banking.Exceptions;
 using Banking.Exceptions.ExceptionBase;
 
@@ -14,15 +15,22 @@ public class GetDepositoByPeriodoUseCase : IGetDepositoByPeriodoUseCase
 {
     private readonly ILerDepositosRepository _lerDepositosRepository;
     private readonly IMapper _mapper;
+    private readonly ILoggedCliente _loggedCliente;
 
-    public GetDepositoByPeriodoUseCase(ILerDepositosRepository lerDepositosRepository, IMapper mapper)
+    public GetDepositoByPeriodoUseCase(ILerDepositosRepository lerDepositosRepository, IMapper mapper,
+        ILoggedCliente loggedCliente)
     {
         _lerDepositosRepository = lerDepositosRepository;
         _mapper = mapper;
+        _loggedCliente = loggedCliente;
     }
 
     public async Task<List<ResponseDepositarJson>> Execute(RequestGetDepositoByPeriodoJson request)
     {
+        var cliente = await _loggedCliente.GetClienteByToken();
+        if (cliente == null)
+            throw new DataDepositoException(ResourceMessagesExceptions.CLIENTE_NAO_ENCONTRADO);
+
         await ValidatorAsync(request);
 
         var startDate =
@@ -34,7 +42,7 @@ public class GetDepositoByPeriodoUseCase : IGetDepositoByPeriodoUseCase
             DateTime.SpecifyKind(DateTime.ParseExact(request.DataFinal!, "dd/MM/yyyy", CultureInfo.InvariantCulture),
                 DateTimeKind.Utc);
 
-        var depositos = await _lerDepositosRepository.GetDepositosByPeriodo(startDate, endDate);
+        var depositos = await _lerDepositosRepository.GetDepositosByPeriodo(startDate, endDate, cliente.Id);
 
         var response = _mapper.Map<List<ResponseDepositarJson>>(depositos);
 
