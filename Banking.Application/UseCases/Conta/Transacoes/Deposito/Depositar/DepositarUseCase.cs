@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Banking.Application.Services.Transacao;
 using Banking.Communication.Requests.Conta.Transacao;
+using Banking.Communication.Requests.Conta.Transferencia;
 using Banking.Communication.Response.Conta.Transacao;
 using Banking.Domain.Repositories;
 using Banking.Domain.Repositories.Cliente;
@@ -33,7 +34,7 @@ namespace Banking.Application.UseCases.Conta.Transacoes.Deposito.Depositar
             _clienteRepository = clienteRepository;
         }
 
-        public async Task<ResponseDepositarJson> Execute(RequestExecutarTransacaoJson request)
+        public async Task<ResponseDepositarJson> Execute(RequestExecutarTransferenciaJson request)
         {
             await Validate(request);
 
@@ -42,7 +43,7 @@ namespace Banking.Application.UseCases.Conta.Transacoes.Deposito.Depositar
             if (cliente == null)
                 throw new BusinessException(ResourceMessagesExceptions.CLIENTE_NAO_ENCONTRADO);
 
-            var valorTransacao = double.Parse(request.valorTransacao);
+            var valorTransacao = double.Parse(request.ValorTransacao);
 
             _transacaoService.ExecutarDeposito(cliente.Conta, valorTransacao);
 
@@ -70,7 +71,7 @@ namespace Banking.Application.UseCases.Conta.Transacoes.Deposito.Depositar
             return _mapper.Map<ResponseDepositarJson>(deposito);
         }
 
-        private async Task Validate(RequestExecutarTransacaoJson request)
+        private async Task Validate(RequestExecutarTransferenciaJson request)
         {
             var validator = new DepositarValidator();
 

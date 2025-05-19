@@ -19,4 +19,11 @@ public class TransferenciaRepository : IGravarTransferenciaRepository, ILerTrans
         await _context.Transferencias
             .AsNoTracking()
             .Where(x => x.CpfClienteOrigem == cpfCliente).ToListAsync();
+
+    public async Task<List<Domain.Entities.Transferencia>> GetTransferenciaByDataAsync(DateTime dataTransferencia,
+        string cpfCliente) =>
+        await _context.Transferencias
+            .AsNoTracking()
+            .Where(x => x.DataTransacao.Date == dataTransferencia.Date &&
+                        (x.CpfClienteOrigem == cpfCliente || x.CpfClienteDestino == cpfCliente)).ToListAsync();
 }

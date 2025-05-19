@@ -19,6 +19,7 @@ using Banking.Application.UseCases.Conta.Transacoes.Saques.LerSaque.GetAllSaques
 using Banking.Application.UseCases.Conta.Transacoes.Saques.Sacar;
 using Banking.Application.UseCases.Conta.Transacoes.Transferencias.ExecutarTranferencia;
 using Banking.Application.UseCases.Conta.Transacoes.Transferencias.GetAllTransferencias;
+using Banking.Application.UseCases.Conta.Transacoes.Transferencias.GetTransferenciaByData;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Banking.Application;
@@ -61,6 +62,7 @@ public static class DependencyInjectionExtensions
         services.AddScoped<IExecutarTransferenciaUseCase, ExecutarTransferenciaUseCase>();
         services.AddScoped<ITransacaoService, TransacaoService>();
         services.AddScoped<IGetAllTransferenciasUseCase, GetAllTransferenciasUseCaseUseCase>();
+        services.AddScoped<IGetTransferenciaByDataUseCase, GetTransferenciaByDataUseCase>();
 
         //Deposito Use Case
         services.AddScoped<IDepositarUseCase, DepositarUseCase>();

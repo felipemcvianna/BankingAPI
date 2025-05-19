@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Banking.Application.Services.Transacao;
 using Banking.Communication.Requests.Conta.Transacao;
+using Banking.Communication.Requests.Conta.Transferencia;
 using Banking.Communication.Response.Conta.Transacao;
 using Banking.Domain.Entities;
 using Banking.Domain.Repositories;
@@ -36,11 +37,11 @@ namespace Banking.Application.UseCases.Conta.Transacoes.Transferencias.ExecutarT
             _clienteRepository = clienteRepository;
         }
 
-        public async Task<ResponseExecutarTransferenciaJson> Execute(RequestExecutarTransacaoJson request)
+        public async Task<ResponseExecutarTransferenciaJson> Execute(RequestExecutarTransferenciaJson request)
         {
             await TransferenciaValidator(request);
 
-            var valor = double.Parse(request.valorTransacao);
+            var valor = double.Parse(request.ValorTransacao);
 
             var clienteAutenticado = await _loggedCliente.GetClienteAndContaByToken() ??
                                      throw new BusinessException(ResourceMessagesExceptions.CLIENTE_NAO_ENCONTRADO);
@@ -83,7 +84,7 @@ namespace Banking.Application.UseCases.Conta.Transacoes.Transferencias.ExecutarT
             return _mapper.Map<ResponseExecutarTransferenciaJson>(transferencia);
         }
 
-        private async Task TransferenciaValidator(RequestExecutarTransacaoJson request)
+        private async Task TransferenciaValidator(RequestExecutarTransferenciaJson request)
         {
             var validator = new ExecutarTransferenciaValidator();
 

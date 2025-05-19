@@ -10,9 +10,11 @@ using Banking.Application.UseCases.Conta.Transacoes.Saques.LerSaque.GetAllSaques
 using Banking.Application.UseCases.Conta.Transacoes.Saques.Sacar;
 using Banking.Application.UseCases.Conta.Transacoes.Transferencias.ExecutarTranferencia;
 using Banking.Application.UseCases.Conta.Transacoes.Transferencias.GetAllTransferencias;
+using Banking.Application.UseCases.Conta.Transacoes.Transferencias.GetTransferenciaByData;
 using Banking.Communication.Requests.Cliente;
 using Banking.Communication.Requests.Conta.Deposito;
 using Banking.Communication.Requests.Conta.Transacao;
+using Banking.Communication.Requests.Conta.Transferencia;
 using Banking.Communication.Response.Cliente;
 using Banking.Communication.Response.Conta.Transacao;
 using Banking.Exceptions;
@@ -29,7 +31,7 @@ namespace Banking.API.Controllers
         [Route("Transferir")]
         [ProducesResponseType(typeof(ResponseExecutarTransferenciaJson), StatusCodes.Status201Created)]
         [AuthenticatedUser]
-        public async Task<IActionResult> Transferencia([FromBody] RequestExecutarTransacaoJson request,
+        public async Task<IActionResult> Transferencia([FromBody] RequestExecutarTransferenciaJson request,
             [FromServices] IExecutarTransferenciaUseCase useCase)
         {
             var result = await useCase.Execute(request);
@@ -40,7 +42,7 @@ namespace Banking.API.Controllers
         [HttpPost]
         [Route("Depositar")]
         [ProducesResponseType(typeof(ResponseDepositarJson), StatusCodes.Status201Created)]
-        public async Task<IActionResult> Depositar([FromBody] RequestExecutarTransacaoJson request,
+        public async Task<IActionResult> Depositar([FromBody] RequestExecutarTransferenciaJson request,
             [FromServices] IDepositarUseCase useCase)
         {
             var result = await useCase.Execute(request);
@@ -141,6 +143,17 @@ namespace Banking.API.Controllers
         public async Task<IActionResult> GetAllTransferencias([FromServices] IGetAllTransferenciasUseCase useCase)
         {
             var result = await useCase.Execute();
+
+            return Ok(result);
+        }
+
+        [HttpGet]
+        [Route("GetTransferenciaByData")]
+        [AuthenticatedUser]
+        public async Task<IActionResult> GetTransferenciaByData([FromQuery] RequestGetTransferenciaByData request,
+            IGetTransferenciaByDataUseCase useCase)
+        {
+            var result = await useCase.Execute(request);
 
             return Ok(result);
         }
