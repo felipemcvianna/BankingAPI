@@ -29,11 +29,15 @@ public class BankingDbContext : DbContext
 
         modelBuilder.Entity<Saque>()
             .OwnsOne(t => t.ContaSaque);
-        
+
         modelBuilder.Entity<Cliente>()
             .HasOne(c => c.Conta)
             .WithOne(c => c.Cliente)
-            .HasForeignKey<Cliente>(c => c.ContaId); 
-
+            .HasForeignKey<Cliente>(c => c.ContaId);
+        
+        modelBuilder.Entity<Deposito>()
+            .HasOne(d => d.Cliente)
+            .WithMany()
+            .HasForeignKey(x => x.IdCliente);
     }
 }

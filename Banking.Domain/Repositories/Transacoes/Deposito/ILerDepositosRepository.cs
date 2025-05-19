@@ -4,6 +4,6 @@ public interface ILerDepositosRepository
 {
     public Task<List<Entities.Deposito>> GetAllDepositos(string cpfCliente);
     public Task<List<Entities.Deposito>> GetDepositosByPeriodo(DateTime dataInicial, DateTime dataFinal);
-    public Task<List<Entities.Deposito>> ObterDepositoByData(DateTime dataDeposito);
+    public Task<List<Entities.Deposito>> ObterDepositoByData(DateTime dataDeposito, int idCliente);
     public Task<Entities.Deposito?> ObterDepositoPorNumero(string numero);
 }
