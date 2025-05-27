@@ -8,8 +8,8 @@ public class CommomContaValidator<T> : AbstractValidator<T> where T : AuxiliarTr
 {
     protected CommomContaValidator()
     {
-        RuleFor(x => x.numeroAgencia).NotEmpty().WithMessage(ResourceMessagesExceptions.NUMERO_AGENCIA_VAZIO);
-        RuleFor(x => x.numeroConta).NotEmpty().WithMessage(ResourceMessagesExceptions.NUMERO_CONTA_VAZIO);
-        RuleFor(x => x.numeroBanco).NotEmpty().WithMessage(ResourceMessagesExceptions.NUMERO_BANCO_VAZIO);
+        RuleFor(x => x.NumeroAgencia).NotEmpty().WithMessage(ResourceMessagesExceptions.NUMERO_AGENCIA_VAZIO);
+        RuleFor(x => x.NumeroConta).NotEmpty().WithMessage(ResourceMessagesExceptions.NUMERO_CONTA_VAZIO);
+        RuleFor(x => x.NumeroBanco).NotEmpty().WithMessage(ResourceMessagesExceptions.NUMERO_BANCO_VAZIO);
     }
 }

@@ -32,12 +32,22 @@ public class GetTransferenciaByDataUseCase : IGetTransferenciaByDataUseCase
         if (cliente is null)
             throw new TransferenciaException(ResourceMessagesExceptions.CLIENTE_NAO_ENCONTRADO);
 
-        var dataTransferencia = (
-            DateTime.SpecifyKind(DateTime.ParseExact(request.DataTrasferencia, "dd/MM/yyyy",
-                CultureInfo.InvariantCulture, DateTimeStyles.None), DateTimeKind.Utc));
+        if (string.IsNullOrEmpty(request.DataTrasferencia))
+            throw new TransferenciaException(ResourceMessagesExceptions.DATA_VAZIA);
+
+        if (!DateTime.TryParseExact(request.DataTrasferencia, "dd/MM/yyyy", CultureInfo.InvariantCulture,
+                DateTimeStyles.None, out var dataTransferencia))
+        {
+            throw new TransferenciaException(@ResourceMessagesExceptions.DATA_FORMATO_INVALIDO);
+        }
+
+        dataTransferencia = DateTime.SpecifyKind(dataTransferencia, DateTimeKind.Utc);
+
+        if (dataTransferencia.Date > DateTime.Now.Date)
+            throw new DataDepositoException(ResourceMessagesExceptions.DATA_NO_FUTURO);
 
         var transferencia =
-            await _lerTransferenciaRepository.GetTransferenciaByDataAsync(dataTransferencia.Date, cliente.CPF);
+            await _lerTransferenciaRepository.GetTransferenciaByDataAsync(dataTransferencia.Date, cliente.Id);
 
         return _mapper.Map<List<ResponseExecutarTransferenciaJson>>(transferencia);
     }

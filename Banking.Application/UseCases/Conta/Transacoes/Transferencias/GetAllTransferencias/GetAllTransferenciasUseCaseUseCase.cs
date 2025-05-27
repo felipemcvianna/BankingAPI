@@ -30,7 +30,7 @@ public class GetAllTransferenciasUseCaseUseCase : IGetAllTransferenciasUseCase
         if (cliente == null)
             throw new TransferenciaException(ResourceMessagesExceptions.CLIENTE_NAO_ENCONTRADO);
 
-        var listaTransferencias = await _lerTransferenciaRepository.GetAllTransferenciasAsync(cliente.CPF);
+        var listaTransferencias = await _lerTransferenciaRepository.GetAllTransferenciasAsync(cliente.Id);
 
         return _mapper.Map<List<ResponseExecutarTransferenciaJson>>(listaTransferencias);
     }

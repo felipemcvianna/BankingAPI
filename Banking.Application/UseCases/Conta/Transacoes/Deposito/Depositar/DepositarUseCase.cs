@@ -38,7 +38,7 @@ namespace Banking.Application.UseCases.Conta.Transacoes.Deposito.Depositar
         {
             await Validate(request);
 
-            var cliente = await _clienteRepository.GetClienteByNumeroConta(request.numeroConta);
+            var cliente = await _clienteRepository.GetClienteByNumeroConta(request.NumeroConta);
 
             if (cliente == null)
                 throw new BusinessException(ResourceMessagesExceptions.CLIENTE_NAO_ENCONTRADO);
@@ -54,9 +54,9 @@ namespace Banking.Application.UseCases.Conta.Transacoes.Deposito.Depositar
                 NomeCliente = cliente.Nome,
                 ContaDeposito = new Domain.Entities.AuxiliarTransacao
                 {
-                    numeroAgencia = cliente.Conta.NumeroAgencia,
-                    numeroConta = cliente.Conta.NumeroConta,
-                    numeroBanco = cliente.Conta.NumeroBanco
+                    NumeroAgencia = cliente.Conta.NumeroAgencia,
+                    NumeroConta = cliente.Conta.NumeroConta,
+                    NumeroBanco = cliente.Conta.NumeroBanco
                 },
                 ValorDeposito = valorTransacao,
                 DataDeposito = DateTime.UtcNow,
