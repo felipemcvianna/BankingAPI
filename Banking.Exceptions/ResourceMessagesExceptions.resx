@@ -195,4 +195,13 @@
   <data name="DEPOSITO_NAO_ENCONTRADO" xml:space="preserve">
     <value>Não foi possível encontrar o deposito</value>
   </data>
+  <data name="NUMERO_TRANS_VAZIO" xml:space="preserve">
+    <value>Digite o número da transferência</value>
+  </data>
+  <data name="NUMERO_TRANS_INVALIDO" xml:space="preserve">
+    <value>O número da transferência deve ter 16 caracteres</value>
+  </data>
+  <data name="TRANSFERENCIA_NAO_ENCONTRADA" xml:space="preserve">
+    <value>Transferência não encontrada</value>
+  </data>
 </root>

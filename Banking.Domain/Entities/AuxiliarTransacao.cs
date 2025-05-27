@@ -1,9 +1,9 @@
-﻿namespace Banking.Domain.Entities
-{
-    public class AuxiliarTransacao
+﻿    namespace Banking.Domain.Entities
     {
-        public int numeroAgencia { get; set; }
-        public int numeroBanco { get; set; }
-        public int numeroConta { get; set; }
+        public class AuxiliarTransacao
+        {
+            public int NumeroAgencia { get; set; }
+            public int NumeroBanco { get; set; }
+            public int NumeroConta { get; set; }
+        }
     }
-}

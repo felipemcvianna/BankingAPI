@@ -18,26 +18,32 @@ public class BankingDbContext : DbContext
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
-        modelBuilder.Entity<Transferencia>()
-            .OwnsOne(t => t.ContaOrigem);
+        modelBuilder.Entity<Transferencia>().HasOne(x => x.ClienteDestino)
+            .WithMany()
+            .HasForeignKey(k => k.IdClienteDestino);
 
         modelBuilder.Entity<Transferencia>()
-            .OwnsOne(t => t.ContaDestino);
+            .HasOne(d => d.ClienteOrigem)
+            .WithMany()
+            .HasForeignKey(k => k.IdClienteOrigem);
+
 
         modelBuilder.Entity<Deposito>()
             .OwnsOne(t => t.ContaDeposito);
 
+        modelBuilder.Entity<Deposito>()
+            .HasOne(d => d.Cliente)
+            .WithMany()
+            .HasForeignKey(x => x.IdCliente);
+
+
         modelBuilder.Entity<Saque>()
             .OwnsOne(t => t.ContaSaque);
+
 
         modelBuilder.Entity<Cliente>()
             .HasOne(c => c.Conta)
             .WithOne(c => c.Cliente)
             .HasForeignKey<Cliente>(c => c.ContaId);
-        
-        modelBuilder.Entity<Deposito>()
-            .HasOne(d => d.Cliente)
-            .WithMany()
-            .HasForeignKey(x => x.IdCliente);
     }
 }

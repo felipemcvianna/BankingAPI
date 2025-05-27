@@ -3,6 +3,7 @@ using System;
 using Banking.Infrastructure.Data;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
@@ -11,9 +12,11 @@ using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 namespace Banking.Infrastructure.Migrations
 {
     [DbContext(typeof(BankingDbContext))]
-    partial class BankingDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250527000251_Relacionamento-Cliente-Transferencia")]
+    partial class RelacionamentoClienteTransferencia
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -232,13 +235,13 @@ namespace Banking.Infrastructure.Migrations
                             b1.Property<int>("DepositoId")
                                 .HasColumnType("integer");
 
-                            b1.Property<int>("NumeroAgencia")
+                            b1.Property<int>("numeroAgencia")
                                 .HasColumnType("integer");
 
-                            b1.Property<int>("NumeroBanco")
+                            b1.Property<int>("numeroBanco")
                                 .HasColumnType("integer");
 
-                            b1.Property<int>("NumeroConta")
+                            b1.Property<int>("numeroConta")
                                 .HasColumnType("integer");
 
                             b1.HasKey("DepositoId");
@@ -266,13 +269,13 @@ namespace Banking.Infrastructure.Migrations
                             b1.Property<int>("SaqueId")
                                 .HasColumnType("integer");
 
-                            b1.Property<int>("NumeroAgencia")
+                            b1.Property<int>("numeroAgencia")
                                 .HasColumnType("integer");
 
-                            b1.Property<int>("NumeroBanco")
+                            b1.Property<int>("numeroBanco")
                                 .HasColumnType("integer");
 
-                            b1.Property<int>("NumeroConta")
+                            b1.Property<int>("numeroConta")
                                 .HasColumnType("integer");
 
                             b1.HasKey("SaqueId");

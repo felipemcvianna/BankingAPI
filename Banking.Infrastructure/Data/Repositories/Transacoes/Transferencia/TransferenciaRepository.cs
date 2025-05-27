@@ -3,27 +3,32 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Banking.Infrastructure.Data.Repositories.Transacoes.Transferencia;
 
-public class TransferenciaRepository : IGravarTransferenciaRepository, ILerTransferenciaRepository
+public class TransferenciaRepository(BankingDbContext context)
+    : IGravarTransferenciaRepository, ILerTransferenciaRepository
 {
-    private readonly BankingDbContext _context;
-
-    public TransferenciaRepository(BankingDbContext context)
-    {
-        _context = context;
-    }
-
     public async Task Add(Domain.Entities.Transferencia transferencia) =>
-        await _context.Transferencias.AddAsync(transferencia);
+        await context.Transferencias.AddAsync(transferencia);
 
-    public async Task<List<Domain.Entities.Transferencia>> GetAllTransferenciasAsync(string cpfCliente) =>
-        await _context.Transferencias
-            .AsNoTracking()
-            .Where(x => x.CpfClienteOrigem == cpfCliente).ToListAsync();
+    public async Task<List<Domain.Entities.Transferencia>> GetAllTransferenciasAsync(int idCliente) =>
+        await context.Transferencias
+            .Include(c => c.ClienteOrigem.Conta)
+            .Include(c => c.ClienteDestino.Conta)
+            .Where(x => x.IdClienteOrigem == idCliente || x.IdClienteDestino == idCliente).ToListAsync();
 
     public async Task<List<Domain.Entities.Transferencia>> GetTransferenciaByDataAsync(DateTime dataTransferencia,
-        string cpfCliente) =>
-        await _context.Transferencias
-            .AsNoTracking()
-            .Where(x => x.DataTransacao.Date == dataTransferencia.Date &&
-                        (x.CpfClienteOrigem == cpfCliente || x.CpfClienteDestino == cpfCliente)).ToListAsync();
+        int idCliente) =>
+        await context.Transferencias
+            .Include(c => c.ClienteOrigem.Conta)
+            .Include(c => c.ClienteDestino.Conta)
+            .Where(d => d.DataTransacao.Date == dataTransferencia.Date &&
+                        (d.ClienteOrigem.Id == idCliente || d.ClienteDestino.Id == idCliente))
+            .ToListAsync();
+
+    public async Task<Domain.Entities.Transferencia?> GetTransferenciaByNumeroAsync(string numeroTransacao,
+        int idCliente) =>
+        await context.Transferencias
+            .Include(c => c.ClienteOrigem.Conta)
+            .Include(c => c.ClienteDestino.Conta)
+            .FirstOrDefaultAsync(x =>
+                x.NumeroTransacao == numeroTransacao && x.IdClienteOrigem == idCliente);
 }

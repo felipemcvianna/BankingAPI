@@ -2,6 +2,7 @@ using Banking.API.Attributes;
 using Banking.Application.UseCases.Conta.Transacoes.Transferencias.ExecutarTranferencia;
 using Banking.Application.UseCases.Conta.Transacoes.Transferencias.GetAllTransferencias;
 using Banking.Application.UseCases.Conta.Transacoes.Transferencias.GetTransferenciaByData;
+using Banking.Application.UseCases.Conta.Transacoes.Transferencias.GetTransferenciaByNumero;
 using Banking.Communication.Requests.Conta.Transferencia;
 using Banking.Communication.Response.Conta.Transacao;
 using Microsoft.AspNetCore.Mvc;
@@ -39,6 +40,17 @@ public class TransacaoController : ControllerBase
     [AuthenticatedUser]
     public async Task<IActionResult> GetTransferenciaByData([FromQuery] RequestGetTransferenciaByData request,
         IGetTransferenciaByDataUseCase useCase)
+    {
+        var result = await useCase.Execute(request);
+
+        return Ok(result);
+    }
+
+    [HttpGet]
+    [Route("GetTransferenciasByNumero")]
+    [AuthenticatedUser]
+    public async Task<IActionResult> GetTransferenciaByNumero([FromServices] IGetTransferenciaByNumeroUseCase useCase,
+        [FromQuery] RequestGetTransferenciaByNumeroJson request)
     {
         var result = await useCase.Execute(request);
 
