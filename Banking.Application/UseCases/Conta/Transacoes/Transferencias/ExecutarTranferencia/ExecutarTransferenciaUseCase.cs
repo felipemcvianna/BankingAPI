@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Banking.Application.Services.Transacao;
-using Banking.Application.UseCases.Transacao.ExecutarTranferencia;
-using Banking.Communication.Requests.Conta.Transacao;
+using Banking.Communication.Requests.Conta.Transferencia;
 using Banking.Communication.Response.Conta.Transacao;
 using Banking.Domain.Entities;
 using Banking.Domain.Repositories;
@@ -12,7 +11,7 @@ using Banking.Domain.Seguranca.Transacoes;
 using Banking.Exceptions;
 using Banking.Exceptions.ExceptionBase;
 
-namespace Banking.Application.UseCases.Conta.Transacoes.ExecutarTranferencia
+namespace Banking.Application.UseCases.Conta.Transacoes.Transferencias.ExecutarTranferencia
 {
     public class ExecutarTransferenciaUseCase : IExecutarTransferenciaUseCase
     {
@@ -37,16 +36,16 @@ namespace Banking.Application.UseCases.Conta.Transacoes.ExecutarTranferencia
             _clienteRepository = clienteRepository;
         }
 
-        public async Task<ResponseExecutarTransferenciaJson> Execute(RequestExecutarTransacaoJson request)
+        public async Task<ResponseExecutarTransferenciaJson> Execute(RequestExecutarTransferenciaJson request)
         {
             await TransferenciaValidator(request);
 
-            var valor = double.Parse(request.valorTransacao);
+            var valor = double.Parse(request.ValorTransacao);
 
             var clienteAutenticado = await _loggedCliente.GetClienteAndContaByToken() ??
                                      throw new BusinessException(ResourceMessagesExceptions.CLIENTE_NAO_ENCONTRADO);
 
-            var contaClienteDestino = await _clienteRepository.GetClienteByNumeroConta(request.numeroConta);
+            var contaClienteDestino = await _clienteRepository.GetClienteByNumeroConta(request.NumeroConta);
 
             if (contaClienteDestino == null)
                 throw new BusinessException(ResourceMessagesExceptions.CLIENTE_NAO_ENCONTRADO);
@@ -57,25 +56,12 @@ namespace Banking.Application.UseCases.Conta.Transacoes.ExecutarTranferencia
 
             var transferencia = new Transferencia()
             {
-                ContaOrigem = new AuxiliarTransacao()
-                {
-                    numeroAgencia = clienteAutenticado.Conta.NumeroAgencia,
-                    numeroBanco = clienteAutenticado.Conta.NumeroBanco,
-                    numeroConta = clienteAutenticado.Conta.NumeroConta,
-                },
-                ContaDestino = new AuxiliarTransacao()
-                {
-                    numeroAgencia = contaClienteDestino.Conta.NumeroAgencia,
-                    numeroBanco = contaClienteDestino.Conta.NumeroBanco,
-                    numeroConta = contaClienteDestino.Conta.NumeroConta,
-                },
-                NomeClienteDestino = contaClienteDestino.Nome,
-                NomeClienteOrigem = clienteAutenticado.Nome,
-                ValorTransacao = valor,
+                ClienteOrigem = clienteAutenticado,
                 NumeroTransacao = numeroTransacao,
-                CpfClienteDestino = contaClienteDestino.CPF,
-                CpfClienteOrigem = clienteAutenticado.CPF
+                ClienteDestino = contaClienteDestino,
+                ValorTransacao = valor
             };
+
             contaClienteDestino.Conta.AdicionarTransferencia(transferencia);
 
             await _gravarTransferenciaRepository.Add(transferencia);
@@ -84,7 +70,7 @@ namespace Banking.Application.UseCases.Conta.Transacoes.ExecutarTranferencia
             return _mapper.Map<ResponseExecutarTransferenciaJson>(transferencia);
         }
 
-        private async Task TransferenciaValidator(RequestExecutarTransacaoJson request)
+        private async Task TransferenciaValidator(RequestExecutarTransferenciaJson request)
         {
             var validator = new ExecutarTransferenciaValidator();
 

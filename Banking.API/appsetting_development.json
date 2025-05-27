@@ -4,7 +4,7 @@
     },
     "Settings": {
         "Jwt": {
-            "ExpirationTimeMinutes": 10,
+            "ExpirationTimeMinutes": 100000,
             "SigningKey": "h34jg9PJnD9kkdLK45b9Adsd345LJNMx"
 
         },

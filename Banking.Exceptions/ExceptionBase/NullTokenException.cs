@@ -1,15 +1,12 @@
 ﻿namespace Banking.Exceptions.ExceptionBase
 {
-    public class NullTokenException : ArgumentNullException
+    public class NullTokenException : BankingExceptions
     {
-        public string ErrorMessage { get; set; }
-
-        public NullTokenException(string errorMessage)
+        public NullTokenException(string error) : base(error)
         {
-            ErrorMessage = errorMessage;
         }
 
-        public NullTokenException()
+        public NullTokenException(List<string> errors) : base(errors)
         {
         }
     }

@@ -19,6 +19,6 @@ public class SaqueRepository : IGravarSaqueRepository, ILerSaqueRepository
 
     public async Task<List<Domain.Entities.Saque>> LerTodosSaquesClienteAutenticado(int numeroConta, int numeroBanco,
         int numeroAgencia) => await _context.Saques.Where(x =>
-        x.ContaSaque.numeroConta == numeroConta && x.ContaSaque.numeroBanco == numeroBanco &&
-        x.ContaSaque.numeroAgencia == numeroAgencia).ToListAsync();
+        x.ContaSaque.NumeroConta == numeroConta && x.ContaSaque.NumeroConta == numeroBanco &&
+        x.ContaSaque.NumeroConta == numeroAgencia).ToListAsync();
 }

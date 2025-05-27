@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Banking.Application.Services.Transacao;
 using Banking.Communication.Requests.Conta.Transacao;
+using Banking.Communication.Requests.Conta.Transferencia;
 using Banking.Communication.Response.Conta.Transacao;
 using Banking.Domain.Repositories;
 using Banking.Domain.Repositories.Cliente;
@@ -33,28 +34,29 @@ namespace Banking.Application.UseCases.Conta.Transacoes.Deposito.Depositar
             _clienteRepository = clienteRepository;
         }
 
-        public async Task<ResponseDepositarJson> Execute(RequestExecutarTransacaoJson request)
+        public async Task<ResponseDepositarJson> Execute(RequestExecutarTransferenciaJson request)
         {
             await Validate(request);
 
-            var cliente = await _clienteRepository.GetClienteByNumeroConta(request.numeroConta);
+            var cliente = await _clienteRepository.GetClienteByNumeroConta(request.NumeroConta);
 
             if (cliente == null)
                 throw new BusinessException(ResourceMessagesExceptions.CLIENTE_NAO_ENCONTRADO);
 
-            var valorTransacao = double.Parse(request.valorTransacao);
+            var valorTransacao = double.Parse(request.ValorTransacao);
 
             _transacaoService.ExecutarDeposito(cliente.Conta, valorTransacao);
 
             var deposito = new Domain.Entities.Deposito
             {
                 CpfCliente = cliente.CPF,
+                IdCliente = cliente.Id,
                 NomeCliente = cliente.Nome,
                 ContaDeposito = new Domain.Entities.AuxiliarTransacao
                 {
-                    numeroAgencia = cliente.Conta.NumeroAgencia,
-                    numeroConta = cliente.Conta.NumeroConta,
-                    numeroBanco = cliente.Conta.NumeroBanco
+                    NumeroAgencia = cliente.Conta.NumeroAgencia,
+                    NumeroConta = cliente.Conta.NumeroConta,
+                    NumeroBanco = cliente.Conta.NumeroBanco
                 },
                 ValorDeposito = valorTransacao,
                 DataDeposito = DateTime.UtcNow,
@@ -70,7 +72,7 @@ namespace Banking.Application.UseCases.Conta.Transacoes.Deposito.Depositar
             return _mapper.Map<ResponseDepositarJson>(deposito);
         }
 
-        private async Task Validate(RequestExecutarTransacaoJson request)
+        private async Task Validate(RequestExecutarTransferenciaJson request)
         {
             var validator = new DepositarValidator();
 

@@ -15,9 +15,16 @@ namespace Banking.API.Controllers
         public async Task<IActionResult> Login([FromBody] RequestLoginJson request,
             [FromServices] ILoginUseCase useCase)
         {
-            var response = await useCase.Execute(request);
-
-            return Ok(response);
+            try
+            {
+                var response = await useCase.Execute(request);
+                return Ok(response);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
         }
         //
         // [HttpPost]

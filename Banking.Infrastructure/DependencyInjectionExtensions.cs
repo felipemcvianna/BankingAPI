@@ -64,6 +64,7 @@ public static class DependencyInjectionExtensions
 
         //TRANSFERENCIA REPOSITORIES
         services.AddScoped<IGravarTransferenciaRepository, TransferenciaRepository>();
+        services.AddScoped<ILerTransferenciaRepository, TransferenciaRepository>();
         return services;
     }
 

@@ -115,6 +115,9 @@ namespace Banking.Infrastructure.Migrations
                     b.Property<DateTime>("DataDeposito")
                         .HasColumnType("timestamp with time zone");
 
+                    b.Property<int>("IdCliente")
+                        .HasColumnType("integer");
+
                     b.Property<string>("NomeCliente")
                         .IsRequired()
                         .HasColumnType("text");
@@ -129,6 +132,8 @@ namespace Banking.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ContaId");
+
+                    b.HasIndex("IdCliente");
 
                     b.ToTable("Depositos");
                 });
@@ -172,24 +177,14 @@ namespace Banking.Infrastructure.Migrations
                     b.Property<int?>("ContaId")
                         .HasColumnType("integer");
 
-                    b.Property<string>("CpfClienteDestino")
-                        .IsRequired()
-                        .HasColumnType("text");
-
-                    b.Property<string>("CpfClienteOrigem")
-                        .IsRequired()
-                        .HasColumnType("text");
-
                     b.Property<DateTime>("DataTransacao")
                         .HasColumnType("timestamp with time zone");
 
-                    b.Property<string>("NomeClienteDestino")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("IdClienteDestino")
+                        .HasColumnType("integer");
 
-                    b.Property<string>("NomeClienteOrigem")
-                        .IsRequired()
-                        .HasColumnType("text");
+                    b.Property<int>("IdClienteOrigem")
+                        .HasColumnType("integer");
 
                     b.Property<string>("NumeroTransacao")
                         .IsRequired()
@@ -201,6 +196,10 @@ namespace Banking.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.HasIndex("ContaId");
+
+                    b.HasIndex("IdClienteDestino");
+
+                    b.HasIndex("IdClienteOrigem");
 
                     b.ToTable("Transferencias");
                 });
@@ -222,18 +221,24 @@ namespace Banking.Infrastructure.Migrations
                         .WithMany("Depositos")
                         .HasForeignKey("ContaId");
 
+                    b.HasOne("Banking.Domain.Entities.Cliente", "Cliente")
+                        .WithMany()
+                        .HasForeignKey("IdCliente")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
                     b.OwnsOne("Banking.Domain.Entities.AuxiliarTransacao", "ContaDeposito", b1 =>
                         {
                             b1.Property<int>("DepositoId")
                                 .HasColumnType("integer");
 
-                            b1.Property<int>("numeroAgencia")
+                            b1.Property<int>("NumeroAgencia")
                                 .HasColumnType("integer");
 
-                            b1.Property<int>("numeroBanco")
+                            b1.Property<int>("NumeroBanco")
                                 .HasColumnType("integer");
 
-                            b1.Property<int>("numeroConta")
+                            b1.Property<int>("NumeroConta")
                                 .HasColumnType("integer");
 
                             b1.HasKey("DepositoId");
@@ -243,6 +248,8 @@ namespace Banking.Infrastructure.Migrations
                             b1.WithOwner()
                                 .HasForeignKey("DepositoId");
                         });
+
+                    b.Navigation("Cliente");
 
                     b.Navigation("ContaDeposito")
                         .IsRequired();
@@ -259,13 +266,13 @@ namespace Banking.Infrastructure.Migrations
                             b1.Property<int>("SaqueId")
                                 .HasColumnType("integer");
 
-                            b1.Property<int>("numeroAgencia")
+                            b1.Property<int>("NumeroAgencia")
                                 .HasColumnType("integer");
 
-                            b1.Property<int>("numeroBanco")
+                            b1.Property<int>("NumeroBanco")
                                 .HasColumnType("integer");
 
-                            b1.Property<int>("numeroConta")
+                            b1.Property<int>("NumeroConta")
                                 .HasColumnType("integer");
 
                             b1.HasKey("SaqueId");
@@ -286,55 +293,21 @@ namespace Banking.Infrastructure.Migrations
                         .WithMany("Transferencias")
                         .HasForeignKey("ContaId");
 
-                    b.OwnsOne("Banking.Domain.Entities.AuxiliarTransacao", "ContaDestino", b1 =>
-                        {
-                            b1.Property<int>("TransferenciaId")
-                                .HasColumnType("integer");
-
-                            b1.Property<int>("numeroAgencia")
-                                .HasColumnType("integer");
-
-                            b1.Property<int>("numeroBanco")
-                                .HasColumnType("integer");
-
-                            b1.Property<int>("numeroConta")
-                                .HasColumnType("integer");
-
-                            b1.HasKey("TransferenciaId");
-
-                            b1.ToTable("Transferencias");
-
-                            b1.WithOwner()
-                                .HasForeignKey("TransferenciaId");
-                        });
-
-                    b.OwnsOne("Banking.Domain.Entities.AuxiliarTransacao", "ContaOrigem", b1 =>
-                        {
-                            b1.Property<int>("TransferenciaId")
-                                .HasColumnType("integer");
-
-                            b1.Property<int>("numeroAgencia")
-                                .HasColumnType("integer");
-
-                            b1.Property<int>("numeroBanco")
-                                .HasColumnType("integer");
-
-                            b1.Property<int>("numeroConta")
-                                .HasColumnType("integer");
-
-                            b1.HasKey("TransferenciaId");
-
-                            b1.ToTable("Transferencias");
-
-                            b1.WithOwner()
-                                .HasForeignKey("TransferenciaId");
-                        });
-
-                    b.Navigation("ContaDestino")
+                    b.HasOne("Banking.Domain.Entities.Cliente", "ClienteDestino")
+                        .WithMany()
+                        .HasForeignKey("IdClienteDestino")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("ContaOrigem")
+                    b.HasOne("Banking.Domain.Entities.Cliente", "ClienteOrigem")
+                        .WithMany()
+                        .HasForeignKey("IdClienteOrigem")
+                        .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("ClienteDestino");
+
+                    b.Navigation("ClienteOrigem");
                 });
 
             modelBuilder.Entity("Banking.Domain.Entities.Conta", b =>

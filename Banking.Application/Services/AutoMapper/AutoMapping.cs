@@ -12,6 +12,7 @@ public class AutoMapping : Profile
     {
         RegisterRequestToDomain();
         RegisterDomainToRequest();
+        ContaToAuxTransacao();
         TransferenciaDomainToRequest();
         DepositoDomainToRequest();
     }
@@ -28,20 +29,37 @@ public class AutoMapping : Profile
                 => opt.MapFrom(cliente => cliente.Nome));
     }
 
+    private void ContaToAuxTransacao()
+    {
+        CreateMap<Conta, AuxiliarTransacao>();
+    }
+
     private void TransferenciaDomainToRequest()
     {
-        CreateMap<Transferencia, ResponseExecutarTransferenciaJson>();
+        CreateMap<Transferencia, ResponseExecutarTransferenciaJson>()
+            .ForMember(x => x.ContaDestino, opt
+                => opt.MapFrom(c => c.ClienteDestino.Conta))
+            .ForMember(x => x.ContaOrigem, opt
+                => opt.MapFrom(c => c.ClienteOrigem.Conta))
+            .ForMember(x => x.nomeClienteOrigem, opt
+                => opt.MapFrom(c => c.ClienteOrigem.Nome))
+            .ForMember(x => x.nomeClienteDestino, opt
+                => opt.MapFrom(c => c.ClienteDestino.Nome))
+            .ForMember(x => x.CPFClienteDestino, opt
+                => opt.MapFrom(c => c.ClienteDestino.CPF))
+            .ForMember(x => x.CPFClienteOrigem, opt
+                => opt.MapFrom(c => c.ClienteOrigem.CPF));
     }
 
     private void DepositoDomainToRequest()
     {
         CreateMap<Deposito, ResponseDepositarJson>()
-            .ForMember(response => response.numeroBanco, opt
-                => opt.MapFrom(deposito => deposito.ContaDeposito.numeroBanco))
-            .ForMember(response => response.numeroAgencia, opt
-                => opt.MapFrom(deposito => deposito.ContaDeposito.numeroAgencia))
-            .ForMember(response => response.numeroConta, opt
-                => opt.MapFrom(deposito => deposito.ContaDeposito.numeroConta))
+            .ForMember(response => response.NumeroBanco, opt
+                => opt.MapFrom(deposito => deposito.ContaDeposito.NumeroBanco))
+            .ForMember(response => response.NumeroAgencia, opt
+                => opt.MapFrom(deposito => deposito.ContaDeposito.NumeroAgencia))
+            .ForMember(response => response.NumeroConta, opt
+                => opt.MapFrom(deposito => deposito.ContaDeposito.NumeroConta))
             .ForMember(response => response.DataDeposito, opt
                 => opt.MapFrom(deposito => deposito.DataDeposito.ToLocalTime()));
     }

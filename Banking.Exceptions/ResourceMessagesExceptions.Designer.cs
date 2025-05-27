@@ -195,6 +195,24 @@ namespace Banking.Exceptions {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to O número da transferência deve ter 16 caracteres.
+        /// </summary>
+        public static string NUMERO_TRANS_INVALIDO {
+            get {
+                return ResourceManager.GetString("NUMERO_TRANS_INVALIDO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Digite o número da transferência.
+        /// </summary>
+        public static string NUMERO_TRANS_VAZIO {
+            get {
+                return ResourceManager.GetString("NUMERO_TRANS_VAZIO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Token vazio.
         /// </summary>
         public static string SEM_TOKEN {
@@ -254,6 +272,15 @@ namespace Banking.Exceptions {
         public static string TOKEN_INVALIDO {
             get {
                 return ResourceManager.GetString("TOKEN_INVALIDO", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Transferência não encontrada.
+        /// </summary>
+        public static string TRANSFERENCIA_NAO_ENCONTRADA {
+            get {
+                return ResourceManager.GetString("TRANSFERENCIA_NAO_ENCONTRADA", resourceCulture);
             }
         }
         

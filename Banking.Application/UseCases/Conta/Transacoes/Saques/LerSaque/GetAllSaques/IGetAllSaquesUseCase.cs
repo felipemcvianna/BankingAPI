@@ -1,6 +1,6 @@
 using Banking.Domain.Entities;
 
-namespace Banking.Application.UseCases.Conta.Transacoes.Sacar.LerSaque.GetAllSaques;
+namespace Banking.Application.UseCases.Conta.Transacoes.Saques.LerSaque.GetAllSaques;
 
 public interface IGetAllSaquesUseCase
 {
